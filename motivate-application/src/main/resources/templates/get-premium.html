@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Plans</title>
+    <link rel="stylesheet" href="/css/get-premium.css">
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+    </div>
+    <div class="navbar-links">
+        <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
+        <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+        <a th:href="@{/posts/my-posts}" class="nav-link">Posts</a>
+        <a th:href="@{/follow/following}" class="nav-link">Following</a>
+        <a th:href="@{follow/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/logout}" class="nav-link">Logout</a>
+    </div>
+</nav>
+
+
+
+<!-- Main Content -->
+<div class="container">
+    <div class="profile-picture">
+        <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? '/images/default-avatar.jpg' : user.profilePictureUrl}" alt="Profile Picture">
+    </div>
+
+    <!-- Profile Details -->
+    <div class="profile-details">
+        <h1 th:text="${#strings.isEmpty(user.firstName) ? 'Hello, (fill your name)' : 'Hello, ' + user.firstName}">Profile</h1>
+        <div class="profile-field">
+            <label>Balance:</label>
+            <span th:text="${user.wallets.get(0).balance} + ' ' + ${user.wallets.get(0).currency}">$100.00</span>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h1>Membership Plans</h1>
+    <div class="plans">
+        <!-- FREE Plan -->
+        <div class="plan free">
+            <h2>FREE</h2>
+            <div class="details">
+                <div class="field">
+                    <div class="field">
+                        <tr>
+                            <td th:if="${user.getMemberships()[0].type.name() == 'FREE'}"><span class="status active">CURRENT PLAN</span></td>
+                            <td th:if="${user.getMemberships()[0].type.name() != 'FREE'}"><span class="status invisible"></span></td>
+                        </tr>
+                    </div>
+                    <div class="field">
+                        <label>Benefits:</label>
+                        <ul class="benefits">
+                            <li>No Pop-up Banner & Ads</li>
+                            <li>Access to all features</li>
+                            <li>Priority support</li>
+                        </ul>
+                    </div>
+                    <label for="free-period">Period:</label>
+                    <select id="free-period" class="period">
+                        <option th:each="period: ${T(app.membership.model.MembershipPeriod).values()}" th:value="${period}" th:text="${#strings.capitalize(#strings.toLowerCase(period))}"></option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="free-price">Price:</label>
+                    <select id="free-price" class="price">
+                        <option value="monthly">$0/month</option>
+                        <option value="yearly">$0/year</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-select">Select FREE Plan</button>
+        </div>
+
+        <!-- PREMIUM Plan -->
+        <div class="plan premium">
+            <h2>PREMIUM</h2>
+            <div class="details">
+                <div class="field">
+                    <tr>
+                        <td th:if="${user.getMemberships()[0].type.name() == 'PREMIUM'}"><span class="status active">CURRENT PLAN</span></td>
+                        <td th:if="${user.getMemberships()[0].type.name() != 'PREMIUM'}"><span class="status invisible"></span></td>
+                    </tr>
+                </div>
+                <div class="field">
+                    <label>Benefits:</label>
+                    <ul class="benefits">
+                        <li>No Pop-up Banner & Ads</li>
+                        <li>Access to all features</li>
+                        <li>Priority support</li>
+                    </ul>
+                </div>
+                <div>
+                    <label for="premium-period">Period:</label>
+                    <select id="premium-period" class="period">
+                        <option th:each="period: ${T(app.membership.model.MembershipPeriod).values()}" th:value="${period}" th:text="${#strings.capitalize(#strings.toLowerCase(period))}"></option>
+                    </select>
+                </div>
+                <div class="field">
+                </div>
+                <div class="field">
+                    <label for="premium-price">Price:</label>
+                    <select id="premium-price" class="price">
+                        <option value="monthly">$10/month</option>
+                        <option value="yearly">$100/year</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-select">Select PREMIUM Plan</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

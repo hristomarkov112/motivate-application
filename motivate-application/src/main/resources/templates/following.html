@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Following</title>
+    <link rel="stylesheet" href="/css/following.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+    </div>
+    <div class="navbar-links">
+        <a th:href="@{/admin-panel}" class="nav-link">Admin Panel</a>
+        <a th:href="@{/my-posts}" class="nav-link">Posts</a>
+        <a th:href="@{/following}" class="nav-link">Following</a>
+        <a th:href="@{/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+        <a th:href="@{/memberships/details}" class="nav-link">Memberships</a>
+        <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+        <a th:href="@{/logout}" class="nav-link">Logout</a>
+    </div>
+</nav>
+<div class="container">
+    <header>
+        <h1>Current Followings</h1>
+        <a href="/" class="btn">Back to Profile</a>
+    </header>
+
+    <section class="following-list">
+        {% if following %} <!-- Assuming your backend passes a 'following' variable -->
+        {% for user in following %}
+        <div class="following-user">
+            <div class="user-info">
+                <img src="/images/default-avatar.jpg" alt="{{ user.username }}" class="profile-pic">
+                <div class="username">{{ user.username }}</div>
+            </div>
+            <div class="actions">
+                <a href="/unfollow/{{ user.id }}" class="btn-unfollow">Unfollow</a>
+            </div>
+        </div>
+        {% end for %}
+        {% else %}
+        <p class="no-following">You are not following anyone yet.</p>
+        {% endif %}
+    </section>
+</div>
+</body>
+</html>

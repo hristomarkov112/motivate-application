@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="/css/admin-panel.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Users Report</h1>
+    <a th:href="@{/home}" class="btn">Back</a> <!-- Optional: Link to go back to the dashboard -->
+  </header>
+
+  <section class="user-report">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Balance</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th>Following</th>
+        <th>Followers</th>
+        <th>Create Date</th>
+        <th>Last Update</th>
+        <th>Membership</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for user in users %} <!-- Assuming your backend passes a 'users' variable -->
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>${{ user.balance }}</td>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.country }}</td>
+        <td>{{ user.following_count }}</td>
+        <td>{{ user.followers_count }}</td>
+        <td>{{ user.create_date }}</td>
+        <td>{{ user.last_update }}</td>
+        <td>{{ user.membership }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,209 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5A9DD4;
+    padding: 10px 20px;
+    color: white;
+}
+
+.navbar-brand .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-links .nav-link {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+.navbar-links .nav-link:hover {
+    text-decoration: underline;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    text-align: center;
+    width: 100%;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture {
+    flex: 1;
+    text-align: center;
+    background: #dbefff;
+}
+
+.profile-picture img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #5A9DD4;
+}
+
+/* Profile Details */
+.profile-details {
+    flex: 3;
+}
+
+.profile-details h1 {
+    font-size: 20px;
+    padding-top: 15px;
+    margin-top: 0;
+    color: #333;
+}
+
+.profile-field {
+    margin-bottom: 5px;
+    padding-bottom: 10px;
+}
+
+.profile-field label {
+    font-weight: bold;
+    color: #555;
+    width: 120px;
+}
+
+.profile-field span {
+    color: #333;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.plans {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.plan {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.plan h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.plan.free h2 {
+    color: #5A9DD4;
+}
+
+.plan.premium h2 {
+    color: #ff9800;
+}
+
+.details .field {
+    margin-bottom: 15px;
+}
+
+.details label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.details select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.benefits {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.benefits li {
+    margin-bottom: 5px;
+}
+
+.btn-select {
+    width: 100%;
+    padding: 10px;
+    background-color: #5A9DD4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-select:hover {
+    background-color: #244d6c;
+}
+
+.plan.premium .btn-select {
+    background-color: #ff9800; /* Orange for PREMIUM button */
+}
+
+.plan.premium .btn-select:hover {
+    background-color: #e68900; /* Darker orange on hover */
+}
+
+.status.active {
+    background-color: #e8f5e9; /* Light green background */
+    color: #2e7d32; /* Dark green text */
+    border: 1px solid #4caf50; /* Green border */
+    padding: 4px;
+    border-radius: 5px;
+    font-weight: normal;
+
+}
+
+.status.invisible {
+    background-color: #ffffff; /* Light green background */
+    color: #ffffff; /* Dark green text */
+    border: 1px #ffffff; /* Green border */
+    padding: 4px;
+    border-radius: 5px;
+    font-weight: normal;
+    text-align: center;
+}
+
+/* Inactive Subscription */
+.status.inactive {
+    background-color: #ffebee; /* Light red background */
+    color: #c62828; /* Dark red text */
+    border: 1px solid #ef5350; /* Red border */
+    padding: 4px;
+    border-radius: 5px;
+    font-weight: normal;
+    justify-content: center;
+
+}

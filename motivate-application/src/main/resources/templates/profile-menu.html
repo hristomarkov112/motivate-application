@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Social Network</title>
+    <link rel="stylesheet" href="/css/profile-menu.css">
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+        </div>
+        <div class="navbar-links">
+            <a th:href="@{/admin-panel}" class="nav-link">Admin Panel</a>
+            <a th:href="@{/posts/posts}" class="nav-link">Posts</a>
+            <a th:href="@{/follow/following}" class="nav-link">Following</a>
+            <a th:href="@{follow/followers}" class="nav-link">Followers</a>
+            <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+            <a th:href="@{/memberships/details}" class="nav-link">Memberships</a>
+            <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+            <a th:href="@{/logout}" class="nav-link">Logout</a>
+        </div>
+    </nav>
+</nav>
+
+<!-- Edit Profile Page Content -->
+<div class="profile-container">
+    <!-- Profile Picture -->
+    <div class="profile-picture">
+        <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? '/images/default-avatar.jpg' : user.profilePictureUrl}" alt="Profile Picture" id="profilePicturePreview">
+    </div>
+
+
+
+    <!-- Profile Details -->
+    <div class="profile-details">
+        <h1>Edit Profile</h1>
+        <form action="/update-profile" method="post">
+            <!-- Non-editable Fields -->
+            <div class="profile-field">
+                <label>ID:</label>
+                <span th:text="${user.id}"></span>
+            </div>
+            <div class="profile-field">
+                <label>Username:</label>
+                <span th:text="${user.username}"></span>
+            </div>
+            <div class="profile-field">
+                <label>Balance:</label>
+                <span th:text="${user.getWallets().get(0).balance} + ' ' + ${user.getWallets().get(0).currency}">$100.00</span>
+            </div>
+
+            <!-- Editable Fields -->
+            <div class="profile-field">
+                <label for="profilePicture">Profile Pic:</label>
+                <input th:text="${user.profilePictureUrl}" type="text" id="profilePicture" name="profilePicture" value="">
+            </div>
+            <div class="profile-field">
+                <label for="firstName">First Name:</label>
+                <input th:text="${user.firstName}" type="text" id="firstName" name="firstName" value="">
+            </div>
+            <div class="profile-field">
+                <label for="lastName">Last Name:</label>
+                <input th:text="${user.lastName}" type="text" id="lastName" name="lastName" value="">
+            </div>
+            <div class="profile-field">
+                <label for="bio">Bio:</label>
+                <textarea th:text="${user.bio}" id="bio" name="bio" rows="4">Hello! I'm John, a software developer and nature lover. 🏞️</textarea>
+            </div>
+            <div class="profile-field">
+                <label for="email">Email:</label>
+                <input th:text="${user.email}" type="email" id="email" name="email">
+            </div>
+
+            <!-- Non-editable Fields -->
+            <div class="profile-field">
+                <label>Country:</label>
+                <span th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}">United States</span>
+            </div>
+            <div class="profile-field">
+                <label>Create Date:</label>
+                <span th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}">2023-01-01</span>
+            </div>
+            <div class="profile-field">
+                <label>Last Update:</label>
+                <span th:text="${#temporals.format(user.updatedAt, 'dd MMM YYYY HH:mm' )}">2023-10-10</span>
+            </div>
+
+            <div class="profile-field">
+                <label>Plan type:</label>
+                <tr>
+                    <td th:if="${user.getMemberships()[0].type.name() == 'FREE'}"><span class="membership free">FREE</span></td>
+                    <td th:if="${user.getMemberships()[0].type.name() == 'PREMIUM'}"><span class="membership premium">PREMIUM</span></td>
+                </tr>
+                <div class="get-premium-button-container">
+                    <button type="button" class="get-premium-button">Switch to PREMIUM</button>
+                </div>
+            </div>
+
+            <!-- Save Changes Button -->
+            <div class="edit-profile-button-container">
+                <button type="submit" class="edit-profile-button">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2023 Social Network. All rights reserved.</p>
+</footer>
+</body>
+</html>

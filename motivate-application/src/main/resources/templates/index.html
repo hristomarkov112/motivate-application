@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+</head>
+<body>
+<div replace="~{fragments/header :: header}"></div>
+
+<div class="container">
+  <img src="/images/Motiv8-logo.png" alt="Motiv8 Logo" class="logo">
+  <h1>Welcome!</h1>
+  <p>Your social network for daily motivation and inspiration.</p>
+    <div class="button-container">
+        <a th:href="@{/login}" class="button">Login</a>
+        <a th:href="@{/register}" class="button">Register</a>
+    </div>
+</div>
+
+<div replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

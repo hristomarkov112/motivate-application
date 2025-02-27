@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership</title>
+    <link rel="stylesheet" href="/css/memberships.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Membership Details</h1>
+        <a th:href="@{/users/{id}/profile}" class="btn">Back to Profile</a> <!-- Optional: Link to go back to the profile -->
+    </header>
+
+    <section class="membership-details">
+        <div class="details">
+            <div class="field">
+                <label>Type:</label>
+                <tr>
+                <td th:if="${user.getMemberships()[0].type.name() == 'FREE'}"><span class="membership free">FREE</span></td>
+                <td th:if="${user.getMemberships()[0].type.name() == 'PREMIUM'}"><span class="membership premium">PREMIUM</span></td>
+                </tr>
+            </div>
+            <div class="field">
+                <label>Status:</label>
+                <tr>
+                    <td th:if="${user.getMemberships()[0].status.name() == 'ACTIVE'}"><span class="status active">ACTIVE</span></td>
+                    <td th:if="${user.getMemberships()[0].status.name() == 'INACTIVE'}"><span class="status inactive">INACTIVE</span></td>
+                    <td th:if="${user.getMemberships()[0].status.name() == 'EXPIRED'}"><span class="status inactive">EXPIRED</span></td>
+                </tr>
+            </div>
+            <div class="field">
+                <label>Price:</label>
+                <span th:text="${user.memberships[0].price} + ' ' + ${user.wallets[0].currency}">$19.99/month</span> <!-- Replace with dynamic data from backend -->
+            </div>
+            <div class="field">
+                <label>Created At:</label>
+                <span th:text="${#temporals.format(user.memberships[0].createdAt, 'dd MMM YYYY HH:mm' )}">2023-10-01</span> <!-- Replace with dynamic data from backend -->
+            </div>
+            <div class="field">
+                <label>Expires At:</label>
+                <span th:text="${#temporals.format(user.memberships[0].expiresAt, 'dd MMM YYYY HH:mm' )}">2023-11-01</span> <!-- Replace with dynamic data from backend -->
+            </div>
+        </div>
+
+        <div class="renewal-options">
+            <h2>Renewal Options</h2>
+            <form>
+                <div class="radio-group">
+                    <label>
+                        <input th:if="${user.memberships[0].renewalAllowed} != true" type="radio" name="renewal" value="auto-renew">
+                        <input th:if="${user.memberships[0].renewalAllowed} == true" type="radio" name="renewal" value="auto-renew" checked>
+                        Auto-Renew
+                    </label>
+                </div>
+                <div class="radio-group">
+                    <label>
+                        <input th:if="${user.memberships[0].renewalAllowed} != true" type="radio" name="renewal" value="manual-renew"checked>
+                        <input th:if="${user.memberships[0].renewalAllowed} == true" type="radio" name="renewal" value="manual-renew">
+                        Manual Renew
+                    </label>
+                </div>
+            </form>
+        </div>
+        <div class="renewal-options">
+            <h2>Billing Period</h2>
+            <form>
+                <div class="radio-group">
+                    <label>
+                        <input th:if="${user.memberships[0].period.name() != 'MONTHLY'}" type="radio" name="renewal" value="auto-renew">
+                        <input th:if="${user.memberships[0].period.name() == 'MONTHLY'}" type="radio" name="renewal" value="auto-renew" checked>
+                        Monthly
+                    </label>
+                </div>
+                <div class="radio-group">
+                    <label>
+                        <input th:if="${user.memberships[0].period.name() != 'YEARLY'}" type="radio" name="renewal" value="auto-renew">
+                        <input th:if="${user.memberships[0].period.name() == 'YEARLY'}" type="radio" name="renewal" value="auto-renew" checked>
+                        Yearly
+                    </label>
+                </div>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </form>
+        </div>
+    </section>
+</div>
+</body>
+</html>

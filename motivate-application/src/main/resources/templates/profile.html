@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+  </div>
+  <div class="navbar-links">
+    <a th:href="@{/admin-panel}" class="nav-link">Admin Panel</a>
+    <a th:href="@{/posts/posts}" class="nav-link">Posts</a>
+    <a th:href="@{/follow/following}" class="nav-link">Following</a>
+    <a th:href="@{follow/followers}" class="nav-link">Followers</a>
+    <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+    <a th:href="@{/memberships/details}" class="nav-link">Memberships</a>
+    <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+    <a th:href="@{/logout}" class="nav-link">Logout</a>
+  </div>
+</nav>
+
+<!-- Profile Page Content -->
+<div class="profile-container">
+  <!-- Profile Picture -->
+  <div class="profile-picture">
+    <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? '/images/default-avatar.jpg' : user.profilePictureUrl}" alt="Profile Picture">
+  </div>
+
+  <!-- Profile Details -->
+  <div class="profile-details">
+    <h1>Profile</h1>
+    <div class="profile-field">
+      <label>ID:</label>
+      <span th:text="${user.id}">12345</span>
+    </div>
+    <div class="profile-field">
+      <label>Username:</label>
+      <span th:text="${user.username}">johndoe</span>
+    </div>
+    <div class="profile-field">
+      <label>Balance:</label>
+      <span th:text="${user.getWallets().get(0).balance} + ' ' + ${user.getWallets().get(0).currency}">$100.00</span>
+    </div>
+    <div class="profile-field">
+      <label >First Name:</label>
+      <span th:text="${#strings.isEmpty(user.firstName) ? '(Fill first name)' : user.firstName}">John</span>
+    </div>
+    <div class="profile-field">
+      <label >Last Name:</label>
+      <span th:text="${#strings.isEmpty(user.lastName) ? '(Fill last name)' : user.lastName}">Doe</span>
+    </div>
+    <div class="profile-field">
+      <label>Bio:</label>
+      <span th:text="${#strings.isEmpty(user.bio) ? '(Fill short biography)' : user.bio}">Hello! I'm John, a software developer and nature lover. 🏞️</span>
+    </div>
+    <div class="profile-field">
+      <label>Email:</label>
+      <span th:text="${#strings.isEmpty(user.email) ? '(Fill email)' : user.email}">john.doe@example.com</span>
+    </div>
+    <div class="profile-field">
+      <label>Country:</label>
+      <span th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}">United States</span>
+    </div>
+    <div class="profile-field">
+      <label>Following:</label>
+      <span><a href="/profile/following">150</a></span>
+    </div>
+    <div class="profile-field">
+      <label>Followers:</label>
+      <span><a href="/profile/followers">300</a></span>
+    </div>
+    <div class="profile-field">
+      <label>Create Date:</label>
+      <span th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}">2023-01-01</span>
+    </div>
+    <div class="profile-field">
+      <label>Last Update:</label>
+      <span th:text="${#temporals.format(user.updatedAt, 'dd MMM YYYY HH:mm' )}">2023-10-10</span>
+    </div>
+    <div class="profile-field">
+      <label>Membership:</label>
+      <span th:text="${#strings.capitalize(#strings.toLowerCase(user.getMemberships().get(0).type))}" >Premium Member</span>
+    </div>
+
+    <!-- Edit Profile Button -->
+    <div class="edit-profile-button-container">
+      <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="edit-profile-button">Edit Profile</a>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>&copy; 2025 Motivate Limited. All rights reserved.</p>
+</footer>
+</body>
+</html>

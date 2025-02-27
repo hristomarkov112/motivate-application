@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/form.css">
+</head>
+<body>
+<div class="container">
+    <img src="/images/Motiv8-logo.png" alt="Motiv8 Logo" class="logo">
+    <h1>Register</h1>
+    <form action="#" method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <select id="country" name="country" required>
+                <option value="">Select your country</option>
+                <option value="usa">United States</option>
+                <option value="canada">Canada</option>
+                <option value="uk">United Kingdom</option>
+                <option value="australia">Australia</option>
+                <option value="germany">Germany</option>
+                <!-- Add more countries as needed -->
+            </select>
+        </div>
+        <button type="submit" class="button">Register</button>
+    </form>
+</div>
+</body>
+</html>

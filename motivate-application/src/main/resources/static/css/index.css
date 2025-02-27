@@ -1,0 +1,264 @@
+/* General Styles */
+body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+.logo {
+    max-width: 600px;
+    height: auto;
+}
+h1 {
+    color: #000;
+    margin-top: 40px;
+}
+p {
+    color: #5A9DD4;
+}
+.button-container {
+    margin-top: 50px;
+    margin-bottom: 200px;
+}
+
+.button {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    background-color: #5A9DD4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.button:hover {
+    background-color: #244d6c;
+}
+
+/* Header Styles */
+header {
+    background-color: #5A9DD4;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+/* Form Styles */
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form input, form textarea, form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #5A9DD4;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #5A9DD4;
+}
+
+/* Card Styles */
+.card {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+/* Form Group Styles (For Edit Profile Page) */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 12px;
+}
+
+/* Button Styles */
+.btn {
+    background-color: #5A9DD4;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background-color: #244d6c;
+}
+
+/* My Posts Page Styles */
+.post-list {
+    margin-top: 20px;
+}
+
+.post-card {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-card h3 {
+    margin-top: 0;
+}
+
+.post-card p {
+    margin: 10px 0;
+}
+
+.post-card small {
+    color: #666;
+    font-size: 14px;
+}
+
+.post-actions {
+    margin-top: 10px;
+}
+
+.post-actions .btn {
+    margin-right: 10px;
+    font-size: 14px;
+    padding: 5px 10px;
+}
+
+.btn-view {
+    background-color: #5A9DD4;
+}
+
+.btn-view:hover {
+    background-color: #244d6c;
+}
+
+.btn-edit {
+    background-color: #28a745;
+}
+
+.btn-edit:hover {
+    background-color: #218838;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+/* Posts Page Styles */
+.post-list {
+    margin-top: 20px;
+}
+
+.post-card {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-card h3 {
+    margin-top: 0;
+}
+
+.post-card p {
+    margin: 10px 0;
+}
+
+.post-card small {
+    color: #666;
+    font-size: 14px;
+}
+
+.post-card a {
+    color: #5A9DD4;
+    text-decoration: none;
+}
+
+.post-card a:hover {
+    text-decoration: underline;
+}

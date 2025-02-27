@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+    </div>
+    <div class="navbar-links">
+        <a th:if="${user.role.ADMIN}" th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+        <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
+        <a th:if="${user.role.USER}" th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+        <a th:if="${user.role.USER}" th:href="@{/posts/posts}" class="nav-link">Posts</a>
+        <a th:if="${user.role.USER}" th:href="@{/follow/following}" class="nav-link">Following</a>
+        <a th:if="${user.role.USER}" th:href="@{follow/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/logout}" class="nav-link">Logout</a>
+    </div>
+</nav>
+
+
+
+<!-- Main Content -->
+<div class="container">
+    <div class="profile-picture">
+        <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? '/images/default-avatar.jpg' : user.profilePictureUrl}" alt="Profile Picture">
+    </div>
+
+    <!-- Profile Details -->
+    <div class="profile-details">
+        <h1 th:text="${#strings.isEmpty(user.firstName) ? 'Hello, (fill your name)' : 'Hello, ' + user.firstName}">Profile</h1>
+        <div class="profile-field">
+            <label>ID:</label>
+            <span th:text="${user.id}">12345</span>
+        </div>
+        <div class="profile-field">
+            <label>Username:</label>
+            <span th:text="${user.username}">johndoe</span>
+        </div>
+        <div class="profile-field">
+            <label>Balance:</label>
+            <span th:text="${user.wallets.get(0).balance} + ' ' + ${user.wallets.get(0).currency}">$100.00</span>
+        </div>
+    </div>
+    <!-- Create Post Section -->
+    <div class="create-post">
+        <h2>Create a Post</h2>
+        <form action="/create-post" method="post">
+            <textarea name="postContent" placeholder="What's on your mind?" rows="4" required></textarea>
+            <button type="submit" class="button">Post</button>
+        </form>
+    </div>
+
+    <!-- Posts Feed -->
+    <div class="posts-feed">
+        <h2>Recent Posts</h2>
+        <!-- Example Post 1 -->
+        <div class="post">
+            <div class="post-header">
+                <img src="/images/default-avatar.jpg" alt="User 1" class="post-avatar">
+                <div class="post-user-info">
+                    <a href="/profile/user1" class="post-username">John Doe</a>
+                    <span class="post-time">2 hours ago</span>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
+            </div>
+            <div class="post-actions">
+                <button class="like-button">Like</button>
+                <button class="comment-button">Comment</button>
+                <button class="share-button">Share</button>
+            </div>
+        </div>
+
+        <!-- Example Post 2 -->
+        <div class="post">
+            <div class="post-header">
+                <img src="/images/default-avatar.jpg" alt="User 2" class="post-avatar">
+                <div class="post-user-info">
+                    <a href="/profile/user2" class="post-username">Jane Smith</a>
+                    <span class="post-time">5 hours ago</span>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>Excited to start my new job today! 🎉 #NewBeginnings</p>
+            </div>
+            <div class="post-actions">
+                <button class="like-button">Like</button>
+                <button class="comment-button">Comment</button>
+                <button class="share-button">Share</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2025 Motivate Limited. All rights reserved.</p>
+</footer>
+</body>
+</html>
