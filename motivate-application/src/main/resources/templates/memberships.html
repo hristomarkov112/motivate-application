@@ -7,9 +7,26 @@
     <link rel="stylesheet" href="/css/memberships.css"> <!-- Link to your CSS file -->
 </head>
 <body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+    </div>
+    <div class="navbar-links">
+        <a th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+        <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
+        <a th:href="@{/follow/following}" class="nav-link">Following</a>
+        <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+        <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
+        <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+        <a th:href="@{/logout}" class="nav-link">Logout</a>
+    </div>
+</nav>
 <div class="container">
     <header>
         <h1>Membership Details</h1>
+        <a th:href="@{/memberships/history}" class="btn">History</a> <!-- Optional: Link to go back to the profile -->
         <a th:href="@{/users/{id}/profile}" class="btn">Back to Profile</a> <!-- Optional: Link to go back to the profile -->
     </header>
 
@@ -18,16 +35,16 @@
             <div class="field">
                 <label>Type:</label>
                 <tr>
-                <td th:if="${user.getMemberships()[0].type.name() == 'FREE'}"><span class="membership free">FREE</span></td>
-                <td th:if="${user.getMemberships()[0].type.name() == 'PREMIUM'}"><span class="membership premium">PREMIUM</span></td>
+                <td th:if="${user.memberships[0].type.name() == 'FREE'}"><span class="membership free">FREE</span></td>
+                <td th:if="${user.memberships()[0].type.name() == 'PREMIUM'}"><span class="membership premium">PREMIUM</span></td>
                 </tr>
             </div>
             <div class="field">
                 <label>Status:</label>
                 <tr>
-                    <td th:if="${user.getMemberships()[0].status.name() == 'ACTIVE'}"><span class="status active">ACTIVE</span></td>
-                    <td th:if="${user.getMemberships()[0].status.name() == 'INACTIVE'}"><span class="status inactive">INACTIVE</span></td>
-                    <td th:if="${user.getMemberships()[0].status.name() == 'EXPIRED'}"><span class="status inactive">EXPIRED</span></td>
+                    <td th:if="${user.memberships()[0].status.name() == 'ACTIVE'}"><span class="status active">ACTIVE</span></td>
+                    <td th:if="${user.memberships()[0].status.name() == 'INACTIVE'}"><span class="status inactive">INACTIVE</span></td>
+                    <td th:if="${user.memberships()[0].status.name() == 'EXPIRED'}"><span class="status inactive">EXPIRED</span></td>
                 </tr>
             </div>
             <div class="field">
@@ -85,5 +102,7 @@
         </div>
     </section>
 </div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

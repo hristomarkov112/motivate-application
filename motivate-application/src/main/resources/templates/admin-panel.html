@@ -4,9 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel</title>
-  <link rel="stylesheet" href="/css/admin-panel.css"> <!-- Link to your CSS file -->
+  <link rel="stylesheet" href="/css/admin-panel.css">
 </head>
 <body>
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+  </div>
+  <div class="navbar-links">
+    <a th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+    <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
+    <a th:href="@{/follow/following}" class="nav-link">Following</a>
+    <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+    <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+    <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
+    <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+    <a th:href="@{/logout}" class="nav-link">Logout</a>
+  </div>
+</nav>
 <div class="container">
   <header>
     <h1>Users Report</h1>
@@ -20,37 +35,42 @@
         <th>ID</th>
         <th>Username</th>
         <th>Balance</th>
+        <th>Currency</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Email</th>
         <th>Country</th>
-        <th>Following</th>
-        <th>Followers</th>
         <th>Create Date</th>
         <th>Last Update</th>
-        <th>Membership</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Period</th>
       </tr>
       </thead>
       <tbody>
       {% for user in users %} <!-- Assuming your backend passes a 'users' variable -->
-      <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.username }}</td>
-        <td>${{ user.balance }}</td>
-        <td>{{ user.first_name }}</td>
-        <td>{{ user.last_name }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.country }}</td>
-        <td>{{ user.following_count }}</td>
-        <td>{{ user.followers_count }}</td>
-        <td>{{ user.create_date }}</td>
-        <td>{{ user.last_update }}</td>
-        <td>{{ user.membership }}</td>
+      <tr th:each="user : ${users}">
+        <td th:text="${user.id}">{{ user.id }}</td>
+        <td th:text="${user.username}">{{ user.username }}</td>
+        <td th:text="${user.wallets[0].balance}">{{ user.wallet.balance }}</td>
+        <td th:text="${user.wallets[0].currency}">{{ user.wallet.currency }}</td>
+        <td th:text="${user.firstName}">{{ user.first_name }}</td>
+        <td th:text="${user.lastName}">{{ user.last_name }}</td>
+        <td th:text="${user.email}">{{ user.email }}</td>
+        <td th:text="${user.country}">{{ user.country }}</td>
+        <td th:text="${user.createdAt}">{{ user.create_date }}</td>
+        <td th:text="${user.updatedAt}">{{ user.last_update }}</td>
+        <td th:text="${user.memberships[0].type}">{{ user.membership }}</td>
+        <td th:text="${user.memberships[0].status}">{{ user.membership }}</td>
+        <td th:text="${user.memberships[0].period}">{{ user.membership }}</td>
+
       </tr>
       {% endfor %}
       </tbody>
     </table>
   </section>
 </div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

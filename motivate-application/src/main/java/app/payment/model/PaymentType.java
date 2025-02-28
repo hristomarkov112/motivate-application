@@ -1,5 +1,5 @@
 package app.payment.model;
 
 public enum PaymentType {
-    DEPOSIT, WITHDRAWAL
+    DEPOSIT, WITHDRAWAL, TRANSFER, FEE
 }

@@ -12,12 +12,12 @@
     <a th:href="@{/home}" class="logo">Motiv8 Network</a>
   </div>
   <div class="navbar-links">
-    <a th:href="@{/admin-panel}" class="nav-link">Admin Panel</a>
-    <a th:href="@{/my-posts}" class="nav-link">Posts</a>
-    <a th:href="@{/following}" class="nav-link">Following</a>
-    <a th:href="@{/followers}" class="nav-link">Followers</a>
+    <a th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+    <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
+    <a th:href="@{/follow/following}" class="nav-link">Following</a>
+    <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
     <a th:href="@{/payments/history}" class="nav-link">Payments</a>
-    <a th:href="@{/memberships/details}" class="nav-link">Memberships</a>
+    <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
     <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
     <a th:href="@{/logout}" class="nav-link">Logout</a>
   </div>
@@ -47,5 +47,7 @@
     {% endif %}
   </section>
 </div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

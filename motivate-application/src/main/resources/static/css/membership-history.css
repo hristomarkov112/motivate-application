@@ -1,0 +1,170 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5A9DD4;
+    padding: 10px 20px;
+    color: white;
+}
+
+.navbar-brand .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-links .nav-link {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+.navbar-links .nav-link:hover {
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.btn {
+    background-color: #5A9DD4;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    background-color: #244d6c;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.btn {
+    background-color: #5A9DD4;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    background-color: #244d6c;
+}
+
+/* Table Styles */
+.payments-report table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.payments-report th, .payments-report td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.payments-report th {
+    background-color: #5A9DD4;
+    color: white;
+    font-weight: bold;
+}
+
+.payments-report tr:hover {
+    background-color: #f1f1f1;
+}
+
+.payments-report td {
+    color: #555;
+}
+
+/* Active Subscription */
+.status.active {
+    background-color: #e8f5e9; /* Light green background */
+    color: #2e7d32; /* Dark green text */
+    border: 1px solid #4caf50; /* Green border */
+    padding: 4px;
+    border-radius: 5px;
+    font-weight: normal;
+    text-align: center;
+}
+
+/* Inactive Subscription */
+.status.inactive {
+    background-color: #ffebee; /* Light red background */
+    color: #c62828; /* Dark red text */
+    border: 1px solid #ef5350; /* Red border */
+    padding: 4px;
+    border-radius: 5px;
+    font-weight: normal;
+}
+
+/* FREE Subscription Type */
+.membership.free {
+    background-color: #e3f2fd; /* Light blue background */
+    color: #1565c0; /* Dark blue text */
+    border: 1px solid #64b5f6; /* Blue border */
+    padding: 4px;
+    border-radius: 5px;
+    font-weight: normal;
+    text-transform: uppercase; /* Uppercase text for emphasis */
+}
+
+/* PREMIUM Subscription Type */
+.membership.premium {
+    background-color: #fff3e0; /* Light orange background */
+    color: #ef6c00; /* Dark orange text */
+    border: 1px solid #ffb74d; /* Orange border */
+    padding: 4px;
+    border-radius: 5px;
+    font-weight: normal;
+    text-transform: uppercase; /* Uppercase text for emphasis */
+}

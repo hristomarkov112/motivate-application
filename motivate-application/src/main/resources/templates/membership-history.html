@@ -2,9 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments History</title>
+    <link rel="stylesheet" href="/css/membership-history.css"> <!-- Link to your CSS file -->
 </head>
 <body>
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+    </div>
+    <div class="navbar-links">
+        <a th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+        <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
+        <a th:href="@{/follow/following}" class="nav-link">Following</a>
+        <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+        <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
+        <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+        <a th:href="@{/logout}" class="nav-link">Logout</a>
+    </div>
+</nav>
+<div class="container">
+    <header>
+        <h1>Membership History</h1>
+        <a th:href="@{/users/{id}/profile}" class="btn">Back to Profile</a>
+    </header>
 
+    <section class="payments-report">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Period</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Created At</th>
+                <th>Expires At</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="membership : ${user.memberships}">
+                <td th:text="${membership.id}">{{ membership.id }}</td>
+                <td>
+                    <p th:if="${membership.status.name() == 'ACTIVE'}" class="status active">ACTIVE</p>
+                    <p th:if="${membership.status.name() == 'INACTIVE'}" class="status inactive">INACTIVE</p>
+                    <p th:if="${membership.status.name() == 'EXPIRED'}" class="status inactive">EXPIRED</p>
+                </td>
+                <td>
+                    <p th:if="${membership.period.name() == 'MONTHLY'}">Monthly</p>
+                    <p th:if="${membership.period.name() == 'YEARLY'}">Yearly</p>
+                </td>
+                <td>
+                    <p th:if="${membership.type.name() == 'FREE'}" class="membership free">FREE</p>
+                    <p th:if="${membership.type.name() == 'PREMIUM'}" class="membership premium">PREMIUM</p>
+                </td>
+
+                <td th:text="${membership.price} + ' EUR'">{{ membership.balance_left }}</td>
+                <td th:text="${#temporals.format(membership.createdAt, 'dd MMM YYYY HH:mm' )}">{{ membership.currency }}</td>
+                <td th:text="${#temporals.format(membership.expiresAt, 'dd MMM YYYY HH:mm' )}">{{ membership.type }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

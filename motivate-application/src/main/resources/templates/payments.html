@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments History</title>
+    <link rel="stylesheet" href="/css/payments.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+    </div>
+    <div class="navbar-links">
+        <a th:href="@{/posts/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+        <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
+        <a th:href="@{/follow/following}" class="nav-link">Following</a>
+        <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+        <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
+        <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+        <a th:href="@{/logout}" class="nav-link">Logout</a>
+    </div>
+</nav>
+<div class="container">
+    <header>
+        <h1>Payments History</h1>
+        <a th:href="@{/users/{id}/profile}" class="btn">Back to Profile</a> <!-- Optional: Link to go back to the dashboard -->
+    </header>
+
+    <section class="payments-report">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Sender</th>
+                <th>Recipient</th>
+                <th>Amount</th>
+                <th>Balance</th>
+                <th>Currency</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Note</th>
+                <th>Created At</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="payment : ${payments}">
+                <td th:text="${payment.id}">{{ payment.id }}</td>
+                <td th:text="${payment.sender}">{{ payment.sender }}</td>
+                <td th:text="${payment.recipient}">{{ payment.recipient }}</td>
+                <td>
+                    <p th:if="${payment.type.name()} == 'DEPOSIT'" th:text="${'+' + payment.amount}" style="color: #21cd21; font-weight: bold">{{ payment.amount }}</p>
+                    <p th:if="${payment.type.name()} == 'WITHDRAWAL'" th:text="${'-' + payment.amount}" style="color: red; font-weight: bold">{{ payment.amount }}</p>
+                </td>
+                <td th:text="${payment.balanceLeft}">{{ payment.balance_left }}</td>
+                <td th:text="${payment.currency}">{{ payment.currency }}</td>
+                <td th:text="${payment.type}">{{ payment.type }}</td>
+                <td>
+                    <p th:if="${payment.status.name()} == 'FAILED'" style="color: red; font-style: italic;">FAILED</p>
+                    <p th:if="${payment.status.name()} == 'PENDING'" style="color: yellow; font-style: italic">PENDING</p>
+                    <p th:if="${payment.status.name()} == 'SUCCESSFUL'" style="color: #21cd21; font-style: italic">SUCCESSFUL</p>
+                </td>
+                <td th:text="${payment.status.name() == 'FAILED' ? payment.failureReason : payment.description}"></td>
+                <td th:text="${#temporals.format(payment.createdAt, 'dd MMM YYYY HH:mm' )}">{{ payment.created_at }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>

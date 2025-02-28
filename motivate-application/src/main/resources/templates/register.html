@@ -10,29 +10,27 @@
 <div class="container">
     <img src="/images/Motiv8-logo.png" alt="Motiv8 Logo" class="logo">
     <h1>Register</h1>
-    <form action="#" method="post">
+    <form th:action="@{/register}" th:method="post" th:object="${registerRequest}">
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
+            <input th:field="*{username}" type="text" id="username" name="username">
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red"></p>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
+            <input th:field="*{password}" type="password" id="password" name="password">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red"></p>
         </div>
         <div class="form-group">
             <label for="country">Country</label>
-            <select id="country" name="country" required>
-                <option value="">Select your country</option>
-                <option value="usa">United States</option>
-                <option value="canada">Canada</option>
-                <option value="uk">United Kingdom</option>
-                <option value="australia">Australia</option>
-                <option value="germany">Germany</option>
-                <!-- Add more countries as needed -->
+            <select id="country" th:field="*{country}">
+                <option th:each="country : ${T(app.user.model.Country).values()}" th:value="${country}" th:text="${#strings.capitalize(#strings.toLowerCase(country))}"></option>
             </select>
         </div>
         <button type="submit" class="button">Register</button>
     </form>
 </div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

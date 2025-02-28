@@ -31,10 +31,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final WalletService walletService;
     private final MembershipService membershipService;
-    private final CommentService commentService;
-    private final FollowService followService;
-    private final PaymentService paymentService;
-    private final PostService postService;
 
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService, CommentService commentService, FollowService followService, PaymentService paymentService, PostService postService) {
@@ -42,10 +38,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.walletService = walletService;
         this.membershipService = membershipService;
-        this.commentService = commentService;
-        this.followService = followService;
-        this.paymentService = paymentService;
-        this.postService = postService;
     }
 
     public User login(LoginRequest loginRequest) {
@@ -85,7 +77,7 @@ public class UserService {
         return User.builder()
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(UserRole.USER)
+                .role(UserRole.ADMIN)
                 .isActive(true)
                 .country(registerRequest.getCountry())
                 .createdAt(LocalDateTime.now())

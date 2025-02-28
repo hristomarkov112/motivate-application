@@ -13,12 +13,12 @@
         <a th:href="@{/home}" class="logo">Motiv8 Network</a>
     </div>
     <div class="navbar-links">
-        <a th:if="${user.role.ADMIN}" th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+        <a th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
-        <a th:if="${user.role.USER}" th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
-        <a th:if="${user.role.USER}" th:href="@{/posts/posts}" class="nav-link">Posts</a>
-        <a th:if="${user.role.USER}" th:href="@{/follow/following}" class="nav-link">Following</a>
-        <a th:if="${user.role.USER}" th:href="@{follow/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+        <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
+        <a th:href="@{/follow/following}" class="nav-link">Following</a>
+        <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
         <a th:href="@{/logout}" class="nav-link">Logout</a>
     </div>
 </nav>
@@ -36,15 +36,15 @@
         <h1 th:text="${#strings.isEmpty(user.firstName) ? 'Hello, (fill your name)' : 'Hello, ' + user.firstName}">Profile</h1>
         <div class="profile-field">
             <label>ID:</label>
-            <span th:text="${user.id}">12345</span>
+            <span th:text="${user.id}"></span>
         </div>
         <div class="profile-field">
             <label>Username:</label>
-            <span th:text="${user.username}">johndoe</span>
+            <span th:text="${user.username}"></span>
         </div>
         <div class="profile-field">
             <label>Balance:</label>
-            <span th:text="${user.wallets.get(0).balance} + ' ' + ${user.wallets.get(0).currency}">$100.00</span>
+            <span>$100.00</span>
         </div>
     </div>
     <!-- Create Post Section -->
@@ -98,10 +98,7 @@
         </div>
     </div>
 </div>
-
 <!-- Footer -->
-<footer class="footer">
-    <p>&copy; 2025 Motivate Limited. All rights reserved.</p>
-</footer>
+<th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

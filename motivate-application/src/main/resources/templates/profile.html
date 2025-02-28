@@ -13,12 +13,12 @@
     <a th:href="@{/home}" class="logo">Motiv8 Network</a>
   </div>
   <div class="navbar-links">
-    <a th:href="@{/admin-panel}" class="nav-link">Admin Panel</a>
-    <a th:href="@{/posts/posts}" class="nav-link">Posts</a>
+    <a th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+    <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
     <a th:href="@{/follow/following}" class="nav-link">Following</a>
-    <a th:href="@{follow/followers}" class="nav-link">Followers</a>
+    <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
     <a th:href="@{/payments/history}" class="nav-link">Payments</a>
-    <a th:href="@{/memberships/details}" class="nav-link">Memberships</a>
+    <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
     <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
     <a th:href="@{/logout}" class="nav-link">Logout</a>
   </div>
@@ -44,7 +44,7 @@
     </div>
     <div class="profile-field">
       <label>Balance:</label>
-      <span th:text="${user.getWallets().get(0).balance} + ' ' + ${user.getWallets().get(0).currency}">$100.00</span>
+      <span th:text="${user.wallets[0].balance} + ' ' + ${user.wallets[0].currency}">$100.00</span>
     </div>
     <div class="profile-field">
       <label >First Name:</label>
@@ -84,19 +84,17 @@
     </div>
     <div class="profile-field">
       <label>Membership:</label>
-      <span th:text="${#strings.capitalize(#strings.toLowerCase(user.getMemberships().get(0).type))}" >Premium Member</span>
+      <span th:if="${user.getMemberships()[0].type.name() == 'FREE'}" class="membership free">FREE</span>
+      <span th:if="${user.getMemberships()[0].type.name() == 'PREMIUM'}" class="membership premium">PREMIUM</span>
     </div>
 
     <!-- Edit Profile Button -->
     <div class="edit-profile-button-container">
-      <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="edit-profile-button">Edit Profile</a>
+      <a th:href="@{'/users/' + ${user.id} + '/profile-menu'}" class="edit-profile-button">Edit Profile</a>
     </div>
   </div>
 </div>
-
 <!-- Footer -->
-<footer class="footer">
-  <p>&copy; 2025 Motivate Limited. All rights reserved.</p>
-</footer>
+<th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

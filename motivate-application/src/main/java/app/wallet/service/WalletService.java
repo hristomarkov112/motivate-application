@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Currency;
 import java.util.UUID;
+import java.util.Currency;
 
 @Slf4j
 @Service
@@ -74,7 +74,7 @@ public class WalletService {
 
         return Wallet.builder()
                 .owner(user)
-                .balance(new BigDecimal("1000.00"))
+                .balance(new BigDecimal("100.00"))
                 .currency(Currency.getInstance("EUR"))
                 .createdAt(now)
                 .updatedAt(now)

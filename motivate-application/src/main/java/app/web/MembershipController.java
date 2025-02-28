@@ -25,7 +25,7 @@ public class MembershipController {
     @GetMapping("/details")
     public ModelAndView getMembershipsPage() {
 
-        User user = userService.getById(UUID.fromString("3693af92-fdfc-467d-bf5d-46f604e4eff2"));
+        User user = userService.getById(UUID.fromString("69374c84-e26a-425c-b1ee-dbe813046475"));
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("memberships");
@@ -41,6 +41,18 @@ public class MembershipController {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("get-premium");
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/history")
+    public ModelAndView getHistoryPage() {
+
+        User user = userService.getById(UUID.fromString("3693af92-fdfc-467d-bf5d-46f604e4eff2"));
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("membership-history");
         modelAndView.addObject("user", user);
 
         return modelAndView;

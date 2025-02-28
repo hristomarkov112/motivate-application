@@ -17,7 +17,7 @@ public class PostController {
         this.userService = userService;
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/my-posts")
     public String getMyPostsPage() {
 
         return "posts";

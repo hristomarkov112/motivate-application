@@ -61,7 +61,7 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     @OrderBy("createdAt DESC")
-    private List<Wallet> wallets = new ArrayList<>();
+    private List<Wallet> wallets;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     @OrderBy("createdAt DESC")
