@@ -36,38 +36,6 @@ body {
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-header {
-    padding-top: 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-h1 {
-    font-size: 2.5rem;
-    margin: 0;
-}
-
-.btn {
-    background-color: #5A9DD4;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-.btn:hover {
-    background-color: #244d6c;
-}
-
-.container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -127,6 +95,52 @@ h1 {
     color: #555;
 }
 
+/* Toggle Switch Styles */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 30px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #5eb84e;
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
 /* Footer */
 .footer {
     text-align: center;
@@ -134,4 +148,38 @@ h1 {
     background-color: #5A9DD4;
     color: white;
     margin-top: 20px;
+}
+
+
+/*Toggle Button 2 by GPT*/
+.toggle-btn-block {
+    padding: 10px 15px;
+    border: 2px solid white;
+    background-color: #932727;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn-block.toggled {
+    background-color: green;
+    color: white;
+}
+
+.toggle-btn-role {
+    padding: 10px 15px;
+    border: 2px solid white;
+    background-color: #5A9DD4;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn-role.toggled {
+    background-color: green;
+    color: white;
 }

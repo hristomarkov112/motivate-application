@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel</title>
-  <link rel="stylesheet" href="/css/admin-panel.css">
+  <link rel="stylesheet" href="/css/users.css">
 </head>
 <body>
 <nav class="navbar">
@@ -42,13 +42,15 @@
         <th>Country</th>
         <th>Create Date</th>
         <th>Last Update</th>
-        <th>Type</th>
-        <th>Status</th>
+        <th>Membership</th>
         <th>Period</th>
+        <th>is Blocked</th>
+        <th>Block User</th>
+        <th>Current Role</th>
+        <th>Admin Access</th>
       </tr>
       </thead>
       <tbody>
-      {% for user in users %} <!-- Assuming your backend passes a 'users' variable -->
       <tr th:each="user : ${users}">
         <td th:text="${user.id}">{{ user.id }}</td>
         <td th:text="${user.username}">{{ user.username }}</td>
@@ -61,11 +63,26 @@
         <td th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}">{{ user.create_date }}</td>
         <td th:text="${#temporals.format(user.updatedAt, 'dd MMM YYYY HH:mm' )}">{{ user.last_update }}</td>
         <td th:text="${user.memberships[0].type}">{{ user.membership }}</td>
-        <td th:text="${user.memberships[0].status}">{{ user.membership }}</td>
         <td th:text="${user.memberships[0].period}">{{ user.membership }}</td>
-
+        <td th:text="${user.blocked} ? 'Yes' : 'No'">{{ user.email }}</td>
+        <td>
+          <form th:action="@{'/users/' + ${user.id} + '/block'}" th:method="PUT">
+            <input type="hidden" name="userId" th:value="${user.id}" />
+            <button type="submit" th:classappend="${user.blocked} ? 'toggled'" class="toggle-btn-block">
+              <span th:text="${user.blocked} ? 'UNBLOCK' : 'BLOCK'"></span>
+            </button>
+          </form>
+        </td>
+        <td th:text="${user.role}">{{ user.email }}</td>
+        <td>
+          <form th:action="@{'/users/' + ${user.id} + '/role'}" th:method="PUT">
+            <input type="hidden" name="userId" th:value="${user.id}" />
+            <button type="submit" th:classappend="${user.role.USER} ? 'CHANGE'" class="toggle-btn-role">
+              <span th:text="${user.role} ? 'CHANGE' : 'CHANGE'"></span>
+            </button>
+          </form>
+        </td>
       </tr>
-      {% endfor %}
       </tbody>
     </table>
   </section>

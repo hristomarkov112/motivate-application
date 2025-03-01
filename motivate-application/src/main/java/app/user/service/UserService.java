@@ -93,7 +93,7 @@ public class UserService {
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(UserRole.ADMIN)
-                .isActive(true)
+                .isBlocked(false)
                 .country(registerRequest.getCountry())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -108,5 +108,28 @@ public class UserService {
     public User getById(UUID id) {
 
         return userRepository.findById(id).orElseThrow(() -> new DomainException("User with id [%s] does not exist.".formatted(id)));
+    }
+
+    public void blockUser(UUID userId) {
+        User user = getById(userId);
+
+        user.setBlocked(!user.isBlocked());
+        userRepository.save(user);
+
+        log.info("User with id [%s] blocked.".formatted(userId));
+    }
+
+    public void changeRole(UUID userId) {
+        User user = getById(userId);
+
+        if (user.getRole() == UserRole.USER) {
+            user.setRole(UserRole.ADMIN);
+        } else {
+            user.setRole(UserRole.USER);
+        }
+
+        userRepository.save(user);
+
+        log.info("User with id [%s] changed role.".formatted(userId));
     }
 }

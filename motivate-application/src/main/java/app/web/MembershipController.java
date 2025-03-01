@@ -2,9 +2,9 @@ package app.web;
 
 import app.user.model.User;
 import app.user.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,9 +23,10 @@ public class MembershipController {
     }
 
     @GetMapping("/details")
-    public ModelAndView getMembershipsPage() {
+    public ModelAndView getMembershipsPage(HttpSession session) {
 
-        User user = userService.getById(UUID.fromString("80d9a468-e502-4a30-a54e-23ce760a071b"));
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("memberships");
@@ -35,9 +36,10 @@ public class MembershipController {
     }
 
     @GetMapping("/get-premium")
-    public ModelAndView getPremiumPage(Model model) {
+    public ModelAndView getPremiumPage(HttpSession session) {
 
-        User user = userService.getById(UUID.fromString("3693af92-fdfc-467d-bf5d-46f604e4eff2"));
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("get-premium");
@@ -47,9 +49,10 @@ public class MembershipController {
     }
 
     @GetMapping("/history")
-    public ModelAndView getHistoryPage() {
+    public ModelAndView getHistoryPage(HttpSession session) {
 
-        User user = userService.getById(UUID.fromString("3693af92-fdfc-467d-bf5d-46f604e4eff2"));
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("membership-history");

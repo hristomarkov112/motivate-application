@@ -13,7 +13,8 @@
         <a th:href="@{/home}" class="logo">Motiv8 Network</a>
     </div>
     <div class="navbar-links">
-        <a th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+        <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users}" class="nav-link" style="font-weight: bold">Users</a>
+        <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
         <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
         <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>

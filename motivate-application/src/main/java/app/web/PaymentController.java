@@ -2,6 +2,8 @@ package app.web;
 
 import app.payment.model.Payment;
 import app.payment.service.PaymentService;
+import app.user.model.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +25,10 @@ public class PaymentController {
     }
 
     @GetMapping("/history")
-    public ModelAndView getAllPayments() {
+    public ModelAndView getAllPayments(HttpSession session) {
 
-        List<Payment> payments = paymentService.getAllByOwnerId(UUID.fromString("80d9a468-e502-4a30-a54e-23ce760a071b"));
+        UUID userId = (UUID) session.getAttribute("user_id");
+        List<Payment> payments = paymentService.getAllByOwnerId(userId);
 
 
         ModelAndView modelAndView = new ModelAndView();

@@ -28,10 +28,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}/profile")
-    public ModelAndView getProfilePage() {
+    @GetMapping
+    public ModelAndView getAllUsers() {
 
-        User user = userService.getById(UUID.fromString("99c7efa7-ca7c-44ab-9d1e-5f8b0f141e25"));
+        List<User> users = userService.getAllUsers();
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("users");
+        modelAndView.addObject("users", users);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/{id}/profile")
+    public ModelAndView getProfilePage(@PathVariable UUID id) {
+
+        User user = userService.getById(id);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("profile");
@@ -41,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/profile-menu")
-    public ModelAndView gerProfileMenu(@PathVariable UUID id) {
+    public ModelAndView gerProfileMenu(@PathVariable UUID id, @Valid UserEditRequest userEditRequest) {
 
         User user = userService.getById(id);
 
@@ -71,15 +83,19 @@ public class UserController {
         return new ModelAndView("redirect:/home");
     }
 
-    @GetMapping("/admin-panel")
-    public ModelAndView getAdminPanelPage() {
+    @PutMapping("/{id}/block")
+    public ModelAndView blockUser(@PathVariable UUID id) {
 
-        List<User> users = userService.getAllUsers();
+        userService.blockUser(id);
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("admin-panel");
-        modelAndView.addObject("users", users);
+        return new ModelAndView("redirect:/users");
+    }
 
-        return modelAndView;
+    @PutMapping("/{id}/role")
+    public ModelAndView changeUserRole(@PathVariable UUID id) {
+
+        userService.changeRole(id);
+
+        return new ModelAndView("redirect:/users");
     }
 }
