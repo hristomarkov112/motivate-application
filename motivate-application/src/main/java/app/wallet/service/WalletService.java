@@ -7,6 +7,7 @@ import app.payment.service.PaymentService;
 import app.user.model.User;
 import app.wallet.model.Wallet;
 import app.wallet.repository.WalletRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.util.Currency;
 public class WalletService {
 
     private static final String MASTERCARD = "MasterCard";
+    private static final String MOTIV8_LIMITED = "Motiv8 Limited";
     private final WalletRepository walletRepository;
     private final PaymentService paymentService;
 
@@ -66,7 +68,44 @@ public class WalletService {
         return walletRepository.findById(walletId).orElseThrow(() -> new RuntimeException("Wallet with id [%s] does not exist.".formatted(walletId)));
     }
 
+    @Transactional
+    public Payment charge(User user, UUID walletId, BigDecimal amount, String description) {
 
+        Wallet wallet = getWalletById(walletId);
+
+        String failureReason = "Not sufficient funds for this transaction";
+
+        if (wallet.getBalance().compareTo(amount) < 0) {
+            return paymentService.createNewPayment(
+                    user,
+                    wallet.getId().toString(),
+                    MOTIV8_LIMITED,
+                    amount,
+                    wallet.getBalance(),
+                    wallet.getCurrency(),
+                    PaymentType.WITHDRAWAL,
+                    PaymentStatus.FAILED,
+                    description,
+                    failureReason
+            );
+        }
+
+        wallet.setBalance(wallet.getBalance().subtract(amount));
+        wallet.setUpdatedAt(LocalDateTime.now());
+
+        return paymentService.createNewPayment(
+                user,
+                wallet.getId().toString(),
+                MOTIV8_LIMITED,
+                amount,
+                wallet.getBalance(),
+                wallet.getCurrency(),
+                PaymentType.WITHDRAWAL,
+                PaymentStatus.SUCCESSFUL,
+                description,
+                ""
+        );
+    }
 
     private Wallet initializeWallet(User user) {
 
@@ -80,4 +119,6 @@ public class WalletService {
                 .updatedAt(now)
                 .build();
     }
+
+
 }

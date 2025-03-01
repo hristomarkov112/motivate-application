@@ -109,7 +109,7 @@ h1 {
 
 .user-report th, .user-report td {
     padding: 12px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #ddd;
 }
 
@@ -125,4 +125,13 @@ h1 {
 
 .user-report td {
     color: #555;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #5A9DD4;
+    color: white;
+    margin-top: 20px;
 }

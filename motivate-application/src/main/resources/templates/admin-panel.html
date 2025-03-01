@@ -57,9 +57,9 @@
         <td th:text="${user.firstName}">{{ user.first_name }}</td>
         <td th:text="${user.lastName}">{{ user.last_name }}</td>
         <td th:text="${user.email}">{{ user.email }}</td>
-        <td th:text="${user.country}">{{ user.country }}</td>
-        <td th:text="${user.createdAt}">{{ user.create_date }}</td>
-        <td th:text="${user.updatedAt}">{{ user.last_update }}</td>
+        <td th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}">{{ user.country }}</td>
+        <td th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}">{{ user.create_date }}</td>
+        <td th:text="${#temporals.format(user.updatedAt, 'dd MMM YYYY HH:mm' )}">{{ user.last_update }}</td>
         <td th:text="${user.memberships[0].type}">{{ user.membership }}</td>
         <td th:text="${user.memberships[0].status}">{{ user.membership }}</td>
         <td th:text="${user.memberships[0].period}">{{ user.membership }}</td>

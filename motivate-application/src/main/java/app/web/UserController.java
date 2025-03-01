@@ -2,10 +2,15 @@ package app.web;
 
 import app.user.model.User;
 import app.user.service.UserService;
+import app.web.dto.UserEditRequest;
+import app.web.mapper.DtoMapper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,12 +31,12 @@ public class UserController {
     @GetMapping("/{id}/profile")
     public ModelAndView getProfilePage() {
 
-        User user = userService.getById(UUID.fromString("3693af92-fdfc-467d-bf5d-46f604e4eff2"));
-
+        User user = userService.getById(UUID.fromString("99c7efa7-ca7c-44ab-9d1e-5f8b0f141e25"));
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("profile");
         modelAndView.addObject("user", user);
+
         return modelAndView;
     }
 
@@ -43,26 +48,27 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("profile-menu");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("userEditRequest", DtoMapper.mapUserToEditRequest(user));
 
         return modelAndView;
     }
 
-    @GetMapping("/home")
-    public ModelAndView getHomePage() {
+    @PutMapping("/{id}/profile-menu")
+    public ModelAndView updateUserProfile(@PathVariable UUID id, @Valid UserEditRequest userEditRequest, BindingResult bindingResult) {
 
-        User user = userService.getById(UUID.fromString("3693af92-fdfc-467d-bf5d-46f604e4eff2"));
+        if (bindingResult.hasErrors()) {
+            User user = userService.getById(id);
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("profile-menu");
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("userEditRequest", userEditRequest);
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("home");
-        modelAndView.addObject("user", user);
+            return modelAndView;
+        }
 
-        return modelAndView;
-    }
+        userService.editUserDetails(id, userEditRequest);
 
-    @GetMapping("/edit-profile")
-    public String getEditProfilePage() {
-
-        return "profile-menu";
+        return new ModelAndView("redirect:/home");
     }
 
     @GetMapping("/admin-panel")

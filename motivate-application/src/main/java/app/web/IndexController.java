@@ -3,6 +3,7 @@ package app.web;
 import app.user.model.User;
 import app.user.service.UserService;
 import app.wallet.service.WalletService;
+import app.web.dto.LoginRequest;
 import app.web.dto.RegisterRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,9 +38,25 @@ public class IndexController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage() {
+    public ModelAndView getLoginPage() {
 
-        return "login";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        modelAndView.addObject("loginRequest", new LoginRequest());
+
+        return modelAndView;
+    }
+
+    @PostMapping("/login")
+    public String login(@Valid LoginRequest loginRequest, BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            return "login";
+        }
+
+        userService.login(loginRequest);
+
+        return ("redirect:/home");
     }
 
     @GetMapping("/register")
@@ -66,7 +85,7 @@ public class IndexController {
     @GetMapping("/home")
     public ModelAndView getHomePage() {
 
-        User user = userService.getById(UUID.fromString("69374c84-e26a-425c-b1ee-dbe813046475"));
+        User user = userService.getById(UUID.fromString("99c7efa7-ca7c-44ab-9d1e-5f8b0f141e25"));
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");
@@ -74,11 +93,5 @@ public class IndexController {
 
         return modelAndView;
     }
-
-
-
-
-
-
 
 }

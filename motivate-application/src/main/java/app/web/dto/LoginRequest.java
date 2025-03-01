@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class LoginRequest {
 
-    @Size(min = 6, message = "Username must be at least 6 symbols")
+    @Size(min = 6, message = "Username or password incorrect")
     private String username;
 
-    @Size(min = 6, message = "Password must be at least 6 symbols")
+    @Size(min = 6, message = "Username or password incorrect")
     private String password;
 }

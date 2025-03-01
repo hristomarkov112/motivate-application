@@ -7,15 +7,18 @@
   <link rel="stylesheet" href="/css/form.css">
 <body>
 <div class="container">
+  <img src="/images/Motiv8-logo.png" alt="Motiv8 Logo" class="logo">
   <h2>Login</h2>
-  <form action="/login" method="post">
+  <form th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
     <div class="form-group">
       <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required>
+      <input type="text" id="username" name="username" th:field="*{username}" required>
+      <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red"></p>
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
+      <input type="password" id="password" name="password" th:field="*{password}" required>
+      <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red"></p>
     </div>
     <button type="submit" class="button">Login</button>
   </form>

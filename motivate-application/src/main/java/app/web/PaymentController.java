@@ -25,7 +25,7 @@ public class PaymentController {
     @GetMapping("/history")
     public ModelAndView getAllPayments() {
 
-        List<Payment> payments = paymentService.getAllByOwnerId(UUID.fromString("69374c84-e26a-425c-b1ee-dbe813046475"));
+        List<Payment> payments = paymentService.getAllByOwnerId(UUID.fromString("80d9a468-e502-4a30-a54e-23ce760a071b"));
 
 
         ModelAndView modelAndView = new ModelAndView();

@@ -207,3 +207,12 @@ h1 {
     justify-content: center;
 
 }
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #5A9DD4;
+    color: white;
+    margin-top: 20px;
+}

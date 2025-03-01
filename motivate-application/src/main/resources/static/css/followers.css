@@ -143,3 +143,12 @@ h1 {
     text-align: center;
     margin-top: 50px;
 }
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #5A9DD4;
+    color: white;
+    margin-top: 20px;
+}
