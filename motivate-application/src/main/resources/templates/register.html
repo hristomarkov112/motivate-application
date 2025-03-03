@@ -10,7 +10,7 @@
 <div class="container">
     <img src="/images/Motiv8-logo.png" alt="Motiv8 Logo" class="logo">
     <h1>Register</h1>
-    <form th:action="@{/register}" th:method="post" th:object="${registerRequest}">
+    <form th:action="@{/register}" th:method="POST" th:object="${registerRequest}">
         <div class="form-group">
             <label for="username">Username</label>
             <input th:field="*{username}" type="text" id="username" name="username">

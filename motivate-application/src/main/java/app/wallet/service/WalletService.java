@@ -8,9 +8,11 @@ import app.user.model.User;
 import app.wallet.model.Wallet;
 import app.wallet.repository.WalletRepository;
 
+import app.web.dto.PaymentNotificationEvent;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -26,11 +28,15 @@ public class WalletService {
     private static final String MOTIV8_LIMITED = "Motiv8 Limited";
     private final WalletRepository walletRepository;
     private final PaymentService paymentService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public WalletService(WalletRepository walletRepository, PaymentService paymentService) {
+    public WalletService(WalletRepository walletRepository,
+                         PaymentService paymentService,
+                         ApplicationEventPublisher eventPublisher) {
         this.walletRepository = walletRepository;
         this.paymentService = paymentService;
+        this.eventPublisher = eventPublisher;
     }
 
     public void createNewWallet(User user) {
@@ -51,6 +57,7 @@ public class WalletService {
         wallet.setUpdatedAt(LocalDateTime.now());
 
         walletRepository.save(wallet);
+
 
         return paymentService.createNewPayment(wallet.getOwner(),
                 MASTERCARD,
@@ -92,6 +99,18 @@ public class WalletService {
 
         wallet.setBalance(wallet.getBalance().subtract(amount));
         wallet.setUpdatedAt(LocalDateTime.now());
+
+        walletRepository.save(wallet);
+
+        System.out.printf("Thread [%s]: Code in WalletService.class\n", Thread.currentThread().getName());
+        PaymentNotificationEvent event = PaymentNotificationEvent.builder()
+                .userId(user.getId())
+                .paymentDate(LocalDateTime.now())
+                .email(user.getEmail())
+                .amount(amount)
+                .build();
+
+        eventPublisher.publishEvent(event);
 
         return paymentService.createNewPayment(
                 user,

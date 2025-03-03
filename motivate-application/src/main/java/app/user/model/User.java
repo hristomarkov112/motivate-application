@@ -47,7 +47,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Country country;
 
-    private boolean isBlocked;
+    private boolean isActive;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

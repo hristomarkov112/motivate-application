@@ -64,12 +64,12 @@
         <td th:text="${#temporals.format(user.updatedAt, 'dd MMM YYYY HH:mm' )}">{{ user.last_update }}</td>
         <td th:text="${user.memberships[0].type}">{{ user.membership }}</td>
         <td th:text="${user.memberships[0].period}">{{ user.membership }}</td>
-        <td th:text="${user.blocked} ? 'Yes' : 'No'">{{ user.email }}</td>
+        <td th:text="${user.active} ? 'Yes' : 'No'">{{ user.email }}</td>
         <td>
           <form th:action="@{'/users/' + ${user.id} + '/block'}" th:method="PUT">
             <input type="hidden" name="userId" th:value="${user.id}" />
             <button type="submit" th:classappend="${user.blocked} ? 'toggled'" class="toggle-btn-block">
-              <span th:text="${user.blocked} ? 'UNBLOCK' : 'BLOCK'"></span>
+              <span th:text="${user.isActive()} ? 'UNBLOCK' : 'BLOCK'"></span>
             </button>
           </form>
         </td>

@@ -43,15 +43,11 @@
     <h1>Membership Plans</h1>
     <div class="plans">
         <!-- FREE Plan -->
-        <div class="plan free">
+        <form class="plan free" th:action="@{'/memberships?membership-type=FREE'}" th:method="POST" th:object="${getPremiumRequest}">
             <h2>FREE</h2>
             <div class="details">
                 <div class="field">
                     <div class="field">
-                        <tr>
-                            <td th:if="${user.getMemberships()[0].type.name() == 'FREE'}"><span class="status active">CURRENT PLAN</span></td>
-                            <td th:if="${user.getMemberships()[0].type.name() != 'FREE'}"><span class="status invisible"></span></td>
-                        </tr>
                     </div>
                     <div class="field">
                         <label>Benefits:</label>
@@ -62,7 +58,7 @@
                         </ul>
                     </div>
                     <label for="free-period">Period:</label>
-                    <select id="free-period" class="period">
+                    <select id="free-period" class="period" th:field="*{membershipPeriod}">
                         <option th:each="period: ${T(app.membership.model.MembershipPeriod).values()}" th:value="${period}" th:text="${#strings.capitalize(#strings.toLowerCase(period))}"></option>
                     </select>
                 </div>
@@ -74,18 +70,15 @@
                     </select>
                 </div>
             </div>
-            <button class="btn-select">Select FREE Plan</button>
-        </div>
+            <div th:if="${user.memberships.get(0).type.name() == 'FREE'}"><span class="status active">CURRENT PLAN</span></div>
+            <button th:if="${!(user.memberships.get(0).type.name() == 'FREE')}" class="btn-select" >Get PREMIUM Plan</button>
+        </form>
 
         <!-- PREMIUM Plan -->
-        <div class="plan premium">
+        <form class="plan premium" th:action="@{'/memberships?membership-type=PREMIUM'}" th:method="POST" th:object="${getPremiumRequest}">
             <h2>PREMIUM</h2>
             <div class="details">
                 <div class="field">
-                    <tr>
-                        <td th:if="${user.getMemberships()[0].type.name() == 'PREMIUM'}"><span class="status active">CURRENT PLAN</span></td>
-                        <td th:if="${user.getMemberships()[0].type.name() != 'PREMIUM'}"><span class="status invisible"></span></td>
-                    </tr>
                 </div>
                 <div class="field">
                     <label>Benefits:</label>
@@ -97,7 +90,7 @@
                 </div>
                 <div>
                     <label for="premium-period">Period:</label>
-                    <select id="premium-period" class="period">
+                    <select id="premium-period" class="period" th:field="*{membershipPeriod}">
                         <option th:each="period: ${T(app.membership.model.MembershipPeriod).values()}" th:value="${period}" th:text="${#strings.capitalize(#strings.toLowerCase(period))}"></option>
                     </select>
                 </div>
@@ -111,8 +104,9 @@
                     </select>
                 </div>
             </div>
-            <button class="btn-select">Select PREMIUM Plan</button>
-        </div>
+            <button th:if="${!(user.memberships.get(0).type.name() == 'PREMIUM')}" class="btn-select" >Get PREMIUM Plan</button>
+            <div th:if="${user.memberships.get(0).type.name() == 'PREMIUM'}"><span class="status active">CURRENT PLAN</span></div>
+        </form>
     </div>
 </div>
 <!-- Footer -->

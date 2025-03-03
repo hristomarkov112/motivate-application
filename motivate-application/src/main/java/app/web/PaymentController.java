@@ -1,8 +1,9 @@
 package app.web;
 
+import app.membership.model.Membership;
+import app.membership.service.MembershipService;
 import app.payment.model.Payment;
 import app.payment.service.PaymentService;
-import app.user.model.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,19 @@ public class PaymentController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("payments");
         modelAndView.addObject("payments", payments);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/{id}")
+    public ModelAndView getPremiumResultPage(HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        Payment payment = paymentService.getAllByOwnerId(userId).get(0);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("get-premium-result");
+        modelAndView.addObject("payment", payment);
 
         return modelAndView;
     }

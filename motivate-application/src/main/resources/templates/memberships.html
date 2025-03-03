@@ -36,15 +36,15 @@
                 <label>Type:</label>
                 <tr>
                 <td th:if="${user.memberships[0].type.name() == 'FREE'}"><span class="membership free">FREE</span></td>
-                <td th:if="${user.memberships()[0].type.name() == 'PREMIUM'}"><span class="membership premium">PREMIUM</span></td>
+                <td th:if="${user.memberships[0].type.name() == 'PREMIUM'}"><span class="membership premium">PREMIUM</span></td>
                 </tr>
             </div>
             <div class="field">
                 <label>Status:</label>
                 <tr>
-                    <td th:if="${user.memberships()[0].status.name() == 'ACTIVE'}"><span class="status active">ACTIVE</span></td>
-                    <td th:if="${user.memberships()[0].status.name() == 'INACTIVE'}"><span class="status inactive">INACTIVE</span></td>
-                    <td th:if="${user.memberships()[0].status.name() == 'EXPIRED'}"><span class="status inactive">EXPIRED</span></td>
+                    <td th:if="${user.memberships[0].status.name() == 'ACTIVE'}"><span class="status active">ACTIVE</span></td>
+                    <td th:if="${user.memberships[0].status.name() == 'INACTIVE'}"><span class="status inactive">INACTIVE</span></td>
+                    <td th:if="${user.memberships[0].status.name() == 'EXPIRED'}"><span class="status inactive">EXPIRED</span></td>
                 </tr>
             </div>
             <div class="field">

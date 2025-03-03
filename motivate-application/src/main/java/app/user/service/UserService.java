@@ -1,20 +1,21 @@
 package app.user.service;
 
-import app.comment.service.CommentService;
 import app.exception.DomainException;
-import app.follow.service.FollowService;
 import app.membership.service.MembershipService;
-import app.payment.service.PaymentService;
-import app.post.service.PostService;
+import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.user.repository.UserRepository;
 import app.wallet.service.WalletService;
-import app.web.dto.LoginRequest;
 import app.web.dto.RegisterRequest;
 import app.web.dto.UserEditRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -34,27 +35,14 @@ public class UserService {
     private final MembershipService membershipService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService, CommentService commentService, FollowService followService, PaymentService paymentService, PostService postService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.walletService = walletService;
         this.membershipService = membershipService;
     }
 
-    public User login(LoginRequest loginRequest) {
-        Optional<User> optionalUser = userRepository.findByUsername(loginRequest.getUsername());
-        if(optionalUser.isEmpty()) {
-            throw new RuntimeException("Username or password is incorrect.");
-        }
-
-        User user = optionalUser.get();
-        if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Username or password is incorrect.");
-        }
-
-        return user;
-    }
-
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public User register(RegisterRequest registerRequest) {
 
@@ -65,7 +53,7 @@ public class UserService {
 
         User user = userRepository.save(initializeUser(registerRequest));
 
-        membershipService.createDefaultMembership(user);
+        membershipService.createFreeMembership(user);
         walletService.createNewWallet(user);
 
         log.info("Successfully registered new user account with username [%s] and id [%s].".formatted(user.getUsername(), user.getId()), user.getUsername());
@@ -93,13 +81,14 @@ public class UserService {
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(UserRole.ADMIN)
-                .isBlocked(false)
+                .isActive(true)
                 .country(registerRequest.getCountry())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
 
+    @Cacheable("users")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -113,12 +102,13 @@ public class UserService {
     public void blockUser(UUID userId) {
         User user = getById(userId);
 
-        user.setBlocked(!user.isBlocked());
+        user.setActive(!user.isActive());
         userRepository.save(user);
 
         log.info("User with id [%s] blocked.".formatted(userId));
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void changeRole(UUID userId) {
         User user = getById(userId);
 
@@ -131,5 +121,13 @@ public class UserService {
         userRepository.save(user);
 
         log.info("User with id [%s] changed role.".formatted(userId));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("Username [%s] does not exist.".formatted(username)));
+
+        return new AuthenticationMetaData(user.getId(), user.getUsername(), user.getPassword(), user.getRole(), user.isActive());
     }
 }

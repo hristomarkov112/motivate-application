@@ -4,8 +4,10 @@ import app.user.model.User;
 import app.user.service.UserService;
 import app.web.dto.UserEditRequest;
 import app.web.mapper.DtoMapper;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getAllUsers() {
 
         List<User> users = userService.getAllUsers();
@@ -41,9 +44,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}/profile")
-    public ModelAndView getProfilePage(@PathVariable UUID id) {
+    public ModelAndView getProfilePage(HttpSession session) {
 
-        User user = userService.getById(id);
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("profile");

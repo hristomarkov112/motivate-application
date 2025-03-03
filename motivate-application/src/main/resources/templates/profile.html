@@ -28,7 +28,7 @@
 <div class="profile-container">
   <!-- Profile Picture -->
   <div class="profile-picture">
-    <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? 'static/images/default-avatar.jpg' : user.profilePictureUrl}" alt="Profile Picture">
+    <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? '/images/default-avatar.jpg' : user.profilePictureUrl}" alt="Profile Picture">
   </div>
 
   <!-- Profile Details -->

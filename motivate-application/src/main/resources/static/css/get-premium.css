@@ -140,6 +140,7 @@ h1 {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1em;
+    margin-bottom: 20px;
 }
 
 .benefits {
@@ -162,6 +163,7 @@ h1 {
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-bottom: 5px;
 }
 
 .btn-select:hover {
@@ -180,20 +182,9 @@ h1 {
     background-color: #e8f5e9; /* Light green background */
     color: #2e7d32; /* Dark green text */
     border: 1px solid #4caf50; /* Green border */
-    padding: 4px;
+    padding: 10px;
     border-radius: 5px;
     font-weight: normal;
-
-}
-
-.status.invisible {
-    background-color: #ffffff; /* Light green background */
-    color: #ffffff; /* Dark green text */
-    border: 1px #ffffff; /* Green border */
-    padding: 4px;
-    border-radius: 5px;
-    font-weight: normal;
-    text-align: center;
 }
 
 /* Inactive Subscription */
