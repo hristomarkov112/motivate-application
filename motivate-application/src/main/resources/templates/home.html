@@ -16,7 +16,7 @@
         <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users}" class="nav-link" style="font-weight: bold">Users</a>
         <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
-        <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+        <a th:href="@{/memberships/premium}" class="nav-link">Get Premium</a>
         <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
         <a th:href="@{/follow/following}" class="nav-link">Following</a>
         <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
@@ -51,8 +51,8 @@
     <!-- Create Post Section -->
     <div class="create-post">
         <h2>Create a Post</h2>
-        <form action="/create-post" method="post">
-            <textarea name="postContent" placeholder="What's on your mind?" rows="4" required></textarea>
+        <form th:action="@{/home/post-creation}" th:method="POST" th:object="${postRequest}">
+            <textarea name="postContent" placeholder="What's on your mind?" rows="4" required th:field="*{content}"></textarea>
             <button type="submit" class="button">Post</button>
         </form>
     </div>
@@ -61,40 +61,44 @@
     <div class="posts-feed">
         <h2>Recent Posts</h2>
         <!-- Example Post 1 -->
-        <div class="post">
+        <div th:each="post : ${posts}" class="post">
             <div class="post-header">
-                <img src="/images/default-avatar.jpg" alt="User 1" class="post-avatar">
+                <img th:src="${#strings.isEmpty(post.profilePicture) ? '/images/default-avatar.jpg' : post.profilePicture}" alt="User 1" class="post-avatar">
                 <div class="post-user-info">
-                    <a href="/profile/user1" class="post-username">John Doe</a>
-                    <span class="post-time">2 hours ago</span>
+                    <a href="/profile/user1" class="post-username" th:text="${post.username}"></a>
+                    <span class="post-time" th:text="${#temporals.format(post.createdAt, 'dd MMM YYYY HH:mm' )}">2 hours ago</span>
                 </div>
             </div>
             <div class="post-content">
-                <p>Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
+                <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
             </div>
             <div class="post-actions">
                 <button class="like-button">Like</button>
-                <button class="comment-button">Comment</button>
+                <!-- Toggle Comment Input Field -->
+                <form action="@{/toggle-comment}" method="post" style="display: inline;">
+                    <input type="hidden" name="postId" value="${post.id}" />
+                    <button type="submit" class="comment-button">Comment</button>
+                </form>
                 <button class="share-button">Share</button>
             </div>
-        </div>
-
-        <!-- Example Post 2 -->
-        <div class="post">
-            <div class="post-header">
-                <img src="/images/default-avatar.jpg" alt="User 2" class="post-avatar">
-                <div class="post-user-info">
-                    <a href="/profile/user2" class="post-username">Jane Smith</a>
-                    <span class="post-time">5 hours ago</span>
-                </div>
+            <!-- Counters for Likes and Comments -->
+            <div class="post-counters">
+            <span class="like-counter">
+                <i class="fas fa-thumbs-up"></i> <!-- Font Awesome Like Icon -->
+                <span text="${post.likeCount}">0 </span> Likes
+            </span>
+                <span class="comment-counter">
+                <i class="fas fa-comment"></i> <!-- Font Awesome Comment Icon -->
+                <span text="${post.commentCount}">0 </span> Comments
+            </span>
             </div>
-            <div class="post-content">
-                <p>Excited to start my new job today! 🎉 #NewBeginnings</p>
-            </div>
-            <div class="post-actions">
-                <button class="like-button">Like</button>
-                <button class="comment-button">Comment</button>
-                <button class="share-button">Share</button>
+            <!-- Comment Input Field (Conditionally Rendered) -->
+            <div if="${post.showCommentInput}" class="comment-input-container visible">
+                <form action="@{/submit-comment}" method="post">
+                    <input type="hidden" name="postId" value="${post.id}" />
+                    <textarea class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
+                    <button type="submit" class="submit-comment-button">Submit</button>
+                </form>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Membership Plans</title>
-    <link rel="stylesheet" href="/css/get-premium.css">
+    <link rel="stylesheet" href="/css/premium.css">
 </head>
 <body>
 <!-- Navigation Bar -->
@@ -19,7 +19,7 @@
         <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
         <a th:href="@{/payments/history}" class="nav-link">Payments</a>
         <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
-        <a th:href="@{/memberships/get-premium}" class="nav-link">Get Premium</a>
+        <a th:href="@{/memberships/premium}" class="nav-link">Get Premium</a>
         <a th:href="@{/logout}" class="nav-link">Logout</a>
     </div>
 </nav>
@@ -43,7 +43,7 @@
     <h1>Membership Plans</h1>
     <div class="plans">
         <!-- FREE Plan -->
-        <form class="plan free" th:action="@{'/memberships?membership-type=FREE'}" th:method="POST" th:object="${getPremiumRequest}">
+        <form class="plan free" th:action="@{'/memberships?membership-type=FREE'}" th:method="POST" th:object="${premiumRequest}">
             <h2>FREE</h2>
             <div class="details">
                 <div class="field">
@@ -75,7 +75,7 @@
         </form>
 
         <!-- PREMIUM Plan -->
-        <form class="plan premium" th:action="@{'/memberships?membership-type=PREMIUM'}" th:method="POST" th:object="${getPremiumRequest}">
+        <form class="plan premium" th:action="@{'/memberships?membership-type=PREMIUM'}" th:method="POST" th:object="${premiumRequest}">
             <h2>PREMIUM</h2>
             <div class="details">
                 <div class="field">

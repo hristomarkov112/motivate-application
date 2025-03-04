@@ -25,8 +25,14 @@ public class Post {
     private User owner;
 
     @Column(nullable = false)
+    private String username;
+
+    private String profilePicture;
+
+    @Column(nullable = false, length = 4000)
     private String content;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "post")

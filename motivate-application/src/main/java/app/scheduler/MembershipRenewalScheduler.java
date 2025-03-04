@@ -7,7 +7,7 @@ import app.membership.service.MembershipService;
 import app.payment.model.Payment;
 import app.payment.model.PaymentStatus;
 import app.user.model.User;
-import app.web.dto.GetPremiumRequest;
+import app.web.dto.PremiumRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -44,12 +44,12 @@ public class MembershipRenewalScheduler {
                 MembershipType membershipType = membership.getType();
                 MembershipPeriod membershipPeriod = membership.getPeriod();
                 UUID walletId = membershipOwner.getWallets().get(0).getId();
-                GetPremiumRequest getPremiumRequest = GetPremiumRequest.builder()
+                PremiumRequest premiumRequest = PremiumRequest.builder()
                         .membershipPeriod(membershipPeriod)
                         .walletId(walletId)
                         .build();
 
-                Payment payment = membershipService.getPremium(membershipOwner, membershipType, getPremiumRequest);
+                Payment payment = membershipService.getPremium(membershipOwner, membershipType, premiumRequest);
                 if (payment.getStatus() == PaymentStatus.FAILED) {
                     membershipService.changeMembershipToInactive(membership);
                     membershipService.createFreeMembership(membership.getOwner());

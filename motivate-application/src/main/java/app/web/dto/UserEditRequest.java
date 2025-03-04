@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.URL;
 @Builder
 public class UserEditRequest {
 
-    @URL(message = "URL must be a correct format.")
+    @URL
     private String profilePicture;
 
     @Size(max = 20, message = "First name must not be more than 20 characters.")

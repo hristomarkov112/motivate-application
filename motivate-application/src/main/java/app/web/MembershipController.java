@@ -1,15 +1,15 @@
 package app.web;
 
-import app.membership.model.Membership;
-import app.membership.model.MembershipPeriod;
 import app.membership.model.MembershipType;
 import app.membership.service.MembershipService;
 import app.payment.model.Payment;
+import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
-import app.web.dto.GetPremiumRequest;
+import app.web.dto.PremiumRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,10 +33,9 @@ public class MembershipController {
     }
 
     @GetMapping("/details")
-    public ModelAndView getMembershipsPage(HttpSession session) {
+    public ModelAndView getMembershipsPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetaData.getId());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("memberships");
@@ -45,29 +44,27 @@ public class MembershipController {
         return modelAndView;
     }
 
-    @GetMapping("/get-premium")
-    public ModelAndView getPremiumPage(HttpSession session) {
+    @GetMapping("/premium")
+    public ModelAndView getPremiumPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetaData.getId());
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("get-premium");
+        modelAndView.setViewName("premium");
         modelAndView.addObject("user", user);
-        modelAndView.addObject("getPremiumRequest", GetPremiumRequest.builder().build());
+        modelAndView.addObject("PremiumRequest", PremiumRequest.builder().build());
 
         return modelAndView;
     }
 
-    @PostMapping("/get-premium")
-    public String getPremium(@RequestParam("membership-type") MembershipType membershipType, GetPremiumRequest getPremiumRequest, HttpSession session) {
+    @PostMapping("/premium")
+    public String getPremiumPage(@RequestParam("membership-type") MembershipType membershipType, PremiumRequest premiumRequest, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetaData.getId());
 
-        Payment getPremiumResult = membershipService.getPremium(user, membershipType, getPremiumRequest);
+        Payment PremiumResult = membershipService.getPremium(user, membershipType, premiumRequest);
 
-        return "redirect:/payments/" + getPremiumResult.getId();
+        return "redirect:/payments/" + PremiumResult.getId();
     }
 
     @GetMapping("/history")

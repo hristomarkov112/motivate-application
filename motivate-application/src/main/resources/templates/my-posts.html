@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Posts</title>
+  <link rel="stylesheet" href="/css/my-posts.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+  </div>
+  <div class="navbar-links">
+    <a th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+    <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
+    <a th:href="@{/follow/following}" class="nav-link">Following</a>
+    <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+    <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+    <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
+    <a th:href="@{/memberships/premium}" class="nav-link">Get Premium</a>
+    <a th:href="@{/logout}" class="nav-link">Logout</a>
+  </div>
+</nav>
+<div class="container">
+  <header>
+    <h1>My Posts</h1>
+    <a th:href="@{/users/{id}/profile}" class="btn">Back to Profile</a>
+  </header>
+
+  <div class="posts-feed">
+    <h2>Recent Posts</h2>
+    <!-- Example Post 1 -->
+    <div th:each="post : ${posts}" class="post">
+      <div class="post-header">
+        <img th:src="${#strings.isEmpty(post.profilePicture) ? '/images/default-avatar.jpg' : post.profilePicture}" alt="User 1" class="post-avatar">
+        <div class="post-user-info">
+          <a href="/profile/user1" class="post-username" th:text="${post.username}"></a>
+          <span class="post-time" th:text="${#temporals.format(post.createdAt, 'dd MMM YYYY HH:mm' )}">2 hours ago</span>
+        </div>
+      </div>
+      <div class="post-content">
+        <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
+      </div>
+      <div class="post-actions">
+        <button class="like-button">Like</button>
+        <!-- Toggle Comment Input Field -->
+        <form action="@{/toggle-comment}" method="post" style="display: inline;">
+          <input type="hidden" name="postId" value="${post.id}" />
+          <button type="submit" class="comment-button">Comment</button>
+        </form>
+        <button class="share-button">Share</button>
+      </div>
+      <!-- Counters for Likes and Comments -->
+      <div class="post-counters">
+            <span class="like-counter">
+                <i class="fas fa-thumbs-up"></i> <!-- Font Awesome Like Icon -->
+                <span text="${post.likeCount}">0 </span> Likes
+            </span>
+        <span class="comment-counter">
+                <i class="fas fa-comment"></i> <!-- Font Awesome Comment Icon -->
+                <span text="${post.commentCount}">0 </span> Comments
+            </span>
+      </div>
+      <!-- Comment Input Field (Conditionally Rendered) -->
+      <div if="${post.showCommentInput}" class="comment-input-container visible">
+        <form action="@{/submit-comment}" method="post">
+          <input type="hidden" name="postId" value="${post.id}" />
+          <textarea class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
+          <button type="submit" class="submit-comment-button">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>

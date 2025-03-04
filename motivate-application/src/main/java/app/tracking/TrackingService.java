@@ -1,4 +1,4 @@
-package app.tracking.service;
+package app.tracking;
 
 import app.web.dto.PaymentNotificationEvent;
 import org.springframework.context.event.EventListener;

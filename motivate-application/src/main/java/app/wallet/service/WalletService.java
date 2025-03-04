@@ -1,5 +1,6 @@
 package app.wallet.service;
 
+import app.exception.DomainException;
 import app.payment.model.Payment;
 import app.payment.model.PaymentStatus;
 import app.payment.model.PaymentType;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.Currency;
 
@@ -48,7 +51,7 @@ public class WalletService {
     }
 
     @Transactional
-    public Payment topUp(UUID walletId, BigDecimal amount) {
+    public Payment deposit(UUID walletId, BigDecimal amount) {
 
         Wallet wallet = getWalletById(walletId);
         String paymentDescription = "Top up with %.2f EUR".formatted(amount.doubleValue());
@@ -129,6 +132,11 @@ public class WalletService {
     private Wallet initializeWallet(User user) {
 
         LocalDateTime now = LocalDateTime.now();
+
+        List<Wallet> userWallets = walletRepository.findAllByOwnerUsername(user.getUsername());
+        if(userWallets.size() == 1) {
+            throw new DomainException("Username has already an existing wallet. Cannot create more than one.");
+        }
 
         return Wallet.builder()
                 .owner(user)

@@ -128,6 +128,6 @@ public class UserService implements UserDetailsService {
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("Username [%s] does not exist.".formatted(username)));
 
-        return new AuthenticationMetaData(user.getId(), user.getUsername(), user.getPassword(), user.getRole(), user.isActive());
+        return new AuthenticationMetaData(user.getId(), username, user.getPassword(), user.getRole(), user.isActive());
     }
 }

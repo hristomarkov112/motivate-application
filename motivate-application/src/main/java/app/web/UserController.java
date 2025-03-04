@@ -1,13 +1,16 @@
 package app.web;
 
+import app.post.model.Post;
+import app.post.service.PostService;
+import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
 import app.web.dto.UserEditRequest;
 import app.web.mapper.DtoMapper;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +27,19 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PostService postService) {
         this.userService = userService;
+        this.postService = postService;
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView getAllUsers() {
+    public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
+        User user = userService.getById(authenticationMetaData.getId());
         List<User> users = userService.getAllUsers();
 
         ModelAndView modelAndView = new ModelAndView();
@@ -44,10 +50,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}/profile")
-    public ModelAndView getProfilePage(HttpSession session) {
+    public ModelAndView getProfilePage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetaData.getId());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("profile");
@@ -87,7 +92,20 @@ public class UserController {
         return new ModelAndView("redirect:/home");
     }
 
-    @PutMapping("/{id}/block")
+    //The page must open when you click on a profile and want to open, view, follow or unfollow him.
+    @GetMapping("/other-profile")
+    public ModelAndView getOtherProfilePage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        User user = userService.getById(authenticationMetaData.getId());
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("profile");
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+    @PutMapping("/{id}/status")
     public ModelAndView blockUser(@PathVariable UUID id) {
 
         userService.blockUser(id);

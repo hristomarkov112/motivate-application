@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile</title>
-  <link rel="stylesheet" href="/css/profile.css">
+  <link rel="stylesheet" href="/css/other-profile.css">
 </head>
 <body>
 <!-- Navigation Bar -->
@@ -43,18 +43,6 @@
       <span th:text="${user.username}"></span>
     </div>
     <div class="profile-field">
-      <label>Balance:</label>
-      <span th:text="${user.wallets[0].balance} + ' ' + ${user.wallets[0].currency}"></span>
-    </div>
-    <div class="profile-field">
-      <label >First Name:</label>
-      <span th:text="${#strings.isEmpty(user.firstName) ? '(Fill first name)' : user.firstName}"></span>
-    </div>
-    <div class="profile-field">
-      <label >Last Name:</label>
-      <span th:text="${#strings.isEmpty(user.lastName) ? '(Fill last name)' : user.lastName}"></span>
-    </div>
-    <div class="profile-field">
       <label>Bio:</label>
       <span th:text="${#strings.isEmpty(user.bio) ? '(Fill short biography)' : user.bio}">Hello! I'm John, a software developer and nature lover. 🏞️</span>
     </div>
@@ -75,25 +63,41 @@
       <span><a href="/profile/followers">300</a></span>
     </div>
     <div class="profile-field">
-      <label>Create Date:</label>
+      <label>Joined to Motiv8 Family:</label>
       <span th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}">2023-01-01</span>
-    </div>
-    <div class="profile-field">
-      <label>Last Update:</label>
-      <span th:text="${#temporals.format(user.updatedAt, 'dd MMM YYYY HH:mm' )}">2023-10-10</span>
-    </div>
-    <div class="profile-field">
-      <label>Membership:</label>
-      <span th:if="${user.getMemberships()[0].type.name() == 'FREE'}" class="membership free">FREE</span>
-      <span th:if="${user.getMemberships()[0].type.name() == 'PREMIUM'}" class="membership premium">PREMIUM</span>
     </div>
 
     <!-- Edit Profile Button -->
     <div class="edit-profile-button-container">
-      <a th:href="@{'/users/' + ${user.id} + '/profile-menu'}" class="edit-profile-button">Edit Profile</a>
+      <a th:href="@{'/users/' + ${user.id} + '/profile-menu'}" class="edit-profile-button">Follow</a>
     </div>
   </div>
 </div>
+<!-- Posts section -->
+<section th:each="post : ${posts}" class="posts">
+  {% if posts %} Assuming your backend passes a 'posts' variable -->
+  {% for post in posts %}
+  <!-- Example Post 1 -->
+  <div class="post">
+    <div class="post-header">
+      <img th:src="${#strings.isEmpty(post.profilePicture) ? '/images/default-avatar.jpg' : post.profilePicture}" alt="User 1" class="post-avatar">
+      <div class="post-user-info">
+        <a href="/profile/user1" class="post-username" th:text="${post.username}"></a>
+        <span class="post-time" th:text="${#temporals.format(post.createdAt, 'dd MMM YYYY HH:mm' )}">2 hours ago</span>
+      </div>
+    </div>
+    <div class="post-content">
+      <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
+    </div>
+    <div class="post-actions">
+      <button class="like-button">Like</button>
+      <button class="comment-button">Comment</button>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p th:if="${posts.size() == 0}" class="no-posts">You haven't created any posts yet.</p>
+    {% endif %}
+</section>
 <!-- Footer -->
 <th:block th:insert="fragments/footer :: footer"></th:block>
 </body>

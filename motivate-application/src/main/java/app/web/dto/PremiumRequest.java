@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class GetPremiumRequest {
+public class PremiumRequest {
 
     private MembershipPeriod membershipPeriod;
 

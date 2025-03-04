@@ -1,18 +1,16 @@
 package app.web;
 
-import app.membership.model.Membership;
-import app.membership.service.MembershipService;
 import app.payment.model.Payment;
 import app.payment.service.PaymentService;
-import jakarta.servlet.http.HttpSession;
+import app.security.AuthenticationMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/payments")
@@ -26,11 +24,9 @@ public class PaymentController {
     }
 
     @GetMapping("/history")
-    public ModelAndView getAllPayments(HttpSession session) {
+    public ModelAndView getAllPayments(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        List<Payment> payments = paymentService.getAllByOwnerId(userId);
-
+        List<Payment> payments = paymentService.getAllByOwnerId(authenticationMetaData.getId());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("payments");
@@ -40,13 +36,12 @@ public class PaymentController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView getPremiumResultPage(HttpSession session) {
+    public ModelAndView getPremiumResultPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        Payment payment = paymentService.getAllByOwnerId(userId).get(0);
+        Payment payment = paymentService.getAllByOwnerId(authenticationMetaData.getId()).get(0);
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("get-premium-result");
+        modelAndView.setViewName("premium-result");
         modelAndView.addObject("payment", payment);
 
         return modelAndView;

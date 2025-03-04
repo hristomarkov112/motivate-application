@@ -10,7 +10,7 @@ import app.payment.model.Payment;
 import app.payment.model.PaymentStatus;
 import app.user.model.User;
 import app.wallet.service.WalletService;
-import app.web.dto.GetPremiumRequest;
+import app.web.dto.PremiumRequest;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class MembershipService {
     }
 
     @Transactional
-    public Payment getPremium(User user, MembershipType membershipType, GetPremiumRequest getPremiumRequest) {
+    public Payment getPremium(User user, MembershipType membershipType, PremiumRequest premiumRequest) {
 
         Optional<Membership> optionalMembership = membershipRepository.findByStatusAndOwnerId(MembershipStatus.ACTIVE, user.getId());
         if (optionalMembership.isEmpty()) {
@@ -66,13 +66,13 @@ public class MembershipService {
 
         Membership currentMembership = optionalMembership.get();
 
-        MembershipPeriod membershipPeriod = getPremiumRequest.getMembershipPeriod();
+        MembershipPeriod membershipPeriod = premiumRequest.getMembershipPeriod();
         String period = membershipPeriod.name().substring(0, 1).toUpperCase() + membershipPeriod.name().substring(1);
         String type = membershipType.name().substring(0, 1).toUpperCase() + membershipType.name().substring(1);
         String chargeDescription = "You have successfully purchased %s %s membership plan.".formatted(period, type);
         BigDecimal membershipPrice = getMembershipPrice(membershipType, membershipPeriod);
 
-        Payment chargeResult = walletService.charge(user, getPremiumRequest.getWalletId(), membershipPrice, chargeDescription);
+        Payment chargeResult = walletService.charge(user, premiumRequest.getWalletId(), membershipPrice, chargeDescription);
         if(chargeResult.getStatus() == PaymentStatus.FAILED) {
             log.warn("Membership charge has failed for user with ID [%s], membership type [%s]".formatted(user.getId(), membershipType));
             return chargeResult;
