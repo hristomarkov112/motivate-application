@@ -1,11 +1,13 @@
 package app.web;
 
+import app.comment.model.Comment;
+import app.comment.service.CommentService;
 import app.post.model.Post;
 import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
-import app.wallet.service.WalletService;
+import app.web.dto.CommentRequest;
 import app.web.dto.LoginRequest;
 import app.web.dto.PostRequest;
 import app.web.dto.RegisterRequest;
@@ -15,7 +17,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,11 +28,15 @@ public class IndexController {
 
     private final UserService userService;
     private final PostService postService;
+    private final CommentService commentService;
 
     @Autowired
-    public IndexController(UserService userService, PostService postService) {
+    public IndexController(UserService userService,
+                           PostService postService,
+                           CommentService commentService) {
         this.userService = userService;
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -79,21 +84,28 @@ public class IndexController {
 
         userService.register(registerRequest);
 
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/login");
     }
 
     @GetMapping("/home")
     public ModelAndView getHomePage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData, @RequestParam(value = "error", required = false) String errorParam) {
 
         User user = userService.getById(authenticationMetaData.getId());
-        List<Post> posts = postService.getAllPosts();
 
+        //User
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");
         modelAndView.addObject("user", user);
+
+        //Posts
+        List<Post> posts = postService.getAllPosts();
         modelAndView.addObject("postRequest", new PostRequest());
         modelAndView.addObject("posts", posts);
 
+        //Comments
+        List<Comment> comments = commentService.getAllCommentsByPost(user);
+        modelAndView.addObject("commentRequest", new CommentRequest());
+        modelAndView.addObject("comments", comments);
 
         if (errorParam != null) {
             modelAndView.addObject("errorMessage", "The text length must be less than or equal 4000 characters.") ;
@@ -102,7 +114,7 @@ public class IndexController {
         return modelAndView;
     }
 
-    @PostMapping("/home/post-creation")
+    @PostMapping("/home/post")
     public ModelAndView createPostPage(@Valid PostRequest postRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
         ModelAndView modelAndView = new ModelAndView();
@@ -113,6 +125,21 @@ public class IndexController {
         }
 
         postService.createPost(postRequest, user);
+
+        return new ModelAndView("redirect:/home");
+    }
+
+    @PostMapping("/home/comment")
+    public ModelAndView createCommentPage(@Valid CommentRequest commentRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        ModelAndView modelAndView = new ModelAndView();
+        User user = userService.getById(authenticationMetaData.getId());
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("home");
+        }
+
+        commentService.createComment(commentRequest, user);
 
         return new ModelAndView("redirect:/home");
     }

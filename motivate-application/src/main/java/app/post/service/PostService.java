@@ -1,5 +1,6 @@
 package app.post.service;
 
+import app.exception.DomainException;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
 import app.user.model.User;
@@ -30,18 +31,18 @@ public class PostService {
 
     public Post createPost(PostRequest postRequest, User user) {
 
-        return postRepository.save(initializePost(postRequest, user));
-    }
-
-    private Post initializePost(PostRequest postRequest, User user) {
-
-        return Post.builder()
+        Post post = Post.builder()
                 .owner(user)
                 .username(user.getUsername())
                 .profilePicture(user.getProfilePictureUrl())
                 .content(postRequest.getContent())
                 .createdAt(LocalDateTime.now())
+                .showCommentInput(true)
+                .likeCount(0)
+                .commentCount(0)
                 .build();
+
+        return postRepository.save(post);
     }
 
     public List<Post> getPostsByUserId(UUID ownerId) {
@@ -51,6 +52,15 @@ public class PostService {
     public List<Post> getAllPosts() {
         return postRepository.findAll(Sort.by("createdAt"));
     }
+
+    public Post likePost(UUID postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        post.setLikeCount(post.getLikeCount() + 1);
+        return postRepository.save(post);
+    }
+
+
 
 //    public List<Post> getAllPosts() {
 //        return postRepository.findAllOrderByCreatedAt();

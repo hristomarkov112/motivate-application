@@ -17,7 +17,6 @@
         <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
         <a th:href="@{/memberships/premium}" class="nav-link">Get Premium</a>
-        <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
         <a th:href="@{/follow/following}" class="nav-link">Following</a>
         <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
         <a th:href="@{/logout}" class="nav-link">Logout</a>
@@ -36,8 +35,8 @@
     <div class="profile-details">
         <h1 th:text="${#strings.isEmpty(user.firstName) ? 'Hello, (fill your name)' : 'Hello, ' + user.firstName}">Profile</h1>
         <div class="profile-field">
-            <label>ID:</label>
-            <span th:text="${user.id}"></span>
+            <label style="color: #aeaeae">ID:</label>
+            <span th:text="${user.id}" style="color: #afafaf"></span>
         </div>
         <div class="profile-field">
             <label>Username:</label>
@@ -51,7 +50,7 @@
     <!-- Create Post Section -->
     <div class="create-post">
         <h2>Create a Post</h2>
-        <form th:action="@{/home/post-creation}" th:method="POST" th:object="${postRequest}">
+        <form th:action="@{/home/post}" th:method="POST" th:object="${postRequest}">
             <textarea name="postContent" placeholder="What's on your mind?" rows="4" required th:field="*{content}"></textarea>
             <button type="submit" class="button">Post</button>
         </form>
@@ -72,33 +71,42 @@
             <div class="post-content">
                 <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
             </div>
-            <div class="post-actions">
+            <div class="post-actions" th:action="@{/{id}/likes}" th:method="POST" th:object="">
                 <button class="like-button">Like</button>
-                <!-- Toggle Comment Input Field -->
-                <form action="@{/toggle-comment}" method="post" style="display: inline;">
-                    <input type="hidden" name="postId" value="${post.id}" />
-                    <button type="submit" class="comment-button">Comment</button>
-                </form>
-                <button class="share-button">Share</button>
             </div>
             <!-- Counters for Likes and Comments -->
             <div class="post-counters">
             <span class="like-counter">
-                <i class="fas fa-thumbs-up"></i> <!-- Font Awesome Like Icon -->
-                <span text="${post.likeCount}">0 </span> Likes
+                <i class="fas fa-thumbs-up"></i>
+                <span th:text="${post.likeCount} + ' '">0</span> Likes
             </span>
                 <span class="comment-counter">
                 <i class="fas fa-comment"></i> <!-- Font Awesome Comment Icon -->
-                <span text="${post.commentCount}">0 </span> Comments
+                <span th:text="${post.comments.size()} + ' '">0</span> Comments
             </span>
             </div>
             <!-- Comment Input Field (Conditionally Rendered) -->
-            <div if="${post.showCommentInput}" class="comment-input-container visible">
-                <form action="@{/submit-comment}" method="post">
+            <div th:if="${post.showCommentInput}" class="comment-input-container visible">
+                <form th:action="@{/home/comment}" th:method="post" th:object="${commentRequest}">
                     <input type="hidden" name="postId" value="${post.id}" />
-                    <textarea class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
-                    <button type="submit" class="submit-comment-button">Submit</button>
+                    <textarea class="comment-textarea" name="comment" placeholder="Write a comment..." th:field="*{content}"></textarea>
+                    <button type="submit" class="submit-comment-button">Comment</button>
                 </form>
+            </div>
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <div th:each="comment : ${comments}" class="comment">
+                    <div class="comment-header">
+                        <img th:src="${#strings.isEmpty(comment.profilePicture) ? '/images/default-avatar.jpg' : comment.userProfilePicture}" alt="User Avatar" class="comment-avatar">
+                        <div class="comment-user-info">
+                            <span class="comment-username" th:text="${comment.username}"></span>
+                            <span class="comment-time" th:text="${#temporals.format(comment.createdAt, 'dd MMM YYYY HH:mm' )}"></span>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <p th:text="${comment.content}"></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -69,6 +69,7 @@ h1 {
 
 /* Posts Feed */
 .posts-feed {
+    min-height: 600px;
     margin-top: 20px;
 }
 
@@ -184,6 +185,7 @@ h1 {
 
 .like-counter,
 .comment-counter {
+    font-weight: bold;
     display: flex;
     align-items: center;
 }

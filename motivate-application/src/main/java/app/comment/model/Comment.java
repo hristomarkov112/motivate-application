@@ -23,13 +23,20 @@ public class Comment {
     @ManyToOne
     private User owner;
 
+    @Column(nullable = false)
+    private String username;
+
     @ManyToOne
     private Post post;
+
+    private String profilePicture;
 
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-
+    @Column(nullable = false)
+    private int likeCount;
 }
