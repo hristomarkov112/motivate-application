@@ -67,7 +67,7 @@ public class User {
     @OrderBy("createdAt DESC")
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    @OneToMany(mappedBy = "owner")
     @OrderBy("createdAt DESC")
     private List<Comment> comments = new ArrayList<>();
 

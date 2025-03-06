@@ -19,7 +19,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID postId;
+    private UUID id;
 
     @ManyToOne
     private User owner;
@@ -35,7 +35,7 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "postId")
+    @OneToMany
     private List<Comment> comments;
 
     @Column(nullable = false)

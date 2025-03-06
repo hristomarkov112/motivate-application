@@ -1,6 +1,5 @@
 package app.web;
 
-import app.post.model.Post;
 import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;

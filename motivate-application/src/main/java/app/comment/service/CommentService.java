@@ -4,6 +4,7 @@ import app.comment.model.Comment;
 import app.comment.repository.CommentRepository;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
+import app.post.service.PostService;
 import app.user.model.User;
 import app.web.dto.CommentRequest;
 import app.web.dto.PostRequest;
@@ -18,12 +19,12 @@ import java.util.UUID;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final PostRepository postRepository;
+    private final PostService postService;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentService(CommentRepository commentRepository, PostService postService) {
         this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
+        this.postService = postService;
     }
 
     public Comment createComment(CommentRequest commentRequest, User user) {
@@ -34,7 +35,7 @@ public class CommentService {
 
     private Comment initializeComment(CommentRequest commentRequest, User owner) {
 
-        Post post = postRepository.getByOwner(owner);
+        Post post = postService.getByOwner(owner);
 
         return Comment.builder()
                 .owner(owner)
@@ -49,30 +50,12 @@ public class CommentService {
     }
 
     public List<Comment> getAllCommentsByPost(User owner) {
-        Post post = postRepository.getByOwner(owner);
+        Post post = postService.getByOwner(owner);
 
         List<Comment> commentsByPost = commentRepository.findByPost(post);
 
         return commentsByPost;
     }
-
-
-//    public Post addComment(UUID postId, String username, String content) {
-//        Post post = postRepository.findById(postId)
-//                .orElseThrow(() -> new RuntimeException("Post not found"));
-//        Comment comment = Comment.builder()
-//                .owner(post.getOwner())
-//                .username(username)
-//                .post(post)
-//                .profilePicture(post.getProfilePicture())
-//                .content(content)
-//                .createdAt(LocalDateTime.now())
-//                .likeCount(0)
-//                .build();
-//        post.addComment(comment);
-//        post.setCommentCount(post.getCommentCount() + 1); // Increment comment count
-//        return postRepository.save(post);
-//    }
 
 //    public List<Comment> getAllComments() {
 //        return commentRepository.findAll();

@@ -7,7 +7,6 @@ import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
-import app.web.dto.CommentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -51,12 +50,23 @@ public class PostController {
     }
 
     @PutMapping("/{id}/likes")
-    public ModelAndView addLike(@PathVariable UUID id) {
+    public ModelAndView addLike(@PathVariable UUID postId) {
+        
+        Post post = postService.getById(postId);
+        
 
-        postService.addLike(id);
+        postService.addLike(postId);
 
         return new ModelAndView("redirect:/home");
     }
+
+//    @PutMapping("/{id}/comment")
+//    public ModelAndView addComment(@PathVariable UUID postId, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+//
+//        postService.addComment(postId);
+//
+//        return new ModelAndView("redirect:/home");
+//    }
 
 
 }

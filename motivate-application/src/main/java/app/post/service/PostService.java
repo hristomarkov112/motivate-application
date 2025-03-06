@@ -1,11 +1,11 @@
 package app.post.service;
 
+import app.comment.service.CommentService;
 import app.exception.DomainException;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
 import app.user.model.User;
-import app.user.repository.UserRepository;
-
+import app.user.service.UserService;
 import app.web.dto.PostRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +21,14 @@ import java.util.UUID;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository,
+                       UserService userService,
+                       CommentService commentService) {
         this.postRepository = postRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public Post createPost(PostRequest postRequest, User user) {
@@ -60,7 +62,35 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    public Post getByOwner(User owner) {
+        return postRepository.getByOwner(owner);
+    }
 
+    public Post getById(UUID postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new DomainException("Post with id %s has not been found".formatted(postId)));
+    }
+
+    public void addLike(UUID postId) {
+        Post post = getById(postId);
+        post.setLikeCount(post.getLikeCount() + 1);
+    }
+
+//    public void addComment(UUID postId, String username, String content) {
+//        Post post = postRepository.getById(postId);
+//
+//        Comment comment = Comment.builder()
+//                .owner(post.getOwner())
+//                .username(username)
+//                .post(post)
+//                .profilePicture(post.getProfilePicture())
+//                .content(content)
+//                .createdAt(LocalDateTime.now())
+//                .likeCount(0)
+//                .build();
+//        post.getComments().add(comment);
+//        post.setCommentCount(post.getCommentCount() + 1); // Increment comment count
+//        return postRepository.save(post);
+//    }
 
 //    public List<Post> getAllPosts() {
 //        return postRepository.findAllOrderByCreatedAt();
