@@ -3,17 +3,13 @@ package app.comment.service;
 import app.comment.model.Comment;
 import app.comment.repository.CommentRepository;
 import app.post.model.Post;
-import app.post.repository.PostRepository;
 import app.post.service.PostService;
 import app.user.model.User;
 import app.web.dto.CommentRequest;
-import app.web.dto.PostRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class CommentService {
@@ -45,8 +41,6 @@ public class CommentService {
                 .createdAt(LocalDateTime.now())
                 .likeCount(0)
                 .build();
-
-
     }
 
     public List<Comment> getAllCommentsByPost(User owner) {

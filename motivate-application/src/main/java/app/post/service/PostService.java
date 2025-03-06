@@ -1,11 +1,9 @@
 package app.post.service;
 
-import app.comment.service.CommentService;
 import app.exception.DomainException;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
 import app.user.model.User;
-import app.user.service.UserService;
 import app.web.dto.PostRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +19,10 @@ import java.util.UUID;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserService userService;
 
     @Autowired
-    public PostService(PostRepository postRepository,
-                       UserService userService,
-                       CommentService commentService) {
+    public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.userService = userService;
     }
 
     public Post createPost(PostRequest postRequest, User user) {
@@ -99,8 +93,6 @@ public class PostService {
 //    public Optional<Post> getPostById(UUID id) {
 //        return postRepository.findById(id);
 //    }
-
-
 //
 //    public void deletePost(UUID id) {
 //        postRepository.deleteById(id);

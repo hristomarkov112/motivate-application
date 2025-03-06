@@ -71,7 +71,7 @@
             <div class="post-content">
                 <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
             </div>
-            <div class="post-actions" th:action="@{'/posts/' + ${post.postId} + '/likes'}" th:method="POST">
+            <div class="post-actions" action="@{/posts/{id}/likes}" method="POST">
                 <button class="like-button">Like</button>
             </div>
             <!-- Counters for Likes and Comments -->
