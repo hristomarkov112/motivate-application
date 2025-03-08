@@ -13,10 +13,10 @@
         <a th:href="@{/home}" class="logo">Motiv8 Network</a>
     </div>
     <div class="navbar-links">
-        <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users}" class="nav-link" style="font-weight: bold">Users</a>
-        <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+        <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
-        <a th:href="@{/memberships/premium}" class="nav-link">Get Premium</a>
+        <a th:href="@{/posts}" class="nav-link">Posts</a>
+        <a th:href="@{/memberships/premium}" class="nav-link">Get PREMIUM</a>
         <a th:href="@{/follow/following}" class="nav-link">Following</a>
         <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
         <a th:href="@{/logout}" class="nav-link">Logout</a>
@@ -47,14 +47,6 @@
             <span th:text="${user.wallets[0].balance} + ' ' + ${user.wallets[0].currency}">$100.00</span>
         </div>
     </div>
-    <!-- Create Post Section -->
-    <div class="create-post">
-        <h2>Create a Post</h2>
-        <form th:action="@{/home/post}" th:method="POST" th:object="${postRequest}">
-            <textarea name="postContent" placeholder="What's on your mind?" rows="4" required th:field="*{content}"></textarea>
-            <button type="submit" class="button">Post</button>
-        </form>
-    </div>
 
     <!-- Posts Feed -->
     <div class="posts-feed">
@@ -71,7 +63,7 @@
             <div class="post-content">
                 <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
             </div>
-            <div class="post-actions" action="@{/posts/{id}/likes}" method="POST">
+            <div class="post-actions" th:action="@{/posts/{id}/likes}" th:method="POST">
                 <button class="like-button">Like</button>
             </div>
             <!-- Counters for Likes and Comments -->
@@ -85,15 +77,8 @@
                 <span th:text="${post.comments.size()} + ' '">0</span> Comments
             </span>
             </div>
-            <!-- Comment Input Field (Conditionally Rendered) -->
-            <div th:if="${post.showCommentInput}" class="comment-input-container visible">
-                <form th:action="@{/home/comment}" th:method="post" th:object="${commentRequest}">
-                    <input type="hidden" name="postId" value="${post.id}" />
-                    <textarea class="comment-textarea" name="comment" placeholder="Write a comment..." th:field="*{content}"></textarea>
-                    <button type="submit" class="submit-comment-button">Comment</button>
-                </form>
-            </div>
-            <!-- Comments Section -->
+
+           <!-- Comments Section -->
             <div class="comments-section">
                 <div th:each="comment : ${comments}" class="comment">
                     <div class="comment-header">
@@ -112,6 +97,6 @@
     </div>
 </div>
 <!-- Footer -->
-<th:block th:insert="fragments/footer :: footer"></th:block>
+<th:block th:insert="fragments/footer::footer"></th:block>
 </body>
 </html>

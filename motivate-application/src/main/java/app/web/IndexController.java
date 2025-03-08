@@ -9,7 +9,6 @@ import app.user.model.User;
 import app.user.service.UserService;
 import app.web.dto.CommentRequest;
 import app.web.dto.LoginRequest;
-import app.web.dto.PostRequest;
 import app.web.dto.RegisterRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,13 +98,12 @@ public class IndexController {
 
         //Posts
         List<Post> posts = postService.getAllPosts();
-        modelAndView.addObject("postRequest", new PostRequest());
         modelAndView.addObject("posts", posts);
 
         //Comments
-        List<Comment> comments = commentService.getAllCommentsByPost(user);
-        modelAndView.addObject("commentRequest", new CommentRequest());
-        modelAndView.addObject("comments", comments);
+//        List<Comment> comments = commentService.getAllCommentsByPost(post);
+//        modelAndView.addObject("commentRequest", new CommentRequest());
+//        modelAndView.addObject("comments", comments);
 
         if (errorParam != null) {
             modelAndView.addObject("errorMessage", "The text length must be less than or equal 4000 characters.") ;
@@ -114,34 +112,19 @@ public class IndexController {
         return modelAndView;
     }
 
-    @PostMapping("/home/post")
-    public ModelAndView createPostPage(@Valid PostRequest postRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-
-        ModelAndView modelAndView = new ModelAndView();
-        User user = userService.getById(authenticationMetaData.getId());
-
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("home");
-        }
-
-        postService.createPost(postRequest, user);
-
-        return new ModelAndView("redirect:/home");
-    }
-
-    @PostMapping("/home/comment")
-    public ModelAndView createCommentPage(@Valid CommentRequest commentRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-
-        ModelAndView modelAndView = new ModelAndView();
-        User user = userService.getById(authenticationMetaData.getId());
-
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("home");
-        }
-
-        commentService.createComment(commentRequest, user);
-
-        return new ModelAndView("redirect:/home");
-    }
+//    @PostMapping("/home/comment")
+//    public ModelAndView createCommentPage(@Valid CommentRequest commentRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+//
+//        ModelAndView modelAndView = new ModelAndView();
+//        User user = userService.getById(authenticationMetaData.getId());
+//
+//        if (bindingResult.hasErrors()) {
+//            modelAndView.setViewName("home");
+//        }
+//
+//        commentService.createComment(commentRequest, user);
+//
+//        return new ModelAndView("redirect:/home");
+//    }
 
 }

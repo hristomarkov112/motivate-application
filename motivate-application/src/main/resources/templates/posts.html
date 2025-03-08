@@ -3,33 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Posts</title>
-  <link rel="stylesheet" href="/css/my-posts.css">
+  <title>Home</title>
+  <link rel="stylesheet" href="/css/posts.css">
 </head>
 <body>
+<!-- Navigation Bar -->
 <nav class="navbar">
   <div class="navbar-brand">
     <a th:href="@{/home}" class="logo">Motiv8 Network</a>
   </div>
   <div class="navbar-links">
     <a th:href="@{/home}" class="nav-link">Home</a>
+    <a th:href="@{/posts/new}" class="nav-link">Create Post</a>
+    <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
     <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
-    <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
-    <a th:href="@{/payments/history}" class="nav-link">Payments</a>
-    <a th:href="@{/memberships/premium}" class="nav-link">Get PREMIUM</a>
+    <a th:if="${user.role.name() != 'USER'}" th:href="@{/memberships/premium}" class="nav-link">GET PREMIUM</a>
     <a th:href="@{/follow/following}" class="nav-link">Following</a>
     <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
     <a th:href="@{/logout}" class="nav-link">Logout</a>
   </div>
 </nav>
+
+<!-- Main Content -->
 <div class="container">
-  <header>
-    <h1>My Posts</h1>
-    <a th:href="@{/posts}" class="btn">Back to Posts Feed</a>
-  </header>
+
   <!-- Posts Feed -->
   <div class="posts-feed">
-    <h2>Recent Posts</h2>
+    <h2>Posts Feed</h2>
     <!-- Example Post 1 -->
     <div th:each="post : ${posts}" class="post">
       <div class="post-header">
@@ -60,7 +60,7 @@
       <div th:if="${post.showCommentInput}" class="comment-input-container visible">
         <form th:action="@{/posts/{id}/comment}" th:method="POST" th:object="${commentRequest}">
           <input type="hidden" name="postId" value="*{post.id}" />
-          <textarea class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
+          <textarea th:field="*{content}" class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
           <button type="submit" class="submit-comment-button">Comment</button>
         </form>
       </div>

@@ -23,15 +23,13 @@ public class CommentService {
         this.postService = postService;
     }
 
-    public Comment createComment(CommentRequest commentRequest, User user) {
+    public Comment createComment(CommentRequest commentRequest, User user, Post post) {
 
-        return commentRepository.save(initializeComment(commentRequest, user));
+        return commentRepository.save(initializeComment(commentRequest, user, post));
 
     }
 
-    private Comment initializeComment(CommentRequest commentRequest, User owner) {
-
-        Post post = postService.getByOwner(owner);
+    private Comment initializeComment(CommentRequest commentRequest, User owner, Post post) {
 
         return Comment.builder()
                 .owner(owner)
@@ -43,13 +41,13 @@ public class CommentService {
                 .build();
     }
 
-    public List<Comment> getAllCommentsByPost(User owner) {
-        Post post = postService.getByOwner(owner);
-
-        List<Comment> commentsByPost = commentRepository.findByPost(post);
-
-        return commentsByPost;
-    }
+//    public List<Comment> getAllCommentsByPost(Post post) {
+//
+//
+//        return commentRepository.findByPost(post);
+//
+//
+//    }
 
 //    public List<Comment> getAllComments() {
 //        return commentRepository.findAll();

@@ -1,9 +1,11 @@
 package app.post.service;
 
+import app.comment.model.Comment;
 import app.exception.DomainException;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
 import app.user.model.User;
+import app.web.dto.CommentRequest;
 import app.web.dto.PostRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +51,11 @@ public class PostService {
         return postRepository.findAll(Sort.by("createdAt"));
     }
 
-    public Post likePost(UUID postId) {
+    public void likePost(UUID postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         post.setLikeCount(post.getLikeCount() + 1);
-        return postRepository.save(post);
+        postRepository.save(post);
     }
 
     public Post getByOwner(User owner) {
@@ -69,22 +71,12 @@ public class PostService {
         post.setLikeCount(post.getLikeCount() + 1);
     }
 
-//    public void addComment(UUID postId, String username, String content) {
-//        Post post = postRepository.getById(postId);
-//
-//        Comment comment = Comment.builder()
-//                .owner(post.getOwner())
-//                .username(username)
-//                .post(post)
-//                .profilePicture(post.getProfilePicture())
-//                .content(content)
-//                .createdAt(LocalDateTime.now())
-//                .likeCount(0)
-//                .build();
-//        post.getComments().add(comment);
-//        post.setCommentCount(post.getCommentCount() + 1); // Increment comment count
-//        return postRepository.save(post);
-//    }
+    public void addComment(UUID postId, Comment comment) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        post.getComments().add(comment);
+        postRepository.save(post);
+    }
 
 //    public List<Post> getAllPosts() {
 //        return postRepository.findAllOrderByCreatedAt();
