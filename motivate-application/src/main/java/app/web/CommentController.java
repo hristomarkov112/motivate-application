@@ -1,63 +1,98 @@
-//package app.web;
+package app.web;
+
+import app.comment.model.Comment;
+import app.comment.service.CommentService;
+import app.post.model.Post;
+import app.post.service.PostService;
+import app.security.AuthenticationMetaData;
+import app.user.model.User;
+import app.user.service.UserService;
+import app.web.dto.CommentRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.UUID;
+
+
+@Controller
+@RequestMapping("/comments")
+public class CommentController {
+
+    private final PostService postService;
+    private final CommentService commentService;
+    private final UserService userService;
+
+    @Autowired
+    public CommentController(PostService postService, CommentService commentService, UserService userService) {
+        this.postService = postService;
+        this.commentService = commentService;
+        this.userService = userService;
+    }
+
+    @GetMapping("/new")
+    public String showCommentForm() {
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("posts");
+        modelAndView.addObject("comment", new CommentRequest());
+        return "/posts";
+    }
+
+    @PostMapping("/new")
+    public String createComment(CommentRequest commentRequest, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        User user = userService.getById(authenticationMetaData.getId());
+
+        UUID postId = commentRequest.getPostId();
+        Post post = postService.getById(postId);
+        commentService.createComment(commentRequest, user, post);
+
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/posts/{id}/comments")
+    public String getCommentsByPostId(@PathVariable UUID id, Model model) {
+        // Fetch the post by postId
+        Post post = postService.getById(id);
+
+        // Fetch all comments for the post
+        List<Comment> comments = commentService.getCommentsByPostId(id);
+
+        // Add the post and comments to the model
+        model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
+
+        // Return the view name
+        return "/comments"; // Thymeleaf template: src/main/resources/templates/comments.html
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteComment(@PathVariable UUID id) {
+        commentService.deleteComment(id);
+        return "redirect:/posts"; // Redirect to the list of comments
+    }
+
+//    @PostMapping("/new")
+//    public ModelAndView addComment(@PathVariable UUID id, CommentRequest commentRequest, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 //
-//import app.comment.model.Comment;
-//import app.comment.service.CommentService;
-//import app.post.model.Post;
-//import app.post.service.PostService;
-//import app.security.AuthenticationMetaData;
-//import app.user.model.User;
-//import app.user.service.UserService;
-//import app.web.dto.CommentRequest;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.annotation.AuthenticationPrincipal;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.PutMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.servlet.ModelAndView;
+//        User user = userService.getById(authenticationMetaData.getId());
+//        Post post = postService.getById();
 //
-////import java.util.UUID;
-////
-////@Controller
-////@RequestMapping("/comments")
-////public class CommentController {
-////
-////    private final PostService postService;
-////    private final CommentService commentService;
-////    private final UserService userService;
-////
-////    @Autowired
-////    public CommentController(PostService postService, CommentService commentService, UserService userService) {
-////        this.postService = postService;
-////        this.commentService = commentService;
-////        this.userService = userService;
-////    }
+//        Comment comment = commentService.createComment(commentRequest, user);
+//        postService.addComment(id, comment);
 //
-////    @PostMapping("/{id}")
-////    public ModelAndView addComment(@PathVariable UUID id, CommentRequest commentRequest, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-////
-////        User user = userService.getById(authenticationMetaData.getId());
-////        Post post = postService.getById();
-////
-////        Comment comment = commentService.createComment(commentRequest, user);
-////        postService.addComment(id, comment);
-////
-////        ModelAndView modelAndView = new ModelAndView();
-////        modelAndView.addObject("comment", comment);
-////        modelAndView.addObject("post", post);
-////
-////
-////        return new ModelAndView("redirect:/home");
-////    }
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("comment", comment);
+//        modelAndView.addObject("post", post);
 //
 //
-//
-////    @PutMapping("/{id}")
-////          public ModelAndView addComment(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-////
-////        postService.addComment(id);
-////
-////        return new ModelAndView("redirect:/home");
-////    }
-//}
+//        return new ModelAndView("redirect:/home");
+//    }
+
+
+}

@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -19,10 +20,7 @@ import java.time.LocalDateTime;
 public class CommentRequest {
 
     @NotNull
-    private User owner;
-
-    @NotNull
-    private Post post;
+    private UUID postId;
 
     @NotBlank
     @Size(max = 4000, message = "The content must be not more than 4000 characters.")

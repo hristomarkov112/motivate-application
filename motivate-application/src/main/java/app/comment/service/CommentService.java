@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CommentService {
@@ -41,13 +42,16 @@ public class CommentService {
                 .build();
     }
 
-//    public List<Comment> getAllCommentsByPost(Post post) {
-//
-//
-//        return commentRepository.findByPost(post);
-//
-//
-//    }
+    // Delete a comment
+    public void deleteComment(UUID id) {
+
+        commentRepository.deleteById(id);
+    }
+
+    public List<Comment> getCommentsByPostId(UUID postId) {
+        return commentRepository.findByPostId(postId);
+    }
+
 
 //    public List<Comment> getAllComments() {
 //        return commentRepository.findAll();

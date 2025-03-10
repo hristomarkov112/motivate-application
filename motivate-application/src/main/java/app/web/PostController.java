@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,9 +53,7 @@ public class PostController {
         modelAndView.addObject("posts", posts);
 
         //Comments
-//        List<Comment> comments = commentService.getAllCommentsByPost(user);
         modelAndView.addObject("commentRequest", new CommentRequest());
-//        modelAndView.addObject("comments", comments);
 
         if (errorParam != null) {
             modelAndView.addObject("errorMessage", "The text length must be less than or equal 4000 characters.") ;
@@ -108,7 +107,7 @@ public class PostController {
         return modelAndView;
     }
 
-    @PostMapping("/{id}/comment")
+    @PutMapping("/{id}/comment")
     public ModelAndView addComment(
             @PathVariable UUID id, @Valid CommentRequest commentRequest, BindingResult bindingResult,
             @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
@@ -139,10 +138,12 @@ public class PostController {
     }
 
     @PutMapping("/{id}/likes")
-    public ModelAndView addLike(@PathVariable UUID id) {
+    public String addLike(@PathVariable UUID id, Model model) {
 
-        postService.addLike(id);
+        Post post = postService.addLike(id);
 
-        return new ModelAndView("redirect:/home");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("post", post); // Ensure the updated post is passed back
+        return "redirect:/posts/" + id; // Redirect to the post's page to reflect updates
     }
 }

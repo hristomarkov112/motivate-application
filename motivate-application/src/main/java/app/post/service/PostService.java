@@ -5,7 +5,6 @@ import app.exception.DomainException;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
 import app.user.model.User;
-import app.web.dto.CommentRequest;
 import app.web.dto.PostRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,9 +65,13 @@ public class PostService {
         return postRepository.findById(postId).orElseThrow(() -> new DomainException("Post with id %s has not been found".formatted(postId)));
     }
 
-    public void addLike(UUID postId) {
+    public Post addLike(UUID postId) {
         Post post = getById(postId);
+        
         post.setLikeCount(post.getLikeCount() + 1);
+        postRepository.save(post);
+
+        return post;
     }
 
     public void addComment(UUID postId, Comment comment) {
