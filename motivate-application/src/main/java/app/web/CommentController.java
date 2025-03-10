@@ -55,21 +55,7 @@ public class CommentController {
         return "redirect:/posts";
     }
 
-    @GetMapping("/posts/{id}/comments")
-    public String getCommentsByPostId(@PathVariable UUID id, Model model) {
-        // Fetch the post by postId
-        Post post = postService.getById(id);
 
-        // Fetch all comments for the post
-        List<Comment> comments = commentService.getCommentsByPostId(id);
-
-        // Add the post and comments to the model
-        model.addAttribute("post", post);
-        model.addAttribute("comments", comments);
-
-        // Return the view name
-        return "/comments"; // Thymeleaf template: src/main/resources/templates/comments.html
-    }
 
     @GetMapping("/delete/{id}")
     public String deleteComment(@PathVariable UUID id) {

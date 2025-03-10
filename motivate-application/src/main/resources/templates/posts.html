@@ -46,19 +46,20 @@
         <input type="hidden" name="_method" value="put"/>
         <button class="like-button">Like</button>
       </form>
-      <div class="post-actions" th:action="@{'/posts/' + ${post.id} + '/comments'}" th:method="PUT">
-        <button class="like-button">View Comments</button>
-      </div>
+      <a th:href="@{/posts/{id}/comments(id=${post.id})}" class="view-comments-button">
+        View Comments
+      </a>
+
       <!-- Counters for Likes and Comments -->
       <div class="post-counters">
             <span class="like-counter">
               <i class="fas fa-thumbs-up"></i>
-              <span th:text="${post.likeCount}"></span> Likes
+              <span th:text="${post.likeCount} + '-'"></span> Likes
             </span>
 
         <span class="comment-counter">
                 <i class="fas fa-comment"></i>
-                <span th:text="${post.comments.size()} + ' '">5</span> Comments
+                <span th:text="${post.comments.size()} + '-'">5</span>Comments
             </span>
       </div>
       <!-- Comment Input Field (Conditionally Rendered) -->

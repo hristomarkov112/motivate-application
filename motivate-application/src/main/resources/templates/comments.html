@@ -39,7 +39,7 @@
 <div class="comment-input-container">
     <form th:action="@{/comments/new}" th:method="POST" th:object="${commentRequest}">
         <input type="hidden" name="postId" th:value="${post.id}" />
-        <textarea th:field="*{content}" class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
+        <textarea field="*{content}" class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
         <button type="submit" class="submit-comment-button">Comment</button>
     </form>
 </div>

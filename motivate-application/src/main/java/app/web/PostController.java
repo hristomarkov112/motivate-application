@@ -107,6 +107,17 @@ public class PostController {
         return modelAndView;
     }
 
+    @GetMapping("/{id}/comments")
+    public String getCommentsByPostId(@PathVariable UUID id, Model model) {
+        Post post = postService.getById(id);
+        List<Comment> comments = commentService.getCommentsByPostId(id);
+
+        model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
+
+        return "comments"; // Returns the Thymeleaf template named 'comments.html'
+    }
+
     @PutMapping("/{id}/comment")
     public ModelAndView addComment(
             @PathVariable UUID id, @Valid CommentRequest commentRequest, BindingResult bindingResult,
@@ -134,16 +145,16 @@ public class PostController {
         postService.addComment(post.getId(), comment);
 
         // Redirect to the post details page or home page
-        return new ModelAndView("redirect:/posts/" + id); // Redirect to the post details page
+        return new ModelAndView("redirect:/posts/" + id);
     }
 
     @PutMapping("/{id}/likes")
-    public String addLike(@PathVariable UUID id, Model model) {
+    public String addLike(@PathVariable UUID id) {
 
         Post post = postService.addLike(id);
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("post", post); // Ensure the updated post is passed back
-        return "redirect:/posts/" + id; // Redirect to the post's page to reflect updates
+        modelAndView.addObject("post", post);
+        return "redirect:/posts";
     }
 }

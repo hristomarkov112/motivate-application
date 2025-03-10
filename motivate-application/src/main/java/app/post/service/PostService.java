@@ -47,7 +47,7 @@ public class PostService {
     }
 
     public List<Post> getAllPosts() {
-        return postRepository.findAll(Sort.by("createdAt"));
+        return postRepository.findAll();
     }
 
     public void likePost(UUID postId) {
@@ -67,7 +67,7 @@ public class PostService {
 
     public Post addLike(UUID postId) {
         Post post = getById(postId);
-        
+
         post.setLikeCount(post.getLikeCount() + 1);
         postRepository.save(post);
 
