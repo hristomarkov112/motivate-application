@@ -108,17 +108,20 @@ public class PostController {
     }
 
     @GetMapping("/{id}/comments")
-    public String getCommentsByPostId(@PathVariable UUID id, Model model) {
+    public ModelAndView getCommentsByPostId(@PathVariable UUID id, Model model) {
         Post post = postService.getById(id);
         List<Comment> comments = commentService.getCommentsByPostId(id);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("comments");
 
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
 
-        return "comments"; // Returns the Thymeleaf template named 'comments.html'
+        return modelAndView;
     }
 
-    @PutMapping("/{id}/comment")
+    @PostMapping("/{id}/comment")
     public ModelAndView addComment(
             @PathVariable UUID id, @Valid CommentRequest commentRequest, BindingResult bindingResult,
             @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
@@ -126,17 +129,17 @@ public class PostController {
         ModelAndView modelAndView = new ModelAndView();
 
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("register");
+            modelAndView.setViewName("comments");
         }
         // Fetch the current user
         User user = userService.getById(authenticationMetaData.getId());
+        Post post = postService.getById(id); // Use the post ID from the URL
 
-
-        modelAndView.setViewName("home");
+        modelAndView.setViewName("comments");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("post", post);
         modelAndView.addObject("commentRequest", commentRequest);
         // Fetch the post to which the comment belongs
-        Post post = postService.getById(id); // Use the post ID from the URL
 
         // Create the comment and associate it with the user and post
         Comment comment = commentService.createComment(commentRequest, user, post);
@@ -145,7 +148,7 @@ public class PostController {
         postService.addComment(post.getId(), comment);
 
         // Redirect to the post details page or home page
-        return new ModelAndView("redirect:/posts/" + id);
+        return modelAndView;
     }
 
     @PutMapping("/{id}/likes")

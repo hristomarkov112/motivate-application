@@ -45,24 +45,12 @@
       <div class="post-actions" th:action="@{/posts/{id}/likes}" th:method="POST">
         <button class="like-button">Like</button>
       </div>
-      <!-- Counters for Likes and Comments -->
+      <!-- Counters for Likes -->
       <div class="post-counters">
             <span class="like-counter">
                 <i class="fas fa-thumbs-up"></i>
-                <span th:text="${post.likeCount} + ' '">0</span> Likes
+                <span th:text="${post.likeCount} + '-'">0</span> Likes
             </span>
-        <span class="comment-counter">
-                <i class="fas fa-comment"></i> <!-- Font Awesome Comment Icon -->
-                <span th:text="${post.comments.size()} + ' '">0</span> Comments
-            </span>
-      </div>
-      <!-- Comment Input Field (Conditionally Rendered) -->
-      <div th:if="${post.showCommentInput}" class="comment-input-container visible">
-        <form th:action="@{/posts/{id}/comment}" th:method="POST" th:object="${commentRequest}">
-          <input type="hidden" name="postId" value="*{post.id}" />
-          <textarea class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
-          <button type="submit" class="submit-comment-button">Comment</button>
-        </form>
       </div>
       <!-- Comments Section -->
       <div class="comments-section">

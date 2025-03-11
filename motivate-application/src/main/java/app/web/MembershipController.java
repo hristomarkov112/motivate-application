@@ -6,6 +6,7 @@ import app.payment.model.Payment;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
+import app.wallet.model.Wallet;
 import app.web.dto.PremiumRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

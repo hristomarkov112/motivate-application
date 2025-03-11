@@ -1,15 +1,53 @@
 /* General Styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: #f4f4f4;
     margin: 0;
+    padding: 0;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5A9DD4;
+    padding: 10px 20px;
+    color: white;
+}
+
+.navbar-brand .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-links .nav-link {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+.navbar-links .nav-link:hover {
+    text-decoration: underline;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
     padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 a {
     text-decoration: none;
-    color: #007bff;
+    color: #5A9DD4;
 }
 
 a:hover {
@@ -65,7 +103,7 @@ a:hover {
 }
 
 .like-button {
-    background-color: #007bff;
+    background-color: #5A9DD4;
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -74,7 +112,7 @@ a:hover {
 }
 
 .like-button:hover {
-    background-color: #0056b3;
+    background-color: #244d6c;
 }
 
 .post-counters {
@@ -157,7 +195,7 @@ a:hover {
 }
 
 .comment-input-container button {
-    background-color: #007bff;
+    background-color: #5A9DD4;
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -166,7 +204,7 @@ a:hover {
 }
 
 .comment-input-container button:hover {
-    background-color: #0056b3;
+    background-color: #244d6c;
 }
 
 /* Back to Posts Link */
@@ -174,7 +212,7 @@ a:hover {
     display: inline-block;
     margin-top: 20px;
     font-size: 14px;
-    color: #007bff;
+    color: #5A9DD4;
 }
 
 .back-to-posts:hover {

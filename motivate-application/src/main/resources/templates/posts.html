@@ -46,28 +46,21 @@
         <input type="hidden" name="_method" value="put"/>
         <button class="like-button">Like</button>
       </form>
-      <a th:href="@{/posts/{id}/comments(id=${post.id})}" class="view-comments-button">
+      <a th:href="@{'/posts/' + ${post.id} + '/comments'}" class="view-comments-button">
         View Comments
       </a>
 
       <!-- Counters for Likes and Comments -->
       <div class="post-counters">
-            <span class="like-counter">
-              <i class="fas fa-thumbs-up"></i>
-              <span th:text="${post.likeCount} + '-'"></span> Likes
-            </span>
-
-        <span class="comment-counter">
-                <i class="fas fa-comment"></i>
-                <span th:text="${post.comments.size()} + '-'">5</span>Comments
-            </span>
+        <span class="like-counter">
+          <i class="fas fa-thumbs-up"></i>
+          <span th:text="${post.likeCount} + '-'"></span> Likes
+        </span>
       </div>
-      <!-- Comment Input Field (Conditionally Rendered) -->
-      <div th:if="${post.showCommentInput}" class="comment-input-container visible">
-        <form th:action="@{/comments/new}" th:method="POST" th:object="${commentRequest}">
-          <!-- Pass the postId as a hidden field -->
-          <input type="hidden" name="postId" th:value="${post.id}" />
-          <textarea th:field="*{content}" class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
+      <!-- Comment Input Field -->
+      <div class="comment-input-container">
+        <form th:action="@{/posts/{id}/comment(id=${post.id})}" th:method="POST" th:object="${commentRequest}">
+          <textarea th:field="*{content}" class="comment-textarea" placeholder="Write a comment..."></textarea>
           <button type="submit" class="submit-comment-button">Comment</button>
         </form>
       </div>

@@ -5,46 +5,70 @@
     <link rel="stylesheet" href="/css/comments.css"> <!-- Link to the CSS file -->
 </head>
 <body>
-<div class="post">
-    <div class="post-header">
-        <img th:src="${#strings.isEmpty(post.profilePicture) ? '/images/default-avatar.jpg' : post.profilePicture}" alt="User Avatar" class="post-avatar">
-        <div class="post-user-info">
-            <a th:href="@{/profile/{username}(username=${post.username})}" class="post-username" th:text="${post.username}"></a>
-            <span class="post-time" th:text="${#temporals.format(post.createdAt, 'dd MMM YYYY HH:mm')}"></span>
-        </div>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/home}" class="logo">Motiv8 Network</a>
     </div>
-    <div class="post-content">
-        <p th:text="${post.content}"></p>
+    <div class="navbar-links">
+        <a th:href="@{/home}" class="nav-link">Home</a>
+        <a th:href="@{/posts/new}" class="nav-link">Create Post</a>
+        <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
+        <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
+        <a th:href="@{/memberships/premium}" class="nav-link">GET PREMIUM</a>
+        <a th:href="@{/follow/following}" class="nav-link">Following</a>
+        <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/logout}" class="nav-link">Logout</a>
     </div>
-</div>
+</nav>
 
-<!-- Comments Section -->
-<div class="comments-section">
-    <h3>Comments</h3>
-    <div th:each="comment : ${comments}" class="comment">
-        <div class="comment-header">
-            <img th:src="${#strings.isEmpty(comment.profilePicture) ? '/images/default-avatar.jpg' : comment.profilePicture}" alt="User Avatar" class="comment-avatar">
-            <div class="comment-user-info">
-                <span class="comment-username" th:text="${comment.username}"></span>
-                <span class="comment-time" th:text="${#temporals.format(comment.createdAt, 'dd MMM YYYY HH:mm')}"></span>
+<!-- Main Content -->
+<div class="container">
+
+    <!-- Posts Feed -->
+    <div class="posts-feed">
+        <div class="post">
+            <div class="post-header">
+                <img th:src="${#strings.isEmpty(post.profilePicture) ? '/images/default-avatar.jpg' : post.profilePicture}" alt="User Avatar" class="post-avatar">
+                <div class="post-user-info">
+                    <a th:href="@{/profile/{username}(username=${post.username})}" class="post-username" th:text="${post.username}"></a>
+                    <span class="post-time" th:text="${#temporals.format(post.createdAt, 'dd MMM YYYY HH:mm')}"></span>
+                </div>
+            </div>
+            <div class="post-content">
+                <p th:text="${post.content}"></p>
             </div>
         </div>
-        <div class="comment-content">
-            <p th:text="${comment.content}"></p>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3>Comments</h3>
+            <div th:each="comment : ${comments}" class="comment">
+                <div class="comment-header">
+                    <img th:src="${#strings.isEmpty(comment.profilePicture) ? '/images/default-avatar.jpg' : comment.profilePicture}" alt="User Avatar" class="comment-avatar">
+                    <div class="comment-user-info">
+                        <span class="comment-username" th:text="${comment.username}"></span>
+                        <span class="comment-time" th:text="${#temporals.format(comment.createdAt, 'dd MMM YYYY HH:mm')}"></span>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <p th:text="${comment.content}"></p>
+                </div>
+            </div>
         </div>
+
+        <!-- Comment Input Field -->
+        <div class="comment-input-container">
+            <form th:action="@{/posts/{id}/comments(id=${post.id})}" th:method="POST" th:object="${commentRequest}">
+                <input type="hidden" name="postId" th:value="${post.id}" />
+                <textarea field="*{content}" class="comment-textarea" placeholder="Write a comment..."></textarea>
+                <button type="submit" class="submit-comment-button">Comment</button>
+            </form>
+        </div>
+
+        <!-- Back to Posts -->
+        <a th:href="@{/posts}" class="back-to-posts">Back to Posts</a>
     </div>
 </div>
-
-<!-- Comment Input Field -->
-<div class="comment-input-container">
-    <form th:action="@{/comments/new}" th:method="POST" th:object="${commentRequest}">
-        <input type="hidden" name="postId" th:value="${post.id}" />
-        <textarea field="*{content}" class="comment-textarea" name="comment" placeholder="Write a comment..."></textarea>
-        <button type="submit" class="submit-comment-button">Comment</button>
-    </form>
-</div>
-
-<!-- Back to Posts -->
-<a th:href="@{/posts}" class="back-to-posts">Back to Posts</a>
 </body>
 </html>
