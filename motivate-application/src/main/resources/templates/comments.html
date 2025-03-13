@@ -59,9 +59,9 @@
 
         <!-- Comment Input Field -->
         <div class="comment-input-container">
-            <form th:action="@{/posts/{id}/comments(id=${post.id})}" th:method="POST" th:object="${commentRequest}">
+            <form th:action="@{'/posts/' + ${post.id} + '/comments'}" th:method="POST" th:object="${commentRequest}">
                 <input type="hidden" name="postId" th:value="${post.id}" />
-                <textarea field="*{content}" class="comment-textarea" placeholder="Write a comment..."></textarea>
+                <textarea field="comment-textarea" class="comment-textarea" placeholder="Write a comment..."></textarea>
                 <button type="submit" class="submit-comment-button">Comment</button>
             </form>
         </div>

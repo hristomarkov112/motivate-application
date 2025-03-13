@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Social Network</title>
+    <link rel="stylesheet" href="/css/additional-info-menu.css">
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+    </div>
+    <div class="navbar-links">
+        <a th:href="@{/home}" class="nav-link">Home</a>
+        <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
+        <a th:href="@{/posts}" class="nav-link">Posts</a>
+        <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
+        <a th:href="@{/memberships/premium}" class="nav-link">Get PREMIUM</a>
+        <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+        <a th:href="@{/follow/following}" class="nav-link">Following</a>
+        <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/logout}" class="nav-link">Logout</a>
+    </div>
+</nav>
+<!-- Edit Profile Page Content -->
+<div class="profile-container">
+    <!-- Profile Picture -->
+    <div class="profile-picture">
+        <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? '/images/default-avatar.jpg' : user.profilePictureUrl}" alt="Profile Picture" id="profilePicturePreview">
+    </div>
+    <!-- Profile Details -->
+    <div class="profile-details">
+        <header>
+            <h1>Additional Info</h1>
+            <a th:href="@{${user.id} + '/additional-info'}" class="btn">Back to Profile</a>
+        </header>
+        <form th:action="@{${user.id} + '/additional-info'}" th:method="PUT" th:object="${additionalInfo}">
+            <!-- Editable Fields -->
+            <label for="country">Gender</label>
+            <select id="country" th:field="*{gender}">
+                <option th:each="gender : ${T(app.additionalinfo.client.dto.GenderType).values()}" th:value="${gender}" th:text="${#strings.capitalize(#strings.toLowerCase(gender))}"></option>
+            </select>
+            <div class="profile-field">
+                <label for="firstName">Phone number:</label>
+                <input th:field="*{phoneNumber}" type="text" id="firstName" name="firstName">
+            </div>
+            <div class="profile-field">
+                <label for="email">Second email:</label>
+                <input th:field="*{secondEmail}" type="email" id="email" name="email">
+            </div>
+
+            <!-- Save Changes Button -->
+            <div class="edit-profile-button-container">
+                <button type="submit" class="edit-profile-button">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer::footer"></th:block>
+</body>
+</html>

@@ -36,7 +36,7 @@ public class CommentController {
     public String showCommentForm() {
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("posts");
+        modelAndView.setViewName("comments");
         modelAndView.addObject("comment", new CommentRequest());
         return "/posts";
     }
@@ -53,7 +53,7 @@ public class CommentController {
         commentService.createComment(commentRequest, user, post);
         modelAndView.addObject("commentRequest", commentRequest);
         modelAndView.addObject("post", post);
-        modelAndView.setViewName("redirect:/comments");
+        modelAndView.setViewName("redirect:/comments/new");
 
         return modelAndView;
     }

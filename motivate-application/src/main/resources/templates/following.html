@@ -23,28 +23,24 @@
     </div>
 </nav>
 <div class="container">
-    <header>
-        <h1>Current Followings</h1>
-        <a th:href="@{/profile}" class="btn">Back to Profile</a>
-    </header>
+    <body>
+    <h1>Following List</h1>
+    <ul>
+        <li th:each="following : ${followings}" th:text="${following}"></li>
+    </ul>
 
-    <section class="following-list">
-        {% if following %} <!-- Assuming your backend passes a 'following' variable -->
-        {% for user in following %}
-        <div class="following-user">
-            <div class="user-info">
-                <img src="/images/default-avatar.jpg" alt="{{ user.username }}" class="profile-pic">
-                <div class="username">{{ user.username }}</div>
-            </div>
-            <div class="actions">
-                <a href="/unfollow/{{ user.id }}" class="btn-unfollow">Unfollow</a>
-            </div>
-        </div>
-        {% end for %}
-        {% else %}
-        <p class="no-following">You are not following anyone yet.</p>
-        {% endif %}
-    </section>
+    <h2>Follow a User</h2>
+    <form action="/follow" method="post">
+        <input type="text" name="username" placeholder="Enter username" required>
+        <button type="submit">Follow</button>
+    </form>
+
+    <h2>Unfollow a User</h2>
+    <form action="/unfollow" method="post">
+        <input type="text" name="username" placeholder="Enter username" required>
+        <button type="submit">Unfollow</button>
+    </form>
+    </body>
 </div>
 <!-- Footer -->
 <th:block th:insert="fragments/footer::footer"></th:block>

@@ -1,5 +1,6 @@
 package app.user.service;
 
+import app.additionalinfo.service.AdditionalInfoService;
 import app.exception.DomainException;
 import app.membership.service.MembershipService;
 import app.security.AuthenticationMetaData;
@@ -33,13 +34,15 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final WalletService walletService;
     private final MembershipService membershipService;
+    private final AdditionalInfoService additionalInfoService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService, AdditionalInfoService additionalInfoService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.walletService = walletService;
         this.membershipService = membershipService;
+        this.additionalInfoService = additionalInfoService;
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -55,6 +58,8 @@ public class UserService implements UserDetailsService {
 
         membershipService.createFreeMembership(user);
         walletService.createNewWallet(user);
+
+        additionalInfoService.saveAdditionalInfo(user.getId(), "UNKNOWN", "Enter phone", "Enter second email");
 
         log.info("Successfully registered new user account with username [%s] and id [%s].".formatted(user.getUsername(), user.getId()), user.getUsername());
 
@@ -80,7 +85,7 @@ public class UserService implements UserDetailsService {
         return User.builder()
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(UserRole.ADMIN)
+                .role(UserRole.USER)
                 .isActive(true)
                 .country(registerRequest.getCountry())
                 .createdAt(LocalDateTime.now())

@@ -121,7 +121,7 @@ public class PostController {
         return modelAndView;
     }
 
-    @PostMapping("/{id}/comment")
+    @PostMapping("/{id}/comments")
     public ModelAndView addComment(
             @PathVariable UUID id, @Valid CommentRequest commentRequest, BindingResult bindingResult,
             @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="/css/additional-info.css.css">
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+  </div>
+  <div class="navbar-links">
+    <a th:href="@{/home}" class="nav-link">Home</a>
+    <a th:href="@{/posts}" class="nav-link">Posts</a>
+    <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
+    <a th:href="@{/memberships/premium}" class="nav-link">Get PREMIUM</a>
+    <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+    <a th:href="@{/follow/following}" class="nav-link">Following</a>
+    <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+    <a th:href="@{/logout}" class="nav-link">Logout</a>
+  </div>
+</nav>
+
+<!-- Profile Page Content -->
+<div class="profile-container">
+  <!-- Profile Picture -->
+  <div class="profile-picture">
+    <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? '/images/default-avatar.jpg' : user.profilePictureUrl}" alt="Profile Picture">
+  </div>
+
+  <!-- Profile Details -->
+  <div class="profile-details">
+    <h1>Additional info</h1>
+    <div class="profile-field">
+      <label>Gender:</label>
+      <span th:text="${additionalInfo.gender}"></span>
+    </div>
+    <div class="profile-field">
+      <label>Phone number:</label>
+      <span th:text="${#strings.isEmpty(additionalInfo.phoneNumber) ? 'add your phone number' : additionalInfo.phoneNumber}"></span>
+    </div>
+    <div class="profile-field">
+      <label>Second Email:</label>
+      <span th:text="${#strings.isEmpty(additionalInfo.secondEmail) ? 'add a second email for back-up' : additionalInfo.secondEmail}"></span>
+    </div>
+
+    <!-- Edit Profile Button -->
+    <div class="edit-profile-button-container">
+      <a th:href="@{${user.id} + '/additional-info-menu'}" class="edit-profile-button">Edit Profile</a>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer::footer"></th:block>
+</body>
+</html>
