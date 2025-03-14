@@ -19,14 +19,14 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CommentRequest {
 
-    @NotNull
-    private UUID postId;
+//    @NotNull
+//    private UUID postId;
 
     @NotBlank
     @Size(max = 4000, message = "The content must be not more than 4000 characters.")
     private String content;
 
-    @NotNull
-    private LocalDateTime createdAt = LocalDateTime.now();
+//    @NotNull
+//    private LocalDateTime createdAt = LocalDateTime.now();
 
 }

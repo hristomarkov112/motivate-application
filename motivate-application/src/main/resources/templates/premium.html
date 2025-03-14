@@ -58,14 +58,14 @@
                         </ul>
                     </div>
                     <label for="free-period">Period:</label>
-                    <select id="free-period" class="period" th:field="*{membershipPeriod}">
+                    <select id="free-period" class="period" field="*{membershipPeriod}">
                         <option th:each="period: ${T(app.membership.model.MembershipPeriod).values()}" th:value="${period}" th:text="${#strings.capitalize(#strings.toLowerCase(period))}"></option>
                     </select>
                 </div>
                 <div class="field">
                     <label for="free-price">Price:</label>
                     <select id="free-price" class="price">
-                        <option value="monthly">$0/month</option>
+                        <option value="monthly" th:text="${premiumRequest.price + ' EUR/Month'}">$0/month</option>
                         <option value="yearly">$0/year</option>
                     </select>
                 </div>
@@ -90,7 +90,7 @@
                 </div>
                 <div>
                     <label for="premium-period">Period:</label>
-                    <select id="premium-period" class="period" th:field="*{membershipPeriod}">
+                    <select id="premium-period" class="period" field="*{membershipPeriod}">
                         <option th:each="period: ${T(app.membership.model.MembershipPeriod).values()}" th:value="${period}" th:text="${#strings.capitalize(#strings.toLowerCase(period))}"></option>
                     </select>
                 </div>
@@ -99,7 +99,7 @@
                 <div class="field">
                     <label for="premium-price">Price:</label>
                     <select id="premium-price" class="price">
-                        <option value="monthly">$10/month</option>
+                        <option value="monthly" th:text="${premiumRequest.price + ' EUR/Month'}">$10/month</option>
                         <option value="yearly">$100/year</option>
                     </select>
                 </div>

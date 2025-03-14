@@ -3,6 +3,7 @@ package app.web;
 import app.comment.model.Comment;
 import app.comment.service.CommentService;
 import app.post.model.Post;
+import app.post.repository.PostRepository;
 import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
@@ -29,12 +30,14 @@ public class PostController {
     private final UserService userService;
     private final PostService postService;
     private final CommentService commentService;
+    private final PostRepository postRepository;
 
     @Autowired
-    public PostController(UserService userService, PostService postService, CommentService commentService) {
+    public PostController(UserService userService, PostService postService, CommentService commentService, PostRepository postRepository) {
         this.userService = userService;
         this.postService = postService;
         this.commentService = commentService;
+        this.postRepository = postRepository;
     }
 
     @GetMapping()
@@ -108,7 +111,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}/comments")
-    public ModelAndView getCommentsByPostId(@PathVariable UUID id, Model model) {
+    public String getCommentsByPostId(@PathVariable UUID id, Model model) {
         Post post = postService.getById(id);
         List<Comment> comments = commentService.getCommentsByPostId(id);
 
@@ -117,38 +120,33 @@ public class PostController {
 
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
+        model.addAttribute("commentRequest", new CommentRequest());
 
-        return modelAndView;
+        return "comments";
     }
 
     @PostMapping("/{id}/comments")
-    public ModelAndView addComment(
-            @PathVariable UUID id, @Valid CommentRequest commentRequest, BindingResult bindingResult,
-            @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+    public String addComment(
+            @PathVariable UUID id,
+            @Valid @ModelAttribute("commentRequest") CommentRequest commentRequest,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData,
+            Model model) {
 
-        ModelAndView modelAndView = new ModelAndView();
+        Post post = postService.getById(id);
+        model.addAttribute("post", post);
 
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("comments");
+            User user = userService.getById(authenticationMetaData.getId());
+            model.addAttribute("user", user);
+            return "comments";
         }
-        // Fetch the current user
+
         User user = userService.getById(authenticationMetaData.getId());
-        Post post = postService.getById(id); // Use the post ID from the URL
-
-        modelAndView.setViewName("comments");
-        modelAndView.addObject("user", user);
-        modelAndView.addObject("post", post);
-        modelAndView.addObject("commentRequest", commentRequest);
-        // Fetch the post to which the comment belongs
-
-        // Create the comment and associate it with the user and post
         Comment comment = commentService.createComment(commentRequest, user, post);
-
-        // Add the comment to the post
         postService.addComment(post.getId(), comment);
 
-        // Redirect to the post details page or home page
-        return modelAndView;
+        return "redirect:/posts";
     }
 
     @PutMapping("/{id}/likes")

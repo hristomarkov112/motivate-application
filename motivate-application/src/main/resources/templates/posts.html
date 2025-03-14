@@ -44,22 +44,23 @@
       </div>
       <form th:action="@{'/posts/' + ${post.id} + '/likes'}" method="POST">
         <input type="hidden" name="_method" value="put"/>
-        <button class="like-button">Like</button>
+        <button class="view-comments-button">Like</button>
+        <a th:href="@{'/posts/' + ${post.id} + '/comments'}" class="view-comments-button">
+          View Comments
+        </a>
       </form>
-      <a th:href="@{'/posts/' + ${post.id} + '/comments'}" class="view-comments-button">
-        View Comments
-      </a>
+
 
       <!-- Counters for Likes and Comments -->
       <div class="post-counters">
         <span class="like-counter">
           <i class="fas fa-thumbs-up"></i>
-          <span th:text="${post.likeCount} + '-'"></span> Likes
+          <span th:text="${post.likeCount + ' Likes'}"></span>
         </span>
       </div>
       <!-- Comment Input Field -->
       <div class="comment-input-container">
-        <form th:action="@{/posts/{id}/comment(id=${post.id})}" th:method="POST" th:object="${commentRequest}">
+        <form th:action="@{/posts/{id}/comments(id=${post.id})}" th:method="POST" th:object="${commentRequest}">
           <textarea th:field="*{content}" class="comment-textarea" placeholder="Write a comment..."></textarea>
           <button type="submit" class="submit-comment-button">Comment</button>
         </form>
@@ -70,7 +71,7 @@
           <div class="comment-header">
             <img th:src="${#strings.isEmpty(comment.profilePicture) ? '/images/default-avatar.jpg' : comment.profilePicture}" alt="User Avatar" class="comment-avatar">
             <div class="comment-user-info">
-              <span class="comment-username" th:text="${comment.owner}"></span>
+              <span class="comment-username" th:text="${comment.owner.username}"></span>
               <span class="comment-time" th:text="${#temporals.format(comment.createdAt, 'dd MMM YYYY HH:mm' )}"></span>
             </div>
           </div>

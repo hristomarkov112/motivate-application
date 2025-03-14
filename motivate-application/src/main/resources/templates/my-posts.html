@@ -43,13 +43,12 @@
         <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
       </div>
       <div class="post-actions" th:action="@{/posts/{id}/likes}" th:method="POST">
-        <button class="like-button">Like</button>
       </div>
       <!-- Counters for Likes -->
       <div class="post-counters">
             <span class="like-counter">
                 <i class="fas fa-thumbs-up"></i>
-                <span th:text="${post.likeCount} + '-'">0</span> Likes
+                <span th:text="${post.likeCount + ' Likes'}"></span>
             </span>
       </div>
       <!-- Comments Section -->

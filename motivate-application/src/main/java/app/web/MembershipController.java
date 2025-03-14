@@ -12,10 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.UUID;
@@ -53,7 +50,7 @@ public class MembershipController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("premium");
         modelAndView.addObject("user", user);
-        modelAndView.addObject("PremiumRequest", PremiumRequest.builder().build());
+        modelAndView.addObject("premiumRequest", PremiumRequest.builder().build());
 
         return modelAndView;
     }
@@ -69,10 +66,9 @@ public class MembershipController {
     }
 
     @GetMapping("/history")
-    public ModelAndView getHistoryPage(HttpSession session) {
+    public ModelAndView getHistoryPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetaData.getId());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("membership-history");

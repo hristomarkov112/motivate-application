@@ -40,23 +40,23 @@ public class CommentController {
         modelAndView.addObject("comment", new CommentRequest());
         return "/posts";
     }
-
-    @PostMapping("/new")
-    public ModelAndView createComment(@Valid CommentRequest commentRequest, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-
-        User user = userService.getById(authenticationMetaData.getId());
-
-        ModelAndView modelAndView = new ModelAndView();
-
-        UUID postId = commentRequest.getPostId();
-        Post post = postService.getById(postId);
-        commentService.createComment(commentRequest, user, post);
-        modelAndView.addObject("commentRequest", commentRequest);
-        modelAndView.addObject("post", post);
-        modelAndView.setViewName("redirect:/comments/new");
-
-        return modelAndView;
-    }
+//
+//    @PostMapping("/new")
+//    public ModelAndView createComment(@Valid CommentRequest commentRequest, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+//
+//        User user = userService.getById(authenticationMetaData.getId());
+//
+//        ModelAndView modelAndView = new ModelAndView();
+//
+//        UUID postId = commentRequest.getPostId();
+//        Post post = postService.getById(postId);
+//        commentService.createComment(commentRequest, user, post);
+//        modelAndView.addObject("commentRequest", commentRequest);
+//        modelAndView.addObject("post", post);
+//        modelAndView.setViewName("redirect:/comments/new");
+//
+//        return modelAndView;
+//    }
 
     @GetMapping("/delete/{id}")
     public String deleteComment(@PathVariable UUID id) {

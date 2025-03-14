@@ -1,6 +1,5 @@
 package app.web;
 
-import app.additionalinfo.service.AdditionalInfoService;
 import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
@@ -8,7 +7,6 @@ import app.user.service.UserService;
 import app.web.dto.UserEditRequest;
 import app.web.mapper.DtoMapper;
 import jakarta.validation.Valid;
-import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,13 +27,11 @@ public class UserController {
 
     private final UserService userService;
     private final PostService postService;
-    private final AdditionalInfoService additionalInfoService;
 
     @Autowired
-    public UserController(UserService userService, PostService postService, AdditionalInfoService additionalInfoService) {
+    public UserController(UserService userService, PostService postService) {
         this.userService = userService;
         this.postService = postService;
-        this.additionalInfoService = additionalInfoService;
     }
 
     @GetMapping

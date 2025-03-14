@@ -26,20 +26,20 @@
 <div class="container">
     <header>
         <h1>Membership History</h1>
-        <a th:href="@{/users/{id}/profile}" class="btn">Back to Profile</a>
+        <a th:href="@{/memberships/history}" class="btn">Back to Profile</a>
     </header>
 
     <section class="payments-report">
         <table>
             <thead>
             <tr>
-                <th>ID</th>
+                <th>Membership ID</th>
                 <th>Status</th>
                 <th>Period</th>
                 <th>Type</th>
                 <th>Price</th>
-                <th>Created At</th>
-                <th>Expires At</th>
+                <th>Create Date</th>
+                <th>Expiration Date</th>
             </tr>
             </thead>
             <tbody>

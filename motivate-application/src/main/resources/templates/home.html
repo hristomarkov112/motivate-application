@@ -16,6 +16,7 @@
         <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
         <a th:href="@{/posts}" class="nav-link">Posts</a>
+        <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
         <a th:href="@{/memberships/premium}" class="nav-link">Get PREMIUM</a>
         <a th:href="@{/follow/following}" class="nav-link">Following</a>
         <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
@@ -63,23 +64,27 @@
             <div class="post-content">
                 <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
             </div>
-            <div class="post-actions" th:action="@{/posts/{id}/likes}" th:method="POST">
-                <button class="like-button">Like</button>
-            </div>
-            <!-- Counters for Likes and Comments -->
-            <div class="post-counters">
+            <form th:action="@{'/posts/' + ${post.id} + '/likes'}" method="POST">
+                <input type="hidden" name="_method" value="put"/>
+                <button class="view-comments-button">Like</button>
+                <a th:href="@{'/posts/' + ${post.id} + '/comments'}" class="view-comments-button">
+                    View Comments
+                </a>
+            </form>
+
+
             <span class="like-counter">
                 <i class="fas fa-thumbs-up"></i>
-                <span th:text="${post.likeCount} + ' '">0</span> Likes
-            </div>
-
-           <!-- Comments Section -->
+                <span th:text="${post.likeCount + ' Likes'}"></span>
+                <!-- Comments Section -->
+            </span>
+            <!-- Counters for Likes and Comments -->
             <div class="comments-section">
-                <div th:each="comment : ${comments}" class="comment">
+                <div th:each="comment : ${post.comments}" class="comment">
                     <div class="comment-header">
-                        <img th:src="${#strings.isEmpty(comment.profilePicture) ? '/images/default-avatar.jpg' : comment.userProfilePicture}" alt="User Avatar" class="comment-avatar">
+                        <img th:src="${#strings.isEmpty(comment.profilePicture) ? '/images/default-avatar.jpg' : comment.profilePicture}" alt="User Avatar" class="comment-avatar">
                         <div class="comment-user-info">
-                            <span class="comment-username" th:text="${comment.username}"></span>
+                            <span class="comment-username" th:text="${comment.owner.username}"></span>
                             <span class="comment-time" th:text="${#temporals.format(comment.createdAt, 'dd MMM YYYY HH:mm' )}"></span>
                         </div>
                     </div>

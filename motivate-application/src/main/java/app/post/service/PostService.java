@@ -8,7 +8,6 @@ import app.user.model.User;
 import app.web.dto.PostRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -62,7 +61,7 @@ public class PostService {
     }
 
     public Post getById(UUID postId) {
-        return postRepository.findById(postId).orElseThrow(() -> new DomainException("Post with id %s has not been found".formatted(postId)));
+        return postRepository.findPostById(postId).orElseThrow(() -> new DomainException("Post with id %s has not been found".formatted(postId)));
     }
 
     public Post addLike(UUID postId) {
@@ -74,8 +73,8 @@ public class PostService {
         return post;
     }
 
-    public void addComment(UUID postId, Comment comment) {
-        Post post = postRepository.findById(postId)
+    public void addComment(UUID id, Comment comment) {
+        Post post = postRepository.findPostById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         post.getComments().add(comment);
         postRepository.save(post);

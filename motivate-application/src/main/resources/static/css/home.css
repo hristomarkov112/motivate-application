@@ -180,16 +180,36 @@ body {
   background-color: #244d6c;
 }
 
+/* View Comment Button */
+.view-comments-button {
+  margin-top: 10px;
+  display: inline-block;
+  padding: 5px 5px;
+  font-size: 14px;
+  color: white;
+  background-color: #5A9DD4;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-comments-button:hover {
+  background-color: #244d6c;
+}
+
 /* Comment Input Container */
 .comment-input-container {
   margin-top: 10px;
   padding: 10px;
   border-top: 1px solid #ddd;
-  display: none; /* Hidden by default */
+  display: none;
 }
 
 .comment-input-container.visible {
-  display: block; /* Visible when toggled */
+  display: block;
 }
 
 /* Comment Textarea */
@@ -198,7 +218,7 @@ body {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  resize: vertical; /* Allow vertical resizing */
+  resize: vertical;
   margin-bottom: 8px;
 }
 
@@ -233,6 +253,7 @@ body {
 
 .like-counter,
 .comment-counter {
+  margin-top: 10px;
   font-weight: bold;
   display: flex;
   align-items: center;

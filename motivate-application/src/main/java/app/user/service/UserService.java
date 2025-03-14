@@ -1,8 +1,9 @@
 package app.user.service;
 
-import app.additionalinfo.service.AdditionalInfoService;
+//import app.additionalinfo.service.AdditionalInfoService;
 import app.exception.DomainException;
 import app.membership.service.MembershipService;
+import app.post.model.Post;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.model.UserRole;
@@ -34,17 +35,16 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final WalletService walletService;
     private final MembershipService membershipService;
-    private final AdditionalInfoService additionalInfoService;
+//    private final AdditionalInfoService additionalInfoService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService, AdditionalInfoService additionalInfoService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.walletService = walletService;
         this.membershipService = membershipService;
-        this.additionalInfoService = additionalInfoService;
+//        this.additionalInfoService = additionalInfoService;
     }
-
     @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public User register(RegisterRequest registerRequest) {
@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
         membershipService.createFreeMembership(user);
         walletService.createNewWallet(user);
 
-        additionalInfoService.saveAdditionalInfo(user.getId(), "UNKNOWN", "Enter phone", "Enter second email");
+//        additionalInfoService.saveAdditionalInfo(user.getId(), "UNKNOWN", "Enter phone", "Enter second email");
 
         log.info("Successfully registered new user account with username [%s] and id [%s].".formatted(user.getUsername(), user.getId()), user.getUsername());
 
@@ -101,7 +101,7 @@ public class UserService implements UserDetailsService {
 
     public User getById(UUID id) {
 
-        return userRepository.findById(id).orElseThrow(() -> new DomainException("User with id [%s] does not exist.".formatted(id)));
+        return userRepository.findUserById(id).orElseThrow(() -> new DomainException("User with id [%s] does not exist.".formatted(id)));
     }
 
     public void blockUser(UUID userId) {
