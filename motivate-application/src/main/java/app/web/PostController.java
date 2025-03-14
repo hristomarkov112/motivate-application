@@ -100,14 +100,31 @@ public class PostController {
     public ModelAndView getMyPostsPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
         User user = userService.getById(authenticationMetaData.getId());
-        List<Post> postsById = postService.getPostsByUserId(authenticationMetaData.getId());
+        List<Post> posts = postService.getPostsByUserId(authenticationMetaData.getId());
 
         //My Posts
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("my-posts");
-        modelAndView.addObject("posts", postsById);
+        modelAndView.addObject("posts", posts);
 
         return modelAndView;
+    }
+
+    @PostMapping("/{postId}/delete")
+    public String deletePost(@PathVariable UUID postId, @RequestParam @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        User user = userService.getById(authenticationMetaData.getId());
+        Post post = postService.getById(postId);
+
+        postService.deletePost(postId, post.getOwner().getId());
+        List<Post> posts = postService.getPostsByUserId(authenticationMetaData.getId());
+
+        //My Posts
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("post");
+        modelAndView.addObject("posts", posts);
+
+        return "redirect:/my-posts";
     }
 
     @GetMapping("/{id}/comments")

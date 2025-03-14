@@ -80,6 +80,17 @@ public class PostService {
         postRepository.save(post);
     }
 
+    public void deletePost(UUID postId, UUID userId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if (!post.getOwner().getId().equals(userId)) {
+            throw new RuntimeException("You are not authorized to delete this post");
+        }
+
+        postRepository.deletePostById(postId);
+    }
+
 //    public List<Post> getAllPosts() {
 //        return postRepository.findAllOrderByCreatedAt();
 //    }
@@ -88,7 +99,5 @@ public class PostService {
 //        return postRepository.findById(id);
 //    }
 //
-//    public void deletePost(UUID id) {
-//        postRepository.deleteById(id);
-//    }
+
 }
