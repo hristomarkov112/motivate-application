@@ -25,6 +25,11 @@ h1 {
     color: #4CAF50;
 }
 
+.profile-details h1 {
+    margin-top: 0;
+    color: #333;
+}
+
 .details {
     text-align: left;
     margin-top: 20px;

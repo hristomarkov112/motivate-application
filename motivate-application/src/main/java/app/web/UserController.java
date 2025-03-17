@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,9 +37,8 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+    public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) throws AccessDeniedException {
 
-        User user = userService.getById(authenticationMetaData.getId());
         List<User> users = userService.getAllUsers();
 
         ModelAndView modelAndView = new ModelAndView();

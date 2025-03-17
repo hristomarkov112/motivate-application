@@ -110,10 +110,9 @@ public class PostController {
         return modelAndView;
     }
 
-    @PostMapping("/{postId}/delete")
-    public String deletePost(@PathVariable UUID postId, @RequestParam @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+    @DeleteMapping("/{postId}/delete")
+    public ModelAndView deletePost(@PathVariable UUID postId, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
-        User user = userService.getById(authenticationMetaData.getId());
         Post post = postService.getById(postId);
 
         postService.deletePost(postId, post.getOwner().getId());
@@ -121,10 +120,10 @@ public class PostController {
 
         //My Posts
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("post");
+        modelAndView.setViewName("my-posts");
         modelAndView.addObject("posts", posts);
 
-        return "redirect:/my-posts";
+        return modelAndView;
     }
 
     @GetMapping("/{id}/comments")

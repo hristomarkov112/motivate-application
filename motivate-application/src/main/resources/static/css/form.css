@@ -44,6 +44,12 @@ h1 {
   margin-bottom: 15px;
 }
 
+.form-group p{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+
 .form-group label {
   display: block;
   margin-bottom: 5px;

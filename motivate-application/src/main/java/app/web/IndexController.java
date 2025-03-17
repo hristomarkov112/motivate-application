@@ -2,6 +2,7 @@ package app.web;
 
 import app.comment.model.Comment;
 import app.comment.service.CommentService;
+import app.exception.UsernameAlreadyExistsException;
 import app.post.model.Post;
 import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,23 +53,19 @@ public class IndexController {
         modelAndView.setViewName("login");
         modelAndView.addObject("loginRequest", new LoginRequest());
 
-        if (errorParam != null) {
-            modelAndView.addObject("errorMessage", "Incorrect username or password!") ;
-        }
+            if (errorParam != null) {
+                modelAndView.addObject("errorMessage", "Incorrect username or password!") ;
+            }
 
         return modelAndView;
     }
 
     @GetMapping("/register")
-    public ModelAndView getRegisterPage(@RequestParam(value = "error", required = false) String errorParam) {
+    public ModelAndView getRegisterPage() {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("register");
         modelAndView.addObject("registerRequest", new RegisterRequest());
-
-        if (errorParam != null) {
-            modelAndView.addObject("errorMessage", "Username has been already registered!") ;
-        }
 
         return modelAndView;
     }
@@ -75,10 +73,8 @@ public class IndexController {
     @PostMapping("/register")
     public ModelAndView registerNewUser(@Valid RegisterRequest registerRequest, BindingResult bindingResult) {
 
-        ModelAndView modelAndView = new ModelAndView();
-
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("register");
+            return new ModelAndView("register");
         }
 
         userService.register(registerRequest);
@@ -111,6 +107,7 @@ public class IndexController {
 
         return modelAndView;
     }
+
 
 //    @PostMapping("/home/comment")
 //    public ModelAndView createCommentPage(@Valid CommentRequest commentRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {

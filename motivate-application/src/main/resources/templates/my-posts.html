@@ -42,7 +42,7 @@
       <div class="post-content">
         <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
       </div>
-      <form th:action="@{/posts/{id}}" th:method="POST">
+      <form th:action="@{/posts/{id}/delete (id = ${post.id})}" th:method="DELETE">
         <button class="view-comments-button">Delete Post</button>
         <a th:href="@{'/posts/' + ${post.id} + '/comments'}" class="view-comments-button">
           View Comments

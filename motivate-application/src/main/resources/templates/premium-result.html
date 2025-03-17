@@ -14,6 +14,10 @@
     <p th:text="${payment.amount}"><strong>Amount:</strong> <span id="amount">$99.99</span></p>
     <p th:text="${payment.createdAt}"><strong>Start Date:</strong> <span id="start-date">2023-10-01</span></p>
   </div>
+  <header>
+    <h1>Back to Membership Details</h1>
+    <a th:href="@{/memberships/details}" class="btn">Back to Profile</a>
+  </header>
 </div>
 </body>
 </html>

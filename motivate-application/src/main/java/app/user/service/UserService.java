@@ -1,8 +1,8 @@
 package app.user.service;
 
 //import app.additionalinfo.service.AdditionalInfoService;
-import app.additionalinfo.service.AdditionalInfoService;
 import app.exception.DomainException;
+import app.exception.UsernameAlreadyExistsException;
 import app.membership.service.MembershipService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
@@ -35,15 +35,15 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final WalletService walletService;
     private final MembershipService membershipService;
-    private final AdditionalInfoService additionalInfoService;
+//    private final AdditionalInfoService additionalInfoService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService, AdditionalInfoService additionalInfoService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.walletService = walletService;
         this.membershipService = membershipService;
-        this.additionalInfoService = additionalInfoService;
+//        this.additionalInfoService = additionalInfoService;
     }
     @CacheEvict(value = "users", allEntries = true)
     @Transactional
@@ -51,7 +51,7 @@ public class UserService implements UserDetailsService {
 
         Optional<User> optionalUser = userRepository.findByUsername(registerRequest.getUsername());
         if(optionalUser.isPresent()) {
-            throw new DomainException("Username [%s] already exists.".formatted(registerRequest.getUsername()));
+            throw new UsernameAlreadyExistsException("Username %s already exists.".formatted(registerRequest.getUsername()));
         }
 
         User user = userRepository.save(initializeUser(registerRequest));
@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
         membershipService.createFreeMembership(user);
         walletService.createNewWallet(user);
 
-        additionalInfoService.saveAdditionalInfo(user.getId(), "UNKNOWN", "Enter phone", "Enter second email");
+//        additionalInfoService.saveAdditionalInfo(user.getId(), "UNKNOWN", "Enter phone", "Enter second email");
 
         log.info("Successfully registered new user account with username [%s] and id [%s].".formatted(user.getUsername(), user.getId()), user.getUsername());
 

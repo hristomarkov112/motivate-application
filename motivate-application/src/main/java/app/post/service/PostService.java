@@ -6,6 +6,7 @@ import app.post.model.Post;
 import app.post.repository.PostRepository;
 import app.user.model.User;
 import app.web.dto.PostRequest;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,7 @@ public class PostService {
         postRepository.save(post);
     }
 
+    @Transactional
     public void deletePost(UUID postId, UUID userId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));

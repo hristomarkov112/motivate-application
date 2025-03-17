@@ -60,9 +60,9 @@ public class MembershipController {
 
         User user = userService.getById(authenticationMetaData.getId());
 
-        Payment PremiumResult = membershipService.getPremium(user, membershipType, premiumRequest);
+        Payment premiumResult = membershipService.getPremium(user, membershipType, premiumRequest);
 
-        return "redirect:/payments/" + PremiumResult.getId();
+        return "redirect:/payments/" + premiumResult.getId();
     }
 
     @GetMapping("/history")
