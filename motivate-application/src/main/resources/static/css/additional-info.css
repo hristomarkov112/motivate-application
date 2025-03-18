@@ -1,6 +1,6 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: Verdana, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
@@ -32,6 +32,29 @@ body {
 
 .navbar-links .nav-link:hover {
     text-decoration: underline;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input,
+.form-group select {
+    width: 340px;
+    height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-group select {
+    appearance: none; /* Remove default arrow */
+    background-color: #fff;
+    height: 40px;
+    width: 344px;
+    padding-left: 5px;
 }
 
 /* Profile Container */

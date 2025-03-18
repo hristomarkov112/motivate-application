@@ -136,44 +136,44 @@ h1 {
 
 /* Active Membership */
 .status.active {
-    background-color: #e8f5e9; /* Light green background */
-    color: #2e7d32; /* Dark green text */
-    border: 1px solid #4caf50; /* Green border */
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #4caf50;
     padding: 4px;
-    border-radius: 5px;
+    border-radius: 15px;
     font-weight: normal;
 }
 
 /* Inactive Membership */
 .status.inactive {
-    background-color: #ffebee; /* Light red background */
-    color: #c62828; /* Dark red text */
-    border: 1px solid #ef5350; /* Red border */
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef5350;
     padding: 4px;
-    border-radius: 5px;
+    border-radius: 15px;
     font-weight: normal;
 }
 
 /* FREE Membership Type */
 .membership.free {
-    background-color: #e3f2fd; /* Light blue background */
-    color: #1565c0; /* Dark blue text */
-    border: 1px solid #64b5f6; /* Blue border */
+    background-color: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #64b5f6;
     padding: 4px;
-    border-radius: 5px;
+    border-radius: 15px;
     font-weight: normal;
-    text-transform: uppercase; /* Uppercase text for emphasis */
+    text-transform: uppercase;
 }
 
 /* PREMIUM Subscription Type */
 .membership.premium {
-    background-color: #fff3e0; /* Light orange background */
-    color: #ef6c00; /* Dark orange text */
-    border: 1px solid #ffb74d; /* Orange border */
+    background-color: #fff3e0;
+    color: #f3cf1d;
+    border: 1px solid #f3cf1d;
     padding: 4px;
-    border-radius: 5px;
+    border-radius: 15px;
     font-weight: normal;
-    text-transform: uppercase; /* Uppercase text for emphasis */
+    text-transform: uppercase;
 }
 
 /* Footer */

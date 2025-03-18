@@ -16,7 +16,6 @@
         <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
         <a th:href="@{/posts}" class="nav-link">Posts</a>
-        <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
         <a th:href="@{/memberships}" class="nav-link">Get PREMIUM</a>
         <a th:href="@{/follow/following}" class="nav-link">Following</a>
         <a th:href="@{/follow/followers}" class="nav-link">Followers</a>

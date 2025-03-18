@@ -73,7 +73,7 @@
           <form th:action="@{'/users/' + ${user.id} + '/role'}" th:method="PUT">
             <input type="hidden" name="userId" th:value="${user.id}" />
             <button type="submit" th:classappend="${user.role.USER} ? 'CHANGE'" class="toggle-btn-role">
-              <span th:text="${user.role} ? 'CHANGE' : 'CHANGE'"></span>
+              <span th:text="${user.role.name() == 'ADMIN'} ? 'To USER' : 'To ADMIN'"></span>
             </button>
           </form>
         </td>

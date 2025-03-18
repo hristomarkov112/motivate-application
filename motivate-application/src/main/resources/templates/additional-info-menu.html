@@ -34,9 +34,9 @@
     <div class="profile-details">
         <header>
             <h1>Additional Info</h1>
-            <a th:href="@{${user.id} + '/additional-info'}" class="btn">Back to Profile</a>
+            <a th:href="@{'/additional-info/' + ${user.id} + '/form'}" class="btn">Back to Profile</a>
         </header>
-        <form th:action="@{${user.id} + '/additional-info'}" th:method="PUT" th:object="${additionalInfo}">
+        <form th:action="@{'/additional-info/' + ${user.id} + '/form'}" th:method="POST" th:object="${additionalInfo}">
             <!-- Editable Fields -->
             <label for="country">Gender</label>
             <select id="country" th:field="*{gender}">

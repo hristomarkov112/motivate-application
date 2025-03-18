@@ -122,7 +122,7 @@ h1 {
 }
 
 .plan.premium h2 {
-    color: #ff9800;
+    color: #f3cf1d;
 }
 
 .details .field {
@@ -156,9 +156,8 @@ h1 {
 
 .btn-select {
     width: 100%;
-    padding: 2px;
     background-color: #5A9DD4;
-    color: #fff;
+    color: black;
     border: none;
     border-radius: 5px;
     font-size: 1em;
@@ -172,18 +171,18 @@ h1 {
 }
 
 .plan.premium .btn-select {
-    background-color: #ff9800; /* Orange for PREMIUM button */
+    background-color: #f3cf1d;
 }
 
 .plan.premium .btn-select:hover {
-    background-color: #e68900; /* Darker orange on hover */
+    background-color: #f3cf1d;
 }
 
 .status.active {
     text-align: center;
-    background-color: #e8f5e9; /* Light green background */
-    color: #2e7d32; /* Dark green text */
-    border: 1px solid #4caf50; /* Green border */
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #4caf50;
     padding: 10px;
     border-radius: 5px;
     font-weight: normal;
@@ -191,9 +190,9 @@ h1 {
 
 /* Inactive Subscription */
 .status.inactive {
-    background-color: #ffebee; /* Light red background */
-    color: #c62828; /* Dark red text */
-    border: 1px solid #ef5350; /* Red border */
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef5350;
     padding: 4px;
     border-radius: 5px;
     font-weight: normal;

@@ -13,8 +13,8 @@
     </div>
     <div class="navbar-links">
         <a th:href="@{/home}" class="nav-link">Home</a>
-        <a th:href="@{/posts}" class="nav-link">Posts</a>
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
+        <a th:href="@{/posts}" class="nav-link">Posts</a>
         <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
         <a th:href="@{/memberships}" class="nav-link">Get PREMIUM</a>
         <a th:href="@{/payments/history}" class="nav-link">Payments</a>
@@ -26,7 +26,7 @@
 <div class="container">
     <header>
         <h1>Membership History</h1>
-        <a th:href="@{/memberships/history}" class="btn">Back to Profile</a>
+        <a th:href="@{/memberships/details}" class="btn">Back</a>
     </header>
 
     <section class="payments-report">
@@ -52,7 +52,7 @@
                 </td>
                 <td>
                     <p th:if="${membership.period.name() == 'MONTHLY'}">Monthly</p>
-                    <p th:if="${membership.period.name() == 'YEARLY'}">Yearly</p>
+                    <p th:if="${membership.period.name() == 'ANNUAL'}">Annual</p>
                 </td>
                 <td>
                     <p th:if="${membership.type.name() == 'FREE'}" class="membership free">FREE</p>

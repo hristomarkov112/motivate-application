@@ -1,5 +1,5 @@
 package app.membership.model;
 
 public enum MembershipPeriod {
-    MONTHLY, YEARLY;
+    MONTHLY, ANNUAL;
 }

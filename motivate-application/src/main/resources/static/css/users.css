@@ -37,7 +37,7 @@ body {
 
 .container {
     min-height: 70vh;
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -160,7 +160,7 @@ input:checked + .slider:before {
     color: white;
     cursor: pointer;
     font-size: 16px;
-    border-radius: 10px;
+    border-radius: 15px;
     transition: all 0.3s ease;
 }
 
@@ -176,7 +176,7 @@ input:checked + .slider:before {
     color: white;
     cursor: pointer;
     font-size: 16px;
-    border-radius: 10px;
+    border-radius: 15px;
     transition: all 0.3s ease;
 }
 

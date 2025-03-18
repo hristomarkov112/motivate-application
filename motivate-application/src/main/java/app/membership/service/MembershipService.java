@@ -28,6 +28,7 @@ public class MembershipService {
     private final MembershipRepository membershipRepository;
     private final WalletService walletService;
 
+
     @Autowired
     public MembershipService(MembershipRepository membershipRepository, WalletService walletService) {
         this.membershipRepository = membershipRepository;
@@ -69,7 +70,7 @@ public class MembershipService {
         MembershipPeriod membershipPeriod = premiumRequest.getMembershipPeriod();
         String period = membershipPeriod.name().substring(0, 1).toUpperCase() + membershipPeriod.name().substring(1);
         String type = membershipType.name().substring(0, 1).toUpperCase() + membershipType.name().substring(1);
-        String chargeDescription = "You have successfully purchased %s %s membership plan.".formatted(period, type);
+        String chargeDescription = "Purchased %s %s plan".formatted(period.toLowerCase(), type.toLowerCase());
         BigDecimal membershipPrice = getMembershipPrice(membershipType, membershipPeriod);
 
         Payment chargeResult = walletService.charge(user, premiumRequest.getWalletId(), membershipPrice, chargeDescription);
@@ -114,6 +115,17 @@ public class MembershipService {
         } else {
             return new BigDecimal("99.99");
         }
+    }
+
+    @Transactional
+    public void updateMembershipRenewal(User user, boolean renewalAllowed, MembershipPeriod period) {
+
+        Membership membership = user.getMemberships().get(0);
+
+        membership.setRenewalAllowed(renewalAllowed);
+        membership.setPeriod(period);
+
+        membershipRepository.save(membership);
     }
 
     public List<Membership> getAllMembershipsReadyForRenewal() {

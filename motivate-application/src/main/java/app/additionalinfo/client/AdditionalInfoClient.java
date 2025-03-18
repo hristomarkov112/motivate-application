@@ -14,13 +14,9 @@ import java.util.UUID;
 @FeignClient(name = "additional-info-svc", url = "http://localhost:8081/api/v1/additional-info")
 public interface AdditionalInfoClient {
 
-    @GetMapping("/test")
-    ResponseEntity<String> getHelloMessage();
-
     @PostMapping("/form")
     ResponseEntity<Void> upsertAdditionalInfo(@RequestBody UpsertAdditionalInfo upsertAdditionalInfo);
 
     @GetMapping("/form")
     ResponseEntity<AdditionalInfo> getAdditionalInfo(@RequestParam(name = "userId") UUID userId);
-
 }

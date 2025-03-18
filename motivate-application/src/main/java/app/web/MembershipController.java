@@ -1,5 +1,6 @@
 package app.web;
 
+import app.membership.model.MembershipPeriod;
 import app.membership.model.MembershipType;
 import app.membership.service.MembershipService;
 import app.payment.model.Payment;
@@ -48,10 +49,9 @@ public class MembershipController {
 
         User user = userService.getById(authenticationMetaData.getId());
 
-        Payment premiumResult = membershipService.getPremium(user, membershipType, premiumRequest);
-
-        return "redirect:/memberships/history";
-        ///" + premiumResult.getId();
+        membershipService.getPremium(user, membershipType, premiumRequest);
+        ModelAndView modelAndView = new ModelAndView();
+        return "redirect:/payments/result";
     }
 
     @GetMapping("/details")
@@ -64,6 +64,19 @@ public class MembershipController {
         modelAndView.addObject("user", user);
 
         return modelAndView;
+    }
+
+    @PutMapping("/renewal")
+    public String updateMembershipRenewal(@RequestParam boolean renewalAllowed,
+                                          @RequestParam MembershipPeriod period,
+                                          @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        User user = userService.getById(authenticationMetaData.getId());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("memberships");
+
+        membershipService.updateMembershipRenewal(user, renewalAllowed, period);
+        return "redirect:memberships/details"; // Redirect back to profile after update
     }
 
     @GetMapping("/history")

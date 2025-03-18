@@ -126,6 +126,13 @@ h1 {
     color: #555;
 }
 
+.gender-field label {
+    font-weight: bold;
+    color: #555;
+    display: inline-block;
+    width: 120px;
+}
+
 .form-group input,
 .form-group select {
     width: 340px;
@@ -136,7 +143,7 @@ h1 {
 }
 
 .form-group select {
-    appearance: none; /* Remove default arrow */
+    appearance: none;
     background-color: #fff;
     height: 40px;
     width: 344px;
@@ -154,6 +161,8 @@ h1 {
 }
 
 .profile-field {
+    font-weight: bold;
+    margin-top: 20px;
     margin-bottom: 15px;
 }
 
@@ -196,23 +205,6 @@ h1 {
     text-decoration: none;
 }
 
-.get-premium-button-container {
-    margin-top: 20px;
-    text-align: left;
-}
-
-.get-premium-button {
-    padding: 10px 20px;
-    background-color: #ef6c00;
-    color: #ffe17c;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-}
-
 /* Editable Fields */
 .profile-field input[type="text"],
 .profile-field input[type="email"],
@@ -225,7 +217,6 @@ h1 {
     margin-top: 5px;
 }
 
-
 .profile-field textarea {
     resize: vertical;
     height: 100px;
@@ -233,41 +224,6 @@ h1 {
 
 .edit-profile-button:hover {
     background-color: #244d6c;
-}
-
-/* Profile Picture Section */
-.profile-picture {
-    flex: 1;
-    text-align: right;
-    padding-right: 20px;
-}
-
-.profile-picture img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 3px solid #5A9DD4;
-    margin-bottom: 10px;
-}
-
-.update-profile-picture {
-    text-align: left;
-}
-
-.update-profile-picture label {
-    display: block;
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 5px;
-}
-
-.update-profile-picture input[type="text"] {
-    width: 70%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    margin-top: 5px;
 }
 
 /* Footer */
@@ -278,45 +234,3 @@ h1 {
     color: white;
     margin-top: 20px;
 }
-
-.status.active {
-    background-color: #e8f5e9; /* Light green background */
-    color: #2e7d32; /* Dark green text */
-    border: 1px solid #4caf50; /* Green border */
-    padding: 4px;
-    border-radius: 5px;
-    font-weight: normal;
-}
-
-/* Inactive Subscription */
-.status.inactive {
-    background-color: #ffebee; /* Light red background */
-    color: #c62828; /* Dark red text */
-    border: 1px solid #ef5350; /* Red border */
-    padding: 4px;
-    border-radius: 5px;
-    font-weight: normal;
-}
-
-/* FREE Subscription Type */
-.membership.free {
-    background-color: #e3f2fd; /* Light blue background */
-    color: #1565c0; /* Dark blue text */
-    border: 1px solid #64b5f6; /* Blue border */
-    padding: 4px;
-    border-radius: 5px;
-    font-weight: normal;
-    text-transform: uppercase; /* Uppercase text for emphasis */
-}
-
-/* PREMIUM Subscription Type */
-.membership.premium {
-    background-color: #fff3e0; /* Light orange background */
-    color: #ef6c00; /* Dark orange text */
-    border: 1px solid #ffb74d; /* Orange border */
-    padding: 4px;
-    border-radius: 5px;
-    font-weight: normal;
-    text-transform: uppercase; /* Uppercase text for emphasis */
-}
-

@@ -1,6 +1,6 @@
 package app.user.service;
 
-//import app.additionalinfo.service.AdditionalInfoService;
+import app.additionalinfo.service.AdditionalInfoService;
 import app.exception.DomainException;
 import app.exception.UsernameAlreadyExistsException;
 import app.membership.service.MembershipService;
@@ -35,15 +35,15 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final WalletService walletService;
     private final MembershipService membershipService;
-//    private final AdditionalInfoService additionalInfoService;
+    private final AdditionalInfoService additionalInfoService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, MembershipService membershipService, AdditionalInfoService additionalInfoService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.walletService = walletService;
         this.membershipService = membershipService;
-//        this.additionalInfoService = additionalInfoService;
+        this.additionalInfoService = additionalInfoService;
     }
     @CacheEvict(value = "users", allEntries = true)
     @Transactional

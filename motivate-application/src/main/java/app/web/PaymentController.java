@@ -8,9 +8,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/payments")
@@ -35,7 +37,7 @@ public class PaymentController {
         return modelAndView;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/result")
     public ModelAndView getPremiumResultPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
         Payment payment = paymentService.getAllByOwnerId(authenticationMetaData.getId()).get(0);
