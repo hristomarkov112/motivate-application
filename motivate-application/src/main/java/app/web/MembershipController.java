@@ -42,7 +42,7 @@ public class MembershipController {
         return modelAndView;
     }
 
-    @GetMapping("/premium")
+    @GetMapping()
     public ModelAndView getPremiumPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
         User user = userService.getById(authenticationMetaData.getId());
@@ -55,7 +55,7 @@ public class MembershipController {
         return modelAndView;
     }
 
-    @PostMapping("/premium")
+    @PostMapping()
     public String getPremiumPage(@RequestParam("membership-type") MembershipType membershipType, PremiumRequest premiumRequest, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
         User user = userService.getById(authenticationMetaData.getId());
