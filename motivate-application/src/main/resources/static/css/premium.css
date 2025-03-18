@@ -156,7 +156,7 @@ h1 {
 
 .btn-select {
     width: 100%;
-    padding: 10px;
+    padding: 2px;
     background-color: #5A9DD4;
     color: #fff;
     border: none;
@@ -164,7 +164,7 @@ h1 {
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-bottom: 5px;
+    margin-bottom: 1px;
 }
 
 .btn-select:hover {
@@ -180,6 +180,7 @@ h1 {
 }
 
 .status.active {
+    text-align: center;
     background-color: #e8f5e9; /* Light green background */
     color: #2e7d32; /* Dark green text */
     border: 1px solid #4caf50; /* Green border */

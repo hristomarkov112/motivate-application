@@ -30,11 +30,11 @@ public class PaymentService {
         this.userRepository = userRepository;
     }
 
-    public Payment createNewPayment(User owner, String sender, String recipient, BigDecimal amount, BigDecimal balanceLeft, Currency currency, PaymentType type, PaymentStatus status, String paymentDescription, String failureReason) {
+    public Payment createNewPayment(User owner, String walletId, String recipient, BigDecimal amount, BigDecimal balanceLeft, Currency currency, PaymentType type, PaymentStatus status, String paymentDescription, String failureReason) {
 
-        return Payment.builder()
+        Payment payment = Payment.builder()
                 .owner(owner)
-                .sender(sender)
+                .sender(walletId)
                 .recipient(recipient)
                 .amount(amount)
                 .balanceLeft(balanceLeft)
@@ -45,6 +45,8 @@ public class PaymentService {
                 .failureReason(failureReason)
                 .createdAt(LocalDateTime.now())
                 .build();
+
+        return paymentRepository.save(payment);
     }
 
     public List<Payment> getAllByOwnerId(UUID ownerId) {

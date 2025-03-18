@@ -82,16 +82,11 @@
                     </select>
                 </div>
             </div>
-
-            <div th:if="${user.memberships[0].type.name() == 'FREE'}">
-                <span class="status active">CURRENT PLAN</span>
-            </div>
-
             <button th:if="${!(user.memberships[0].type.name() == 'FREE')}" class="btn-select" type="submit" name="membershipType" id="FREE" value="FREE">
                 <p>Get FREE Plan</p>
             </button>
             <div th:if="${user.memberships[0].type.name() == 'FREE'}">
-                <p>CURRENT PLAN</p>
+                <p class="status active">CURRENT ACTIVE PLAN</p>
             </div>
         </form>
 <!--            &lt;!&ndash; Buttons does not support th:field and th:value, so we can use name(pick the object field) value(the value to be bind to that field)&ndash;&gt;-->
@@ -153,7 +148,7 @@
                 <p>Get PREMIUM Plan</p>
             </button>
             <div th:if="${user.memberships[0].type.name() == 'PREMIUM'}">
-                <p>CURRENT PLAN</p>
+                <p class="status active">CURRENT ACTIVE PLAN</p>
             </div>
 
 <!--            &lt;!&ndash; Buttons does not support th:field and th:value, so we can use name(pick the object field) value(the value to be bind to that field)&ndash;&gt;-->

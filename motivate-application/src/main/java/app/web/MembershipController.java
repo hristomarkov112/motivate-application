@@ -30,18 +30,6 @@ public class MembershipController {
         this.membershipService = membershipService;
     }
 
-    @GetMapping("/details")
-    public ModelAndView getMembershipsPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-
-        User user = userService.getById(authenticationMetaData.getId());
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("memberships");
-        modelAndView.addObject("user", user);
-
-        return modelAndView;
-    }
-
     @GetMapping()
     public ModelAndView getPremiumPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
@@ -62,7 +50,20 @@ public class MembershipController {
 
         Payment premiumResult = membershipService.getPremium(user, membershipType, premiumRequest);
 
-        return "redirect:/payments/" + premiumResult.getId();
+        return "redirect:/memberships/history";
+        ///" + premiumResult.getId();
+    }
+
+    @GetMapping("/details")
+    public ModelAndView getMembershipsPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        User user = userService.getById(authenticationMetaData.getId());
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("memberships");
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
     }
 
     @GetMapping("/history")
