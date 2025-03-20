@@ -3,7 +3,6 @@ package app.additionalinfo.service;
 import app.additionalinfo.client.AdditionalInfoClient;
 import app.additionalinfo.client.dto.AdditionalInfo;
 import app.additionalinfo.client.dto.UpsertAdditionalInfo;
-import app.user.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

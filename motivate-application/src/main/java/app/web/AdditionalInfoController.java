@@ -1,11 +1,15 @@
 package app.web;
 
 import app.additionalinfo.client.dto.AdditionalInfo;
+import app.additionalinfo.client.dto.UpsertAdditionalInfo;
 import app.additionalinfo.service.AdditionalInfoService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -44,21 +48,10 @@ public class AdditionalInfoController {
 
         User user = userService.getById(id);
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("additional-info-menu");
+        ModelAndView modelAndView = new ModelAndView("additional-info-menu");
         modelAndView.addObject("user", user);
         modelAndView.addObject("additionalInfo", additionalInfo);
 
         return modelAndView;
-    }
-
-    @PostMapping("/{id}/form")
-    public ModelAndView updateUserProfile(@PathVariable UUID id, AdditionalInfo additionalInfo, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-
-        User user = userService.getById(id);
-
-        additionalInfoService.saveAdditionalInfo(id, additionalInfo.getGender(), additionalInfo.getPhoneNumber(), additionalInfo.getSecondEmail());
-
-        return new ModelAndView("redirect:/{id}/form");
     }
 }

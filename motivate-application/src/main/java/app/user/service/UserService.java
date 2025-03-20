@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
         membershipService.createFreeMembership(user);
         walletService.createNewWallet(user);
 
-//        additionalInfoService.saveAdditionalInfo(user.getId(), "UNKNOWN", "Enter phone", "Enter second email");
+        additionalInfoService.saveAdditionalInfo(user.getId(), "SELECT", "Enter phone", "Enter second email");
 
         log.info("Successfully registered new user account with username [%s] and id [%s].".formatted(user.getUsername(), user.getId()), user.getUsername());
 
