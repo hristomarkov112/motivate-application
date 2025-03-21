@@ -1,7 +1,6 @@
 package app.web;
 
 import app.exception.UsernameAlreadyExistsException;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,29 +25,29 @@ public class ExceptionAdvice {
         return "redirect:/register";
     }
 
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    @ExceptionHandler({
-//            AccessDeniedException.class,
-//            NoResourceFoundException.class,
-//            MethodArgumentTypeMismatchException.class,
-//            MissingRequestValueException.class,
-//    })
-//
-//    public ModelAndView handleNotFoundExceptions(Exception exception) {
-//
-//        return new ModelAndView("not-found");
-//    }
-//
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    @ExceptionHandler(Exception.class)
-//    public ModelAndView handleAnyException(Exception exception) {
-//
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("internal-server-error");
-//        modelAndView.addObject("errorMessage", exception.getClass().getSimpleName());
-//
-//        return modelAndView;
-//    }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({
+            AccessDeniedException.class,
+            NoResourceFoundException.class,
+            MethodArgumentTypeMismatchException.class,
+            MissingRequestValueException.class,
+    })
+
+    public ModelAndView handleNotFoundExceptions(Exception exception) {
+
+        return new ModelAndView("not-found");
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleAnyException(Exception exception) {
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("internal-server-error");
+        modelAndView.addObject("errorMessage", exception.getClass().getSimpleName());
+
+        return modelAndView;
+    }
 }
 
 

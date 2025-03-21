@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile</title>
-  <link rel="stylesheet" href="/css/additional-info.css.css">
+  <link rel="stylesheet" href="/css/additional-info.css">
 </head>
 <body>
 <!-- Navigation Bar -->
@@ -33,7 +33,10 @@
 
   <!-- Profile Details -->
   <div class="profile-details">
-    <h1>Additional info</h1>
+    <header>
+      <h1>Additional Info</h1>
+      <a th:href="@{/users/{id}/profile}" class="btn">Back to Profile</a>
+    </header>
     <div class="gender-field">
       <label>Gender:</label>
       <span th:text="${additionalInfo.gender}"></span>
@@ -49,7 +52,7 @@
 
     <!-- Edit Profile Button -->
     <div class="edit-profile-button-container">
-      <a th:href="@{'/additional-info/' + ${user.id} + '/form'}" class="edit-profile-button">Edit Profile</a>
+      <a th:href="@{'/additional-info/' + ${user.id} + '/form'}" class="edit-profile-button">Edit Info</a>
     </div>
   </div>
 </div>

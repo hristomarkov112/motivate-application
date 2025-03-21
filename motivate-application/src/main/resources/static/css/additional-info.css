@@ -50,7 +50,7 @@ body {
 }
 
 .form-group select {
-    appearance: none; /* Remove default arrow */
+    appearance: none;
     background-color: #fff;
     height: 40px;
     width: 344px;
@@ -61,7 +61,7 @@ body {
 .profile-container {
     display: flex;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 50px auto;
     padding: 20px;
     background-color: white;
     border-radius: 8px;
@@ -89,18 +89,49 @@ body {
 
 .profile-details h1 {
     margin-top: 0;
+    margin-bottom: 30px;
     color: #333;
 }
 
+/* Back Button */
+header .btn {
+    background-color: #5A9DD4;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    justify-content: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header .btn:hover {
+    background-color: #244d6c;
+}
+
+/* Profile fields */
+
+.gender-field {
+    font-weight: 300;
+}
+
 .profile-field {
-    margin-bottom: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .profile-field label {
     font-weight: bold;
     color: #555;
     display: inline-block;
-    width: 120px;
+    width: 170px;
 }
 
 .profile-field span {
