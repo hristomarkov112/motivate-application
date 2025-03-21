@@ -62,18 +62,19 @@ public class AdditionalInfoController {
         try {
             additionalInfoService.saveAdditionalInfo(id, additionalInfo.getGender(), additionalInfo.getPhoneNumber(), additionalInfo.getSecondEmail());
             ModelAndView modelAndView = new ModelAndView("redirect:/additional-info");
+            modelAndView.addObject("editRequest", additionalInfo);
 
             return modelAndView;
         } catch (FeignException.BadRequest e) {
             ModelAndView modelAndView = new ModelAndView("additional-info-menu");
             modelAndView.addObject("user", user);
-            modelAndView.addObject("additionalInfo", additionalInfo);
+            modelAndView.addObject("editRequest", additionalInfo);
             modelAndView.addObject("error", "Invalid input. Please check your data.");
             return modelAndView;
         } catch (Exception e) {
             ModelAndView modelAndView = new ModelAndView("additional-info-menu");
             modelAndView.addObject("user", user);
-            modelAndView.addObject("additionalInfo", additionalInfo);
+            modelAndView.addObject("edit", additionalInfo);
             modelAndView.addObject("error", "An error occurred while saving additional information.");
             return modelAndView;
         }

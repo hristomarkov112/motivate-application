@@ -76,7 +76,7 @@ header .btn:hover {
 /* Profile Container */
 .profile-container {
     display: flex;
-    max-width: 1200px;
+    max-width: 800px;
     margin: 20px auto;
     padding: 20px;
     background-color: white;
@@ -189,7 +189,7 @@ h1 {
 /* Edit Profile Button Container */
 .edit-profile-button-container {
     margin-top: 20px;
-    text-align: center;
+    text-align: left;
 }
 
 /* Edit Profile Button */
