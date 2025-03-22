@@ -43,11 +43,11 @@ body {
 }
 
 header {
-    padding-top: 30px;
+    padding-top: 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 h1 {

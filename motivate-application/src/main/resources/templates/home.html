@@ -17,8 +17,7 @@
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
         <a th:href="@{/posts}" class="nav-link">Posts</a>
         <a th:href="@{/memberships}" class="nav-link">Get PREMIUM</a>
-        <a th:href="@{/follow/following}" class="nav-link">Following</a>
-        <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+        <a th:href="@{/users/profiles}" class="nav-link">Find Friends</a>
         <a th:href="@{/logout}" class="nav-link">Logout</a>
     </div>
 </nav>
@@ -61,7 +60,7 @@
                 </div>
             </div>
             <div class="post-content">
-                <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
+                <p th:utext="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
             </div>
             <form th:action="@{'/posts/' + ${post.id} + '/likes'}" method="POST">
                 <input type="hidden" name="_method" value="put"/>
@@ -74,8 +73,12 @@
 
             <span class="like-counter">
                 <i class="fas fa-thumbs-up"></i>
-                <span th:text="${post.likeCount + ' Likes'}"></span>
-                <!-- Comments Section -->
+                <span th:text="${post.likeCount + ' Likes '}"></span>
+                <i class="fas fa-thumbs-up"></i>
+                <span th:text="${post.commentCount + ' Comments'}"></span>
+            </span>
+            <span class="like-counter">
+
             </span>
             <!-- Counters for Likes and Comments -->
             <div class="comments-section">

@@ -3,7 +3,6 @@ package app.web;
 import app.comment.model.Comment;
 import app.comment.service.CommentService;
 import app.post.model.Post;
-import app.post.repository.PostRepository;
 import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
@@ -30,14 +29,12 @@ public class PostController {
     private final UserService userService;
     private final PostService postService;
     private final CommentService commentService;
-    private final PostRepository postRepository;
 
     @Autowired
-    public PostController(UserService userService, PostService postService, CommentService commentService, PostRepository postRepository) {
+    public PostController(UserService userService, PostService postService, CommentService commentService) {
         this.userService = userService;
         this.postService = postService;
         this.commentService = commentService;
-        this.postRepository = postRepository;
     }
 
     @GetMapping()
@@ -54,6 +51,8 @@ public class PostController {
         List<Post> posts = postService.getAllPosts();
         modelAndView.addObject("postRequest", new PostRequest());
         modelAndView.addObject("posts", posts);
+
+        posts.forEach(post -> post.setContent(postService.formatPostContent(post.getContent())));
 
         //Comments
         modelAndView.addObject("commentRequest", new CommentRequest());

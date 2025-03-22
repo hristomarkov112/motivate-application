@@ -95,11 +95,14 @@ public class IndexController {
         //Posts
         List<Post> posts = postService.getAllPosts();
         modelAndView.addObject("posts", posts);
+        posts.forEach(post -> post.setContent(postService.formatPostContent(post.getContent())));
+        Post post = postService.getById(posts.get(0).getId());
 
         //Comments
-//        List<Comment> comments = commentService.getAllCommentsByPost(post);
-//        modelAndView.addObject("commentRequest", new CommentRequest());
-//        modelAndView.addObject("comments", comments);
+        List<Comment> comments = commentService.getCommentsByPostId(post.getId());
+        int commentsCount = comments.size();
+        modelAndView.addObject("commentRequest", new CommentRequest());
+        modelAndView.addObject("comments", comments);
 
         if (errorParam != null) {
             modelAndView.addObject("errorMessage", "The text length must be less than or equal 4000 characters.") ;

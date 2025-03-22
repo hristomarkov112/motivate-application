@@ -33,6 +33,7 @@ public class User {
 
     private String profilePictureUrl;
 
+    @Column(length = 4000)
     private String bio;
 
     @Column(unique = true)

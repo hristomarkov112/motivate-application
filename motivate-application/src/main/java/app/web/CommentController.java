@@ -21,15 +21,11 @@ import java.util.UUID;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private final PostService postService;
     private final CommentService commentService;
-    private final UserService userService;
 
     @Autowired
-    public CommentController(PostService postService, CommentService commentService, UserService userService) {
-        this.postService = postService;
+    public CommentController(CommentService commentService) {
         this.commentService = commentService;
-        this.userService = userService;
     }
 
     @GetMapping("/new")

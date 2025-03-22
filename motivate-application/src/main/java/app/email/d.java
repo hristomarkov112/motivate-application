@@ -1,4 +1,4 @@
 package app.email;
 
-public class ds {
+public class d {
 }

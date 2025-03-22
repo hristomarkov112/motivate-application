@@ -19,10 +19,9 @@
 </nav>
 <div class="container">
   <header>
-    <h1>Users Report</h1>
+    <h1>Users Details</h1>
     <a th:href="@{/home}" class="btn">Back</a> <!-- Optional: Link to go back to the dashboard -->
   </header>
-
   <section class="user-report">
     <table>
       <thead>
@@ -77,6 +76,75 @@
             </button>
           </form>
         </td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+  <header>
+    <h1>Registrations</h1>
+    <a th:href="@{/home}" class="btn">Back</a> <!-- Optional: Link to go back to the dashboard -->
+  </header>
+  <section class="user-report">
+    <table>
+      <thead>
+      <tr>
+        <th>Create Date</th>
+        <th>Country</th>
+        <th>Username</th>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Balance</th>
+        <th>Currency</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user : ${users}">
+        <td th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}">{{ user.create_date }}</td>
+        <td th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}">{{ user.country }}</td>
+        <td th:text="${user.username}">{{ user.username }}</td>
+        <td th:text="${user.id}">{{ user.id }}</td>
+        <td th:text="${user.firstName}">{{ user.first_name }}</td>
+        <td th:text="${user.lastName}">{{ user.last_name }}</td>
+        <td th:text="${user.email}">{{ user.email }}</td>
+        <td th:text="${user.wallets[0].balance}">{{ user.wallet.balance }}</td>
+        <td th:text="${user.wallets[0].currency}">{{ user.wallet.currency }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <header>
+    <h1>Memberships</h1>
+    <a th:href="@{/home}" class="btn">Back</a> <!-- Optional: Link to go back to the dashboard -->
+  </header>
+  <section class="user-report">
+    <table>
+      <thead>
+      <tr>
+        <th>Membership ID</th>
+        <th>Membership</th>
+        <th>Period</th>
+        <th>Last Update</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th>Create Date</th>
+        <th>is Active</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user : ${users}">
+        <td th:text="${user.memberships[0].id}"></td>
+        <td th:text="${user.memberships[0].type}"></td>
+        <td th:text="${user.memberships[0].period}"></td>
+        <td th:text="${#temporals.format(user.updatedAt, 'dd MMM YYYY HH:mm' )}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}"></td>
+        <td th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}"></td>
+        <td th:text="${user.active} ? 'Yes' : 'No'"></td>
       </tr>
       </tbody>
     </table>

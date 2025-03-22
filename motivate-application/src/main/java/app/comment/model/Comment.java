@@ -31,7 +31,7 @@ public class Comment {
 
     private String profilePicture;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 4000)
     private String content;
 
     @Column(nullable = false)

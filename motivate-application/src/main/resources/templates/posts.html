@@ -18,8 +18,7 @@
     <a th:href="@{/posts/new}" class="nav-link">Create Post</a>
     <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
     <a th:if="${user.role.name() != 'USER'}" th:href="@{/memberships/premium}" class="nav-link">GET PREMIUM</a>
-    <a th:href="@{/follow/following}" class="nav-link">Following</a>
-    <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+    <a th:href="@{/users/profiles}" class="nav-link">Find Friends</a>
     <a th:href="@{/logout}" class="nav-link">Logout</a>
   </div>
 </nav>
@@ -40,7 +39,7 @@
         </div>
       </div>
       <div class="post-content">
-        <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
+        <p th:utext="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
       </div>
       <form th:action="@{'/posts/' + ${post.id} + '/likes'}" method="POST">
         <input type="hidden" name="_method" value="put"/>
@@ -49,6 +48,9 @@
           View Comments
         </a>
       </form>
+      <form th:if="${user.role.name() != 'ADMIN'}" th:action="@{/posts/{id}/delete (id = ${post.id})}" th:method="DELETE">
+        <button class="view-comments-button">Delete Post</button>
+      </form>
 
 
       <!-- Counters for Likes and Comments -->
@@ -56,6 +58,8 @@
         <span class="like-counter">
           <i class="fas fa-thumbs-up"></i>
           <span th:text="${post.likeCount + ' Likes'}"></span>
+          <i class="fas fa-thumbs-up"></i>
+          <span th:text="' ' + ${post.commentCount + ' Comments'}"></span>
         </span>
       </div>
       <!-- Comment Input Field -->

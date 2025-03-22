@@ -44,9 +44,12 @@ public class AdditionalInfoController {
     }
 
     @GetMapping("/{id}/form")
-    public ModelAndView getProfileMenu(@PathVariable UUID id, AdditionalInfo additionalInfo) {
+    public ModelAndView getProfileMenu(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
-        User user = userService.getById(id);
+        User user = userService.getById(authenticationMetaData.getId());
+        UUID userId = user.getId();
+
+        AdditionalInfo additionalInfo = additionalInfoService.getAdditionalInfo(userId);
 
         ModelAndView modelAndView = new ModelAndView("additional-info-menu");
         modelAndView.addObject("user", user);
@@ -56,25 +59,26 @@ public class AdditionalInfoController {
     }
 
     @PostMapping("/{id}/form")
-    public ModelAndView submitAdditionalInfoForm(@PathVariable UUID id, @ModelAttribute AdditionalInfo additionalInfo) {
-        User user = userService.getById(id);
+    public ModelAndView submitAdditionalInfoForm(@PathVariable UUID id,@ModelAttribute AdditionalInfo additionalInfo, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        User user = userService.getById(authenticationMetaData.getId());
 
         try {
             additionalInfoService.saveAdditionalInfo(id, additionalInfo.getGender(), additionalInfo.getPhoneNumber(), additionalInfo.getSecondEmail());
             ModelAndView modelAndView = new ModelAndView("redirect:/additional-info");
-            modelAndView.addObject("editRequest", additionalInfo);
+            modelAndView.addObject("additional-info", additionalInfo);
 
             return modelAndView;
         } catch (FeignException.BadRequest e) {
             ModelAndView modelAndView = new ModelAndView("additional-info-menu");
             modelAndView.addObject("user", user);
-            modelAndView.addObject("editRequest", additionalInfo);
+            modelAndView.addObject("additional-info", additionalInfo);
             modelAndView.addObject("error", "Invalid input. Please check your data.");
             return modelAndView;
         } catch (Exception e) {
             ModelAndView modelAndView = new ModelAndView("additional-info-menu");
             modelAndView.addObject("user", user);
-            modelAndView.addObject("edit", additionalInfo);
+            modelAndView.addObject("additional-info", additionalInfo);
             modelAndView.addObject("error", "An error occurred while saving additional information.");
             return modelAndView;
         }

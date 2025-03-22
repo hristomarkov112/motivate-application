@@ -61,6 +61,7 @@ body {
 .profile-container {
     display: flex;
     max-width: 800px;
+    min-height: 50vh;
     margin: 50px auto;
     padding: 20px;
     background-color: white;

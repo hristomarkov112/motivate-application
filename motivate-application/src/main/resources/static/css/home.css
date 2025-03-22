@@ -261,9 +261,11 @@ body {
 
 /* Comments Section */
 .comments-section {
+  max-width: 600px;
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid #ddd;
+  justify-content: right;
 }
 
 .comment {

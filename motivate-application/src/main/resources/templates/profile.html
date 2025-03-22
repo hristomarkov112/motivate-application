@@ -18,8 +18,7 @@
     <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
     <a th:href="@{/memberships}" class="nav-link">Get PREMIUM</a>
     <a th:href="@{/payments/history}" class="nav-link">Payments</a>
-    <a th:href="@{/follow/following}" class="nav-link">Following</a>
-    <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+    <a th:href="@{/users/profiles}" class="nav-link">Find Friends</a>
     <a th:href="@{/logout}" class="nav-link">Logout</a>
   </div>
 </nav>
@@ -65,14 +64,6 @@
     <div class="profile-field">
       <label>Country:</label>
       <span th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}">United States</span>
-    </div>
-    <div class="profile-field">
-      <label>Following:</label>
-      <span><a href="/profile/following">150</a></span>
-    </div>
-    <div class="profile-field">
-      <label>Followers:</label>
-      <span><a href="/profile/followers">300</a></span>
     </div>
     <div class="profile-field">
       <label>Create Date:</label>

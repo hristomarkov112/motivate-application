@@ -36,7 +36,6 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) throws AccessDeniedException {
 
         List<User> users = userService.getAllUsers();
@@ -88,19 +87,7 @@ public class UserController {
 
         userService.editUserDetails(id, userEditRequest);
 
-        return new ModelAndView("redirect:/home");
-    }
-
-    @GetMapping("/other-profile")
-    public ModelAndView getOtherProfilePage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-
-        User user = userService.getById(authenticationMetaData.getId());
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("profile");
-        modelAndView.addObject("user", user);
-
-        return modelAndView;
+        return new ModelAndView("redirect:/users/{id}/profile");
     }
 
     @PutMapping("/{id}/status")
@@ -118,4 +105,33 @@ public class UserController {
 
         return new ModelAndView("redirect:/users");
     }
+
+    @GetMapping("/profiles")
+    public ModelAndView getProfilesPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        User user = userService.getById(authenticationMetaData.getId());
+
+        List<User> users = userService.getAllUsers();
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("profiles");
+        modelAndView.addObject("users", users);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/other-profile")
+    public ModelAndView getOtherProfilePage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        User user = userService.getById(authenticationMetaData.getId());
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("other-profile");
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+
+
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Followers</title>
+  <link rel="stylesheet" href="/css/profiles.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a th:href="@{/home}" class="logo">Motiv8 Network</a>
+  </div>
+  <div class="navbar-links">
+    <a th:href="@{/home}" class="nav-link">Home</a>
+    <a th:href="@{/posts}" class="nav-link">Posts</a>
+    <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
+    <a th:href="@{/payments/history}" class="nav-link">Payments</a>
+    <a th:href="@{/memberships/premium}" class="nav-link">Get PREMIUM</a>
+    <a th:href="@{/follow/following}" class="nav-link">Following</a>
+    <a th:href="@{/logout}" class="nav-link">Logout</a>
+  </div>
+</nav>
+<div class="container">
+  <header>
+    <h1>All User Profiles</h1>
+    <a th:href="@{/home}" class="btn">Home</a>
+  </header>
+
+  <section class="followers-list">
+    <div class="follower" th:each="user : ${users}">
+      <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? '/images/default-avatar.jpg' : user.profilePictureUrl}" alt="{{ follower.username }}" class="profile-pic">
+      <div class="profile-field">
+        <label style="color: #aeaeae">Username:</label>
+        <span th:text="${user.username}" style="color: #afafaf"></span>
+      </div>
+      <div class="profile-field">
+        <label>Country:</label>
+        <span th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}"></span>
+      </div>
+      <div class="profile-field">
+        <label>Member since:</label>
+        <span th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY' )}">$100.00</span>
+      </div>
+
+      <div class="follower-info" >
+      <a th:href="@{/home}" class="btn">View</a>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- Footer -->
+<th:block th:insert="fragments/footer::footer"></th:block>
+</body>
+</html>

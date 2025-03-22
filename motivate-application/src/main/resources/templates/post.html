@@ -18,8 +18,7 @@
     <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
     <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
     <a th:if="${user.role.name() != 'USER'}" th:href="@{/memberships/premium}" class="nav-link">GET PREMIUM</a>
-    <a th:href="@{/follow/following}" class="nav-link">Following</a>
-    <a th:href="@{/follow/followers}" class="nav-link">Followers</a>
+    <a th:href="@{/users/profiles}" class="nav-link">Find Friends</a>
     <a th:href="@{/logout}" class="nav-link">Logout</a>
   </div>
 </nav>
@@ -67,7 +66,7 @@
       </div>
       <!-- Comments Section -->
       <div class="comments-section">
-        <div th:each="comment : ${post.comments}" class="comment">
+        <div th:each="comment : ${postv.comments}" class="comment">
           <div class="comment-header">
             <img th:src="${#strings.isEmpty(comment.profilePicture) ? '/images/default-avatar.jpg' : comment.profilePicture}" alt="User Avatar" class="comment-avatar">
             <div class="comment-user-info">
