@@ -50,22 +50,23 @@ public class PostService {
         return postRepository.findAllByOwnerIdOrderByCreatedAtDesc(ownerId);
     }
 
+//    public List<Post> getAllPosts() {
+//        return postRepository.findAll();
+//    }
+
     public List<Post> getAllPosts() {
-        return postRepository.findAll();
+        return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
     public void likePost(UUID postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+        Post post = postRepository.findPostById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+
         post.setLikeCount(post.getLikeCount() + 1);
         postRepository.save(post);
     }
 
-    public Post getByOwner(User owner) {
-        return postRepository.getByOwner(owner);
-    }
-
     public Post getById(UUID postId) {
+
         return postRepository.findPostById(postId).orElseThrow(() -> new DomainException("Post with id %s has not been found".formatted(postId)));
     }
 
@@ -78,16 +79,18 @@ public class PostService {
         return post;
     }
 
+    @Transactional
     public void addComment(UUID id, Comment comment) {
         Post post = postRepository.findPostById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         post.getComments().add(comment);
+        post.setCommentCount(post.getCommentCount() + 1);
         postRepository.save(post);
     }
 
     @Transactional
     public void deletePost(UUID postId, UUID userId) {
-        Post post = postRepository.findById(postId)
+        Post post = postRepository.findPostById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         if (!post.getOwner().getId().equals(userId)) {
@@ -140,14 +143,4 @@ public class PostService {
     private String convertYoutubeLink(String url) {
         return url.replace("watch?v=", "embed/");
     }
-
-
-//    public List<Post> getAllPosts() {
-//        return postRepository.findAllOrderByCreatedAt();
-//    }
-//
-//    public Optional<Post> getPostById(UUID id) {
-//        return postRepository.findById(id);
-//    }
-
 }

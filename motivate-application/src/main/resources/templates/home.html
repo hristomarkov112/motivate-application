@@ -69,13 +69,11 @@
                     View Comments
                 </a>
             </form>
-
-
             <span class="like-counter">
                 <i class="fas fa-thumbs-up"></i>
-                <span th:text="${post.likeCount + ' Likes '}"></span>
+                <span th:text="${post.likeCount + ' Likes, '}"></span>
                 <i class="fas fa-thumbs-up"></i>
-                <span th:text="${post.commentCount + ' Comments'}"></span>
+                <span th:text="${post.comments.size() + ' Comments'}"></span>
             </span>
             <span class="like-counter">
 

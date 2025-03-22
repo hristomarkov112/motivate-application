@@ -101,7 +101,6 @@ public class PostController {
         User user = userService.getById(authenticationMetaData.getId());
         List<Post> posts = postService.getPostsByUserId(authenticationMetaData.getId());
 
-        //My Posts
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("my-posts");
         modelAndView.addObject("posts", posts);

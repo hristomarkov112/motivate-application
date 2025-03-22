@@ -48,8 +48,8 @@
           View Comments
         </a>
       </form>
-      <form th:if="${user.role.name() != 'ADMIN'}" th:action="@{/posts/{id}/delete (id = ${post.id})}" th:method="DELETE">
-        <button class="view-comments-button">Delete Post</button>
+      <form th:action="@{/posts/{id}/delete (id = ${post.id})}" th:method="DELETE">
+        <button class="view-comments-button" th:if="${user.role.name() == 'ADMIN'}">Delete Post</button>
       </form>
 
 

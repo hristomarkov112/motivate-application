@@ -26,6 +26,7 @@ public class CommentService {
 
     public Comment createComment(CommentRequest commentRequest, User user, Post post) {
 
+
         return commentRepository.save(initializeComment(commentRequest, user, post));
 
     }
@@ -49,22 +50,9 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsByPostId(UUID postId) {
-        return commentRepository.findByPostId(postId);
+        return commentRepository.findByPostIdOrderByCreatedAtDesc(postId);
     }
 
-
-//    public List<Comment> getAllComments() {
-//        return commentRepository.findAll();
-//    }
-//
-//    public Optional<Comment> getCommentById(UUID id) {
-//        return commentRepository.findById(id);
-//    }
-//
-//    public List<Comment> getCommentsByPostId(UUID postId) {
-//        return commentRepository.findByPostId(postId);
-//    }
-//
 //    public void deleteComment(UUID id) {
 //        commentRepository.deleteById(id);
 //    }

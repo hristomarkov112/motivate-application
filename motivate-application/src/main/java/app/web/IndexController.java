@@ -1,14 +1,11 @@
 package app.web;
 
-import app.comment.model.Comment;
 import app.comment.service.CommentService;
-import app.exception.UsernameAlreadyExistsException;
 import app.post.model.Post;
 import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
-import app.web.dto.CommentRequest;
 import app.web.dto.LoginRequest;
 import app.web.dto.RegisterRequest;
 import jakarta.validation.Valid;
@@ -96,13 +93,14 @@ public class IndexController {
         List<Post> posts = postService.getAllPosts();
         modelAndView.addObject("posts", posts);
         posts.forEach(post -> post.setContent(postService.formatPostContent(post.getContent())));
-        Post post = postService.getById(posts.get(0).getId());
+
+
 
         //Comments
-        List<Comment> comments = commentService.getCommentsByPostId(post.getId());
-        int commentsCount = comments.size();
-        modelAndView.addObject("commentRequest", new CommentRequest());
-        modelAndView.addObject("comments", comments);
+//        List<Comment> comments = commentService.getCommentsByPostId(post.getId());
+//        int commentsCount = comments.size();
+//        modelAndView.addObject("commentRequest", new CommentRequest());
+//        modelAndView.addObject("comments", comments);
 
         if (errorParam != null) {
             modelAndView.addObject("errorMessage", "The text length must be less than or equal 4000 characters.") ;
