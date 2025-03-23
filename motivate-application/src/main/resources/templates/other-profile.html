@@ -34,11 +34,7 @@
 
   <!-- Profile Details -->
   <div class="profile-details">
-    <h1>Profile</h1>
-    <div class="profile-field">
-      <label>ID:</label>
-      <span th:text="${user.id}"></span>
-    </div>
+    <h1>User Profile</h1>
     <div class="profile-field">
       <label>Username:</label>
       <span th:text="${user.username}"></span>
@@ -53,53 +49,20 @@
     </div>
     <div class="profile-field">
       <label>Country:</label>
-      <span th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}">United States</span>
+      <span th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}"></span>
     </div>
     <div class="profile-field">
-      <label>Following:</label>
-      <span><a href="/profile/following">150</a></span>
+      <label>In Motiv8 Family since:</label>
+      <span th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}"></span>
     </div>
-    <div class="profile-field">
-      <label>Followers:</label>
-      <span><a href="/profile/followers">300</a></span>
+    <div class="btn">
+      <a href="" class="edit-profile-button">Follow(Soon)</a>
     </div>
-    <div class="profile-field">
-      <label>Joined to Motiv8 Family:</label>
-      <span th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}">2023-01-01</span>
-    </div>
-
-    <!-- Edit Profile Button -->
-    <div class="edit-profile-button-container">
-      <a th:href="@{'/users/' + ${user.id} + '/profile-menu'}" class="edit-profile-button">Follow</a>
+    <div class="btn">
+      <a th:href="@{'/users/profiles'}" class="edit-profile-button">Back</a>
     </div>
   </div>
 </div>
-<!-- Posts section -->
-<section th:each="post : ${posts}" class="posts">
-  {% if posts %} Assuming your backend passes a 'posts' variable -->
-  {% for post in posts %}
-  <!-- Example Post 1 -->
-  <div class="post">
-    <div class="post-header">
-      <img th:src="${#strings.isEmpty(post.profilePicture) ? '/images/default-avatar.jpg' : post.profilePicture}" alt="User 1" class="post-avatar">
-      <div class="post-user-info">
-        <a href="/profile/user1" class="post-username" th:text="${post.username}"></a>
-        <span class="post-time" th:text="${#temporals.format(post.createdAt, 'dd MMM YYYY HH:mm' )}">2 hours ago</span>
-      </div>
-    </div>
-    <div class="post-content">
-      <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
-    </div>
-    <div class="post-actions">
-      <button class="like-button">Like</button>
-      <button class="comment-button">Comment</button>
-    </div>
-    {% endfor %}
-    {% else %}
-    <p th:if="${posts.size() == 0}" class="no-posts">You haven't created any posts yet.</p>
-    {% endif %}
-    </div>
-</section>
 <!-- Footer -->
 <th:block th:insert="fragments/footer::footer"></th:block>
 </body>

@@ -17,7 +17,7 @@
     <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
     <a th:href="@{/payments/history}" class="nav-link">Payments</a>
     <a th:href="@{/memberships/premium}" class="nav-link">Get PREMIUM</a>
-    <a th:href="@{/follow/following}" class="nav-link">Following</a>
+    <a th:href="@{/follow/following}" class="nav-link">Find Friends</a>
     <a th:href="@{/logout}" class="nav-link">Logout</a>
   </div>
 </nav>
@@ -40,11 +40,11 @@
       </div>
       <div class="profile-field">
         <label>Member since:</label>
-        <span th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY' )}">$100.00</span>
+        <span th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY' )}"></span>
       </div>
 
       <div class="follower-info" >
-      <a th:href="@{/home}" class="btn">View</a>
+      <a th:href="@{/users/other-profile}" class="btn">View</a>
       </div>
     </div>
   </section>
