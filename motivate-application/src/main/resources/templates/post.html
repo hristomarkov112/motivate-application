@@ -17,7 +17,7 @@
     <a th:href="@{/posts/new}" class="nav-link">Create Post</a>
     <a th:href="@{/posts/my-posts}" class="nav-link">My Posts</a>
     <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
-    <a th:if="${user.role.name() != 'USER'}" th:href="@{/memberships/premium}" class="nav-link">GET PREMIUM</a>
+    <a th:href="@{/memberships/premium}" class="nav-link">GET PREMIUM</a>
     <a th:href="@{/users/profiles}" class="nav-link">Find Friends</a>
     <a th:href="@{/logout}" class="nav-link">Logout</a>
   </div>

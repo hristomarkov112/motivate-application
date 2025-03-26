@@ -1,15 +1,8 @@
 package app.web;
 
 import app.comment.service.CommentService;
-import app.post.model.Post;
-import app.post.service.PostService;
-import app.security.AuthenticationMetaData;
-import app.user.model.User;
-import app.user.service.UserService;
 import app.web.dto.CommentRequest;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

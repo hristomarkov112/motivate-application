@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.Currency;
@@ -48,30 +47,6 @@ public class WalletService {
 
         log.info("Successfully created new wallet with id [%s] and balance [%.2f].".formatted(wallet.getId(), wallet.getBalance()));
 
-    }
-
-    @Transactional
-    public Payment deposit(UUID walletId, BigDecimal amount) {
-
-        Wallet wallet = getWalletById(walletId);
-        String paymentDescription = "Top up with %.2f EUR".formatted(amount.doubleValue());
-
-        wallet.setBalance(wallet.getBalance().add(amount));
-        wallet.setUpdatedAt(LocalDateTime.now());
-
-        walletRepository.save(wallet);
-
-
-        return paymentService.createNewPayment(wallet.getOwner(),
-                MASTERCARD,
-                walletId.toString(),
-                amount,
-                wallet.getBalance(),
-                wallet.getCurrency(),
-                PaymentType.DEPOSIT,
-                PaymentStatus.SUCCESSFUL,
-                paymentDescription,
-                null);
     }
 
     public Wallet getWalletById(UUID walletId) {
@@ -129,7 +104,7 @@ public class WalletService {
         );
     }
 
-    private Wallet initializeWallet(User user) {
+    protected Wallet initializeWallet(User user) {
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -147,5 +122,36 @@ public class WalletService {
                 .build();
     }
 
+    @Transactional
+    public Payment deposit(UUID walletId, BigDecimal amount) {
 
+        if (walletId == null) {
+            throw new IllegalArgumentException("Wallet ID must not be null");
+        }
+        if (amount == null) {
+            throw new IllegalArgumentException("Amount must not be null");
+        }
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
+
+        Wallet wallet = getWalletById(walletId);
+        String paymentDescription = "Top up with %.2f EUR".formatted(amount.doubleValue());
+
+        wallet.setBalance(wallet.getBalance().add(amount));
+        wallet.setUpdatedAt(LocalDateTime.now());
+
+        walletRepository.save(wallet);
+
+        return paymentService.createNewPayment(wallet.getOwner(),
+                MASTERCARD,
+                walletId.toString(),
+                amount,
+                wallet.getBalance(),
+                wallet.getCurrency(),
+                PaymentType.DEPOSIT,
+                PaymentStatus.SUCCESSFUL,
+                paymentDescription,
+                null);
+    }
 }

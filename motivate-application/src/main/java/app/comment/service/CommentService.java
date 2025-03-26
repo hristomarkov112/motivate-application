@@ -43,7 +43,6 @@ public class CommentService {
                 .build();
     }
 
-    // Delete a comment
     public void deleteComment(UUID id) {
 
         commentRepository.deleteById(id);
@@ -52,8 +51,4 @@ public class CommentService {
     public List<Comment> getCommentsByPostId(UUID postId) {
         return commentRepository.findByPostIdOrderByCreatedAtDesc(postId);
     }
-
-//    public void deleteComment(UUID id) {
-//        commentRepository.deleteById(id);
-//    }
 }

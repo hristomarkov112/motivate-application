@@ -5,7 +5,6 @@ import app.payment.model.PaymentStatus;
 import app.payment.model.PaymentType;
 import app.payment.repository.PaymentRepository;
 import app.user.model.User;
-import app.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,15 +21,23 @@ import java.util.UUID;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public PaymentService(PaymentRepository paymentRepository, UserRepository userRepository) {
+    public PaymentService(PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
-        this.userRepository = userRepository;
     }
 
     public Payment createNewPayment(User owner, String walletId, String recipient, BigDecimal amount, BigDecimal balanceLeft, Currency currency, PaymentType type, PaymentStatus status, String paymentDescription, String failureReason) {
+
+        if (owner == null) {
+            throw new IllegalArgumentException("Owner must not be null");
+        }
+        if (walletId == null || walletId.isBlank()) {
+            throw new IllegalArgumentException("Wallet ID must not be empty");
+        }
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
 
         Payment payment = Payment.builder()
                 .owner(owner)

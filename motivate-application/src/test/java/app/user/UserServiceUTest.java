@@ -14,7 +14,6 @@ import app.web.dto.RegisterRequest;
 import app.web.dto.UserEditRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -69,7 +68,7 @@ public class UserServiceUTest {
 
         when(userRepository.findByUsername("Gosho123")).thenReturn(Optional.empty());
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
-        when(userRepository.save(ArgumentMatchers.<User>any())).thenReturn(savedUser);
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
         User registeredUser = userService.register(registerRequest);
 
@@ -83,7 +82,6 @@ public class UserServiceUTest {
         assertNotNull(registeredUser.getCreatedAt());
         assertNotNull(registeredUser.getUpdatedAt());
 
-        // Verify interactions
         verify(userRepository, times(1)).findByUsername("Gosho123");
         verify(passwordEncoder, times(1)).encode("password");
         verify(membershipService, times(1)).createFreeMembership(savedUser);

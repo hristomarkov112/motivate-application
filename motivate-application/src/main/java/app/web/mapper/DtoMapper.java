@@ -9,6 +9,10 @@ public class DtoMapper {
 
     public static UserEditRequest mapUserToEditRequest(User user) {
 
+        if (user == null) {
+            throw new NullPointerException("User must not be null");
+        }
+
         return UserEditRequest.builder()
                 .profilePicture(user.getProfilePictureUrl())
                 .firstName(user.getFirstName())

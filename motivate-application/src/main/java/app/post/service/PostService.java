@@ -2,6 +2,7 @@ package app.post.service;
 
 import app.comment.model.Comment;
 import app.exception.DomainException;
+import app.exception.PostHasNoOwnerException;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
 import app.user.model.User;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +34,22 @@ public class PostService {
 
     public Post createPost(PostRequest postRequest, User user) {
 
+        if (user == null) {
+            throw new IllegalArgumentException("User must not be null");
+        }
+
+        if (postRequest == null) {
+            throw new IllegalArgumentException("PostRequest must not be null");
+        }
+
+        if (postRequest.getContent() == null || postRequest.getContent().trim().isEmpty()) {
+            throw new IllegalArgumentException("Post content must not be empty");
+        }
+
+        if (postRequest.getContent().length() > 4000) {
+            throw new IllegalArgumentException("Post content exceeds maximum length");
+        }
+
         Post post = Post.builder()
                 .owner(user)
                 .username(user.getUsername())
@@ -50,39 +68,53 @@ public class PostService {
         return postRepository.findAllByOwnerIdOrderByCreatedAtDesc(ownerId);
     }
 
-//    public List<Post> getAllPosts() {
-//        return postRepository.findAll();
-//    }
-
     public List<Post> getAllPosts() {
         return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
-    public void likePost(UUID postId) {
-        Post post = postRepository.findPostById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-
-        post.setLikeCount(post.getLikeCount() + 1);
-        postRepository.save(post);
-    }
-
     public Post getById(UUID postId) {
+
+        if (postId == null) {
+            throw new IllegalArgumentException("Post ID must not be null");
+        }
 
         return postRepository.findPostById(postId).orElseThrow(() -> new DomainException("Post with id %s has not been found".formatted(postId)));
     }
 
     public Post addLike(UUID postId) {
+
+        if (postId == null) {
+            throw new IllegalArgumentException("Post ID must not be null");
+        }
+
         Post post = getById(postId);
 
-        post.setLikeCount(post.getLikeCount() + 1);
-        postRepository.save(post);
+        try {
+            post.setLikeCount(Math.addExact(post.getLikeCount(), 1));
+        } catch (ArithmeticException e) {
+            throw new ArithmeticException("Like count overflow - cannot exceed " + Integer.MAX_VALUE);
+        }
 
-        return post;
+        return postRepository.save(post);
     }
 
     @Transactional
     public void addComment(UUID id, Comment comment) {
+
+        if (id == null) {
+            throw new IllegalArgumentException("Post ID must not be null");
+        }
+        if (comment == null) {
+            throw new IllegalArgumentException("Comment must not be null");
+        }
+
         Post post = postRepository.findPostById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if (post.getComments() == null) {
+            post.setComments(new ArrayList<>());
+        }
+
         post.getComments().add(comment);
         post.setCommentCount(post.getCommentCount() + 1);
         postRepository.save(post);
@@ -90,8 +122,20 @@ public class PostService {
 
     @Transactional
     public void deletePost(UUID postId, UUID userId) {
+
+        if (postId == null) {
+            throw new IllegalArgumentException("Post ID must not be null");
+        }
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID must not be null");
+        }
+
         Post post = postRepository.findPostById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if (post.getOwner() == null) {
+            throw new PostHasNoOwnerException("Post has no owner");
+        }
 
         if (!post.getOwner().getId().equals(userId)) {
             throw new RuntimeException("You are not authorized to delete this post");

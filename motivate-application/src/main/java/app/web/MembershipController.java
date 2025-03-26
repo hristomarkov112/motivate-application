@@ -3,20 +3,15 @@ package app.web;
 import app.membership.model.MembershipPeriod;
 import app.membership.model.MembershipType;
 import app.membership.service.MembershipService;
-import app.payment.model.Payment;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
-import app.wallet.model.Wallet;
 import app.web.dto.PremiumRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/memberships")

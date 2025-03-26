@@ -107,7 +107,7 @@ public class MembershipService {
         return chargeResult;
     }
 
-    private BigDecimal getMembershipPrice(MembershipType membershipType, MembershipPeriod membershipPeriod) {
+    BigDecimal getMembershipPrice(MembershipType membershipType, MembershipPeriod membershipPeriod) {
         if (membershipType == MembershipType.FREE) {
             return BigDecimal.ZERO;
         } else if (membershipType == MembershipType.PREMIUM && membershipPeriod == MembershipPeriod.MONTHLY) {
@@ -119,6 +119,10 @@ public class MembershipService {
 
     @Transactional
     public void updateMembershipRenewal(User user, boolean renewalAllowed, MembershipPeriod period) {
+
+        if (user.getMemberships() == null || user.getMemberships().isEmpty()) {
+            throw new IllegalStateException("User has no memberships to update");
+        }
 
         Membership membership = user.getMemberships().get(0);
 
@@ -134,6 +138,10 @@ public class MembershipService {
     }
 
     public void changeMembershipToInactive(Membership membership) {
+
+        if (membership == null) {
+            throw new IllegalArgumentException("Membership must not be null");
+        }
 
         membership.setStatus(MembershipStatus.INACTIVE);
         membership.setExpiresAt(LocalDateTime.now());
