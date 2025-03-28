@@ -1,8 +1,6 @@
 package app.web;
 
-import app.additionalinfo.client.AdditionalInfoClient;
 import app.additionalinfo.client.dto.AdditionalInfo;
-import app.additionalinfo.client.dto.UpsertAdditionalInfo;
 import app.additionalinfo.service.AdditionalInfoService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
@@ -63,24 +61,25 @@ public class AdditionalInfoController {
 
         User user = userService.getById(authenticationMetaData.getId());
 
-        try {
+//        try {
             additionalInfoService.saveAdditionalInfo(id, additionalInfo.getGender(), additionalInfo.getPhoneNumber(), additionalInfo.getSecondEmail());
             ModelAndView modelAndView = new ModelAndView("redirect:/additional-info");
             modelAndView.addObject("additional-info", additionalInfo);
 
             return modelAndView;
-        } catch (FeignException.BadRequest e) {
-            ModelAndView modelAndView = new ModelAndView("additional-info-menu");
-            modelAndView.addObject("user", user);
-            modelAndView.addObject("additional-info", additionalInfo);
-            modelAndView.addObject("error", "Invalid input. Please check your data.");
-            return modelAndView;
-        } catch (Exception e) {
-            ModelAndView modelAndView = new ModelAndView("additional-info-menu");
-            modelAndView.addObject("user", user);
-            modelAndView.addObject("additional-info", additionalInfo);
-            modelAndView.addObject("error", "An error occurred while saving additional information.");
-            return modelAndView;
-        }
+//        }
+//        catch (FeignException.BadRequest e) {
+//            ModelAndView modelAndView = new ModelAndView("additional-info-menu");
+//            modelAndView.addObject("user", user);
+//            modelAndView.addObject("additional-info", additionalInfo);
+//            modelAndView.addObject("error", "Invalid input. Please check your data.");
+//            return modelAndView;
+//        } catch (Exception e) {
+//            ModelAndView modelAndView = new ModelAndView("additional-info-menu");
+//            modelAndView.addObject("user", user);
+//            modelAndView.addObject("additional-info", additionalInfo);
+//            modelAndView.addObject("error", "An error occurred while saving additional information.");
+//            return modelAndView;
+//        }
     }
 }

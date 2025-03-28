@@ -1,4 +1,4 @@
-package app.user;
+package app.user.service;
 
 import app.additionalinfo.service.AdditionalInfoService;
 import app.exception.DomainException;
@@ -8,7 +8,6 @@ import app.user.model.Country;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.user.repository.UserRepository;
-import app.user.service.UserService;
 import app.wallet.service.WalletService;
 import app.web.dto.RegisterRequest;
 import app.web.dto.UserEditRequest;

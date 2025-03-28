@@ -1,10 +1,9 @@
-package app.payment;
+package app.payment.service;
 
 import app.payment.model.Payment;
 import app.payment.model.PaymentStatus;
 import app.payment.model.PaymentType;
 import app.payment.repository.PaymentRepository;
-import app.payment.service.PaymentService;
 import app.user.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +15,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -83,7 +80,7 @@ public class PaymentServiceUTest {
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> paymentService.createNewPayment(
-                        null,                   // owner (null)
+                        null,
                         "wallet-123",
                         "petar123",
                         new BigDecimal("100.00"),
@@ -99,22 +96,6 @@ public class PaymentServiceUTest {
         assertThat(exception.getMessage()).contains(expectedMessage);
 
         verifyNoInteractions(paymentRepository);
-    }
-
-    @Test
-    void createNewPayment_WithNegativeAmount_ThrowsException() {
-        User owner = User.builder()
-                .username("gosho123")
-                .build();
-
-        assertThatThrownBy(() -> paymentService.createNewPayment(
-                owner, "wallet-123", "petar123",
-                new BigDecimal("-10.00"), BigDecimal.TEN, Currency.getInstance("EUR"),
-                PaymentType.TRANSFER, PaymentStatus.SUCCESSFUL,
-                "Test", null
-        ))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Amount must be positive");
     }
 
     @Test

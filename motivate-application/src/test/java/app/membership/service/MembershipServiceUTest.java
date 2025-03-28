@@ -35,7 +35,7 @@ public class MembershipServiceUTest {
     private MembershipRepository membershipRepository;
 
     @Mock
-    private WalletService walletService; // Unused in this method, but mocked for completeness
+    private WalletService walletService;
 
     @InjectMocks
     private MembershipService membershipService;
@@ -47,7 +47,7 @@ public class MembershipServiceUTest {
                 .username("user")
                 .build();
         LocalDateTime fixedTime = LocalDateTime.of(2023, 1, 1, 12, 0);
-        membershipService.now = fixedTime; // Override "now" for predictable expiresAt
+        membershipService.now = fixedTime;
 
         Membership expectedMembership = Membership.builder()
                 .owner(user)
@@ -182,8 +182,8 @@ public class MembershipServiceUTest {
         membershipService.changeMembershipToInactive(membership);
 
         
-        assertThat(membership.getStatus()).isEqualTo(MembershipStatus.INACTIVE); // Unchanged
-        assertThat(membership.getExpiresAt()).isBeforeOrEqualTo(LocalDateTime.now()); // Updated
+        assertThat(membership.getStatus()).isEqualTo(MembershipStatus.INACTIVE);
+        assertThat(membership.getExpiresAt()).isBeforeOrEqualTo(LocalDateTime.now());
         verify(membershipRepository).save(membership);
     }
 }

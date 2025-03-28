@@ -1,8 +1,7 @@
-package app.comment;
+package app.comment.service;
 
 import app.comment.model.Comment;
 import app.comment.repository.CommentRepository;
-import app.comment.service.CommentService;
 import app.post.model.Post;
 import app.user.model.User;
 import app.web.dto.CommentRequest;
@@ -91,7 +90,7 @@ public class CommentServiceUTests {
     void testGetCommentsByPostId_Success() {
 
         List<Comment> comments = List.of(comment);
-        when(commentRepository.findByPostIdOrderByCreatedAtDesc(postId)).thenReturn(comments);
+        when(commentRepository.findCommentsByPostIdOrderedByDateDesc(postId)).thenReturn(comments);
 
         List<Comment> result = commentService.getCommentsByPostId(postId);
 
@@ -100,6 +99,6 @@ public class CommentServiceUTests {
         assertEquals(1, result.size());
         assertEquals(comment, result.get(0));
 
-        verify(commentRepository, times(1)).findByPostIdOrderByCreatedAtDesc(postId);
+        verify(commentRepository, times(1)).findCommentsByPostIdOrderedByDateDesc(postId);
     }
 }

@@ -19,7 +19,7 @@ public class AuthenticationMetaData implements UserDetails {
     private String username;
     private String password;
     private UserRole role;
-    private boolean isBlocked;
+    private boolean isActive;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -41,21 +41,21 @@ public class AuthenticationMetaData implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return isBlocked;
+        return isActive;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return isBlocked;
+        return isActive;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isBlocked;
+        return isActive;
     }
 
     @Override
     public boolean isEnabled() {
-        return isBlocked;
+        return isActive;
     }
 }

@@ -1,11 +1,10 @@
-package app.post;
+package app.post.service;
 
 import app.comment.model.Comment;
 import app.exception.DomainException;
 import app.membership.model.Membership;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
-import app.post.service.PostService;
 import app.user.model.Country;
 import app.user.model.User;
 import app.user.model.UserRole;
@@ -442,7 +441,7 @@ public class PostServiceUTest {
 
     @Test
     void deletePost_WithValidOwner_DeletesPost() {
-        // Arrange
+
         UUID postId = UUID.randomUUID();
         UUID ownerId = UUID.randomUUID();
         List<Post> posts = new ArrayList<>();
@@ -456,14 +455,14 @@ public class PostServiceUTest {
                 .owner(owner)
                 .build();
 
-        // Make sure to mock the repository call
+
         when(postRepository.findPostById(postId)).thenReturn(Optional.of(post));
         doNothing().when(postRepository).deletePostById(postId);
 
-        // Act
+
         postService.deletePost(postId, ownerId);
 
-        // Assert
+
         verify(postRepository).findPostById(postId);
         verify(postRepository).deletePostById(postId);
     }

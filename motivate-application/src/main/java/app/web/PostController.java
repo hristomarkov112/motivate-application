@@ -2,6 +2,9 @@ package app.web;
 
 import app.comment.model.Comment;
 import app.comment.service.CommentService;
+import app.exception.PostNotFoundException;
+import app.exception.UnauthorizedPostAccessException;
+import app.exception.UserNotFoundException;
 import app.post.model.Post;
 import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
@@ -113,6 +116,10 @@ public class PostController {
 
         Post post = postService.getById(postId);
 
+        if (!post.getOwner().getId().equals(authenticationMetaData.getId())) {
+            throw new UnauthorizedPostAccessException("You are not authorized to delete this post");
+        }
+
         postService.deletePost(postId, post.getOwner().getId());
         List<Post> posts = postService.getPostsByUserId(authenticationMetaData.getId());
 
@@ -148,6 +155,9 @@ public class PostController {
             Model model) {
 
         Post post = postService.getById(id);
+        if (post == null) {
+            throw new PostNotFoundException("Post not found");
+        }
         model.addAttribute("post", post);
 
         if (bindingResult.hasErrors()) {
@@ -157,6 +167,9 @@ public class PostController {
         }
 
         User user = userService.getById(authenticationMetaData.getId());
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
         Comment comment = commentService.createComment(commentRequest, user, post);
         postService.addComment(post.getId(), comment);
 

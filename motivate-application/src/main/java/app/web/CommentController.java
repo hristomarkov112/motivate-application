@@ -29,6 +29,13 @@ public class CommentController {
         modelAndView.addObject("comment", new CommentRequest());
         return "/posts";
     }
+
+    @GetMapping("/delete/{id}")
+    public String deleteComment(@PathVariable UUID id) {
+        commentService.deleteComment(id);
+        return "redirect:/posts"; // Redirect to the list of comments
+    }
+
 //
 //    @PostMapping("/new")
 //    public ModelAndView createComment(@Valid CommentRequest commentRequest, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
@@ -47,9 +54,5 @@ public class CommentController {
 //        return modelAndView;
 //    }
 
-    @GetMapping("/delete/{id}")
-    public String deleteComment(@PathVariable UUID id) {
-        commentService.deleteComment(id);
-        return "redirect:/posts"; // Redirect to the list of comments
-    }
+
 }

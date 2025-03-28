@@ -7,6 +7,7 @@ import app.post.service.PostService;
 import app.user.model.User;
 import app.web.dto.CommentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,6 +50,6 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsByPostId(UUID postId) {
-        return commentRepository.findByPostIdOrderByCreatedAtDesc(postId);
+        return commentRepository.findCommentsByPostIdOrderedByDateDesc(postId);
     }
 }

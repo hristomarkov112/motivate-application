@@ -1,4 +1,4 @@
-package app.additionaInfo;
+package app.additionaInfo.service;
 
 import app.additionalinfo.client.AdditionalInfoClient;
 import app.additionalinfo.client.dto.AdditionalInfo;
@@ -44,7 +44,6 @@ public class AdditionalInfoServiceUTest {
 
     @Test
     void testSaveAdditionalInfo_Success() {
-        // Mock successful response
         ResponseEntity<Void> successResponse = ResponseEntity.ok().build();
         when(additionalInfoClient.upsertAdditionalInfo(any(UpsertAdditionalInfo.class))).thenReturn(successResponse);
 

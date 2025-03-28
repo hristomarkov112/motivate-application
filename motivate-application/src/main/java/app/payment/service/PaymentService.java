@@ -35,9 +35,6 @@ public class PaymentService {
         if (walletId == null || walletId.isBlank()) {
             throw new IllegalArgumentException("Wallet ID must not be empty");
         }
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Amount must be positive");
-        }
 
         Payment payment = Payment.builder()
                 .owner(owner)

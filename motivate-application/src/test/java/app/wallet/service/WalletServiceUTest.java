@@ -1,15 +1,10 @@
 package app.wallet.service;
 
 import app.exception.DomainException;
-import app.payment.model.Payment;
-import app.payment.model.PaymentStatus;
-import app.payment.model.PaymentType;
-import app.payment.service.PaymentService;
 import app.user.model.Country;
 import app.user.model.User;
 import app.wallet.model.Wallet;
 import app.wallet.repository.WalletRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

@@ -25,7 +25,6 @@ public class IndexController {
 
     private final UserService userService;
     private final PostService postService;
-    private final CommentService commentService;
 
     @Autowired
     public IndexController(UserService userService,
@@ -33,7 +32,6 @@ public class IndexController {
                            CommentService commentService) {
         this.userService = userService;
         this.postService = postService;
-        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -92,8 +90,6 @@ public class IndexController {
         List<Post> posts = postService.getAllPosts();
         modelAndView.addObject("posts", posts);
         posts.forEach(post -> post.setContent(postService.formatPostContent(post.getContent())));
-
-
 
         //Comments
 //        List<Comment> comments = commentService.getCommentsByPostId(post.getId());

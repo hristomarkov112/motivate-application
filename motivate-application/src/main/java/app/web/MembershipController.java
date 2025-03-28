@@ -67,11 +67,14 @@ public class MembershipController {
                                           @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
         User user = userService.getById(authenticationMetaData.getId());
+        if (user == null) {
+            return "redirect:/memberships/details";
+        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("memberships");
 
         membershipService.updateMembershipRenewal(user, renewalAllowed, period);
-        return "redirect:memberships/details"; // Redirect back to profile after update
+        return "redirect:/memberships/details";
     }
 
     @GetMapping("/history")

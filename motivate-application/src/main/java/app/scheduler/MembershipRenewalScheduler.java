@@ -27,7 +27,7 @@ public class MembershipRenewalScheduler {
         this.membershipService = membershipService;
     }
 
-    @Scheduled(fixedRate = 10000000)
+    @Scheduled(cron = "0 0 0 * * ?")
     public void renewMembership() {
 
         List<Membership> memberships = membershipService.getAllMembershipsReadyForRenewal();
