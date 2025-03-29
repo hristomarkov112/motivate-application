@@ -13,7 +13,7 @@
         <a th:href="@{/home}" class="logo">Motiv8 Network</a>
     </div>
     <div class="navbar-links">
-        <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
+        <a th:if="${user.role.name() == 'ADMIN'}" th:href="@{/users/admin-panel}" class="nav-link" style="font-weight: bold">ADMIN PANEL</a>
         <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
         <a th:href="@{/posts}" class="nav-link">Posts</a>
         <a th:href="@{/memberships}" class="nav-link">Get PREMIUM</a>
@@ -75,24 +75,6 @@
                 <i class="fas fa-thumbs-up"></i>
                 <span th:text="${post.comments.size() + ' Comments'}"></span>
             </span>
-            <span class="like-counter">
-
-            </span>
-            <!-- Counters for Likes and Comments -->
-            <div class="comments-section">
-                <div th:each="comment : ${post.comments}" class="comment">
-                    <div class="comment-header">
-                        <img th:src="${#strings.isEmpty(comment.profilePicture) ? '/images/default-avatar.jpg' : comment.profilePicture}" alt="User Avatar" class="comment-avatar">
-                        <div class="comment-user-info">
-                            <span class="comment-username" th:text="${comment.owner.username}"></span>
-                            <span class="comment-time" th:text="${#temporals.format(comment.createdAt, 'dd MMM YYYY HH:mm' )}"></span>
-                        </div>
-                    </div>
-                    <div class="comment-content">
-                        <p th:text="${comment.content}"></p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

@@ -300,7 +300,7 @@ public class AdditionalInfoControllerUTest {
                 .phoneNumber("0888854232")
                 .secondEmail("mail@abv.bg")
                 .build();
-        formData.setPhoneNumber("555555555"); // Only phone number provided
+        formData.setPhoneNumber("555555555");
 
         ModelAndView mav = additionalInfoController.submitAdditionalInfoForm(
                 pathId, formData, authenticationMetaData

@@ -45,7 +45,7 @@ public class MembershipController {
         User user = userService.getById(authenticationMetaData.getId());
 
         membershipService.getPremium(user, membershipType, premiumRequest);
-        ModelAndView modelAndView = new ModelAndView();
+
         return "redirect:/payments/result";
     }
 

@@ -1,6 +1,8 @@
 package app.wallet.service;
 
 import app.exception.DomainException;
+import app.exception.InsufficientFundsException;
+import app.exception.WalletNotFoundException;
 import app.payment.model.Payment;
 import app.payment.model.PaymentStatus;
 import app.payment.model.PaymentType;
@@ -50,7 +52,7 @@ public class WalletService {
     }
 
     public Wallet getWalletById(UUID walletId) {
-        return walletRepository.findById(walletId).orElseThrow(() -> new RuntimeException("Wallet with id [%s] does not exist.".formatted(walletId)));
+        return walletRepository.findById(walletId).orElseThrow(() -> new WalletNotFoundException("Wallet with id [%s] does not exist.".formatted(walletId)));
     }
 
     @Transactional
@@ -150,6 +152,47 @@ public class WalletService {
                 wallet.getBalance(),
                 wallet.getCurrency(),
                 PaymentType.DEPOSIT,
+                PaymentStatus.SUCCESSFUL,
+                paymentDescription,
+                null);
+    }
+
+    @Transactional
+    public Payment withdrawal(UUID walletId, BigDecimal amount) {
+
+        if (walletId == null) {
+            throw new IllegalArgumentException("Wallet ID must not be null");
+        }
+        if (amount == null) {
+            throw new IllegalArgumentException("Amount must not be null");
+        }
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive");
+        }
+
+        Wallet wallet = getWalletById(walletId);
+
+        if (wallet.getBalance().compareTo(amount) < 0) {
+            throw new InsufficientFundsException(
+                    String.format("Insufficient funds. Current balance: %.2f, Attempted withdrawal: %.2f",
+                            wallet.getBalance().doubleValue(),
+                            amount.doubleValue())
+            );
+        }
+        String paymentDescription = "Withdrawal to card of %.2f EUR".formatted(amount.doubleValue());
+
+        wallet.setBalance(wallet.getBalance().subtract(amount));
+        wallet.setUpdatedAt(LocalDateTime.now());
+
+        walletRepository.save(wallet);
+
+        return paymentService.createNewPayment(wallet.getOwner(),
+                walletId.toString(),
+                MASTERCARD,
+                amount,
+                wallet.getBalance(),
+                wallet.getCurrency(),
+                PaymentType.WITHDRAWAL,
                 PaymentStatus.SUCCESSFUL,
                 paymentDescription,
                 null);

@@ -100,6 +100,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public List<User> getRegularUsers() {
+        return userRepository.findByRole(UserRole.USER);
+    }
+
 
     public User getById(UUID id) {
 

@@ -671,7 +671,6 @@ public class PostControllerApiTest {
         UUID userId = UUID.randomUUID();
 
         Post mockPost = new Post();
-        User mockUser = new User();
         CommentRequest invalidRequest = new CommentRequest(); // Invalid
 
         AuthenticationMetaData authData = new AuthenticationMetaData(userId, "gosho123", "123123", UserRole.USER, true);

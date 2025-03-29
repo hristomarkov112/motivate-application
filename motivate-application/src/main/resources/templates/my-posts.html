@@ -49,11 +49,13 @@
       </form>
       <div class="post-actions" th:action="@{/posts/{id}/likes}" th:method="POST">
       </div>
-      <!-- Counters for Likes -->
+      <!-- Counters for Likes and Comments -->
       <div class="post-counters">
             <span class="like-counter">
                 <i class="fas fa-thumbs-up"></i>
                 <span th:text="${post.likeCount + ' Likes'}"></span>
+              <i class="fas fa-thumbs-up"></i>
+                <span th:text="${post.comments.size() + ' Comments'}"></span>
             </span>
       </div>
       <!-- Comments Section -->

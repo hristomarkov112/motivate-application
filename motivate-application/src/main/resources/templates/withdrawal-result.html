@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Successful Withdrawal Request!</title>
+  <link rel="stylesheet" href="/css/withdrawal-form.css">
+</head>
+<body>
+<div class="success-container">
+  <h1>Successful Withdrawal Request!</h1>
+  <div class="success-message">
+    <p>You have successfully transferred funds to your Credit/Debit card. Processed amount:
+      <span th:text="${#numbers.formatDecimal(withdrawalRequest.amount, 1, 2)} + ' EUR'"></span>
+    </p>
+  </div>
+  <a th:href="@{/payments/history}" class="back-button">Back to Payments</a>
+</div>
+</body>
+</html>

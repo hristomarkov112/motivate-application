@@ -1,13 +1,14 @@
 package app.web;
 
-import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
+import app.user.model.UserRole;
 import app.user.service.UserService;
 import app.web.dto.UserEditRequest;
 import app.web.mapper.DtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -26,15 +27,14 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    private final PostService postService;
 
     @Autowired
-    public UserController(UserService userService, PostService postService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.postService = postService;
     }
 
-    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin-panel")
     public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) throws AccessDeniedException {
 
         List<User> users = userService.getAllUsers();
@@ -110,7 +110,7 @@ public class UserController {
 
         User user = userService.getById(authenticationMetaData.getId());
 
-        List<User> users = userService.getAllUsers();
+        List<User> users = userService.getRegularUsers();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("profiles");
@@ -130,7 +130,4 @@ public class UserController {
 
         return modelAndView;
     }
-
-
-
 }

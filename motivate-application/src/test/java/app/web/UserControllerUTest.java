@@ -438,56 +438,60 @@ public class UserControllerUTest {
     @Test
     public void getProfilesPage_ReturnsCorrectModelAndView() {
 
-        UUID userId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-        User mockUser = User.builder()
+        UUID userId = UUID.randomUUID();
+        User currentUser = User.builder()
                 .id(userId)
                 .username("gosho123")
                 .build();
 
-        List<User> mockUsers = Arrays.asList(
-                User.builder()
-                        .id(userId)
-                        .username("user1")
-                        .build(),
-                User.builder()
-                        .id(userId)
-                        .username("user2")
-                        .build(),
-                mockUser
-        );
+        User regularUser1 = User.builder()
+                .id(userId)
+                .username("user1")
+                .build();
+        User regularUser2 = User.builder()
+                .id(userId)
+                .username("user2")
+                .build();
 
         when(authenticationMetaData.getId()).thenReturn(userId);
-        when(userService.getById(userId)).thenReturn(mockUser);
-        when(userService.getAllUsers()).thenReturn(mockUsers);
+        when(userService.getById(userId)).thenReturn(currentUser);
+        when(userService.getRegularUsers()).thenReturn(List.of(regularUser1, regularUser2));
 
-        ModelAndView result = userController.getProfilesPage(authenticationMetaData);
+        ModelAndView mav = userController.getProfilesPage(authenticationMetaData);
 
-        assertAll(
-                () -> assertEquals("profiles", result.getViewName()),
-                () -> assertNotNull(result.getModel().get("users")),
-                () -> assertEquals(3, ((List<?>) result.getModel().get("users")).size()),
-                () -> verify(userService).getById(userId),
-                () -> verify(userService).getAllUsers(),
-                () -> verifyNoInteractions(postService) // Verify postService not used in this endpoint
-        );
+        assertEquals("profiles", mav.getViewName());
+
+        List<User> returnedUsers = (List<User>) mav.getModel().get("users");
+        assertEquals(2, returnedUsers.size());
+        assertTrue(returnedUsers.contains(regularUser1));
+        assertTrue(returnedUsers.contains(regularUser2));
+
+        verify(userService).getById(userId);
+        verify(userService).getRegularUsers();
     }
 
     @Test
-    public void getProfilesPage_WhenNoOtherUsersExist_ReturnsOnlyCurrentUser() {
+    void getProfilesPage_WhenNoOtherUsersExist_ReturnsOnlyCurrentUser() {
 
-        UUID userId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-        User mockUser = User.builder()
+        UUID userId = UUID.randomUUID();
+        User currentUser = User.builder()
                 .id(userId)
                 .username("gosho123")
+                .country(Country.BULGARIA)
+                .role(UserRole.USER)
                 .build();
 
         when(authenticationMetaData.getId()).thenReturn(userId);
-        when(userService.getById(userId)).thenReturn(mockUser);
-        when(userService.getAllUsers()).thenReturn(List.of(mockUser)); // Only the current user exists
+        when(userService.getById(userId)).thenReturn(currentUser);
+        when(userService.getRegularUsers()).thenReturn(List.of(currentUser));
 
-        ModelAndView result = userController.getProfilesPage(authenticationMetaData);
+        ModelAndView mav = userController.getProfilesPage(authenticationMetaData);
 
-        assertEquals(1, ((List<?>) result.getModel().get("users")).size());
+        assertEquals("profiles", mav.getViewName());
+
+        List<User> returnedUsers = (List<User>) mav.getModel().get("users");
+        assertEquals(1, returnedUsers.size());
+        assertEquals(currentUser, returnedUsers.get(0));
     }
 
     @Test

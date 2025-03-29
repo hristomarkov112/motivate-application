@@ -40,7 +40,7 @@ public class PaymentServiceUTest {
         BigDecimal amount = new BigDecimal("100.50");
         BigDecimal balanceLeft = new BigDecimal("500.00");
         Currency currency = Currency.getInstance("EUR");
-        PaymentType type = PaymentType.TRANSFER;
+        PaymentType type = PaymentType.PURCHASE;
         PaymentStatus status = PaymentStatus.SUCCESSFUL;
         String description = "Test payment";
         String failureReason = null;
@@ -86,7 +86,7 @@ public class PaymentServiceUTest {
                         new BigDecimal("100.00"),
                         new BigDecimal("500.00"),
                         Currency.getInstance("USD"),
-                        PaymentType.TRANSFER,
+                        PaymentType.PURCHASE,
                         PaymentStatus.SUCCESSFUL,
                         "Test payment",
                         null

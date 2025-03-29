@@ -17,12 +17,10 @@ import java.util.UUID;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final PostService postService;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, PostService postService) {
+    public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
-        this.postService = postService;
     }
 
     public Comment createComment(CommentRequest commentRequest, User user, Post post) {
@@ -50,6 +48,6 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsByPostId(UUID postId) {
-        return commentRepository.findCommentsByPostIdOrderedByDateDesc(postId);
+        return commentRepository.findAllByPost_IdOrderByCreatedAtDesc(postId);
     }
 }

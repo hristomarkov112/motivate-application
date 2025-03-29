@@ -180,7 +180,6 @@ body {
   background-color: #244d6c;
 }
 
-/* View Comment Button */
 .view-comments-button {
   margin-top: 10px;
   display: inline-block;
@@ -242,13 +241,13 @@ body {
   padding-top: 10px;
   border-top: 1px solid #ddd;
   display: flex;
-  gap: 15px; /* Space between counters */
+  gap: 15px;
   font-size: 14px;
   color: #777;
 }
 
 .post-counters i {
-  margin-right: 5px; /* Space between icon and text */
+  margin-right: 5px;
 }
 
 .like-counter,
@@ -307,6 +306,17 @@ body {
 .comment-content {
   font-size: 14px;
   color: #333;
+}
+
+.post-counters i {
+  margin-right: 5px;
+}
+
+.like-counter,
+.comment-counter {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 /* Footer */

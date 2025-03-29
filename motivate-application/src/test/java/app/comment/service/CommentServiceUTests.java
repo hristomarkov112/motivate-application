@@ -90,7 +90,7 @@ public class CommentServiceUTests {
     void testGetCommentsByPostId_Success() {
 
         List<Comment> comments = List.of(comment);
-        when(commentRepository.findCommentsByPostIdOrderedByDateDesc(postId)).thenReturn(comments);
+        when(commentRepository.findAllByPost_IdOrderByCreatedAtDesc(postId)).thenReturn(comments);
 
         List<Comment> result = commentService.getCommentsByPostId(postId);
 
@@ -99,6 +99,6 @@ public class CommentServiceUTests {
         assertEquals(1, result.size());
         assertEquals(comment, result.get(0));
 
-        verify(commentRepository, times(1)).findCommentsByPostIdOrderedByDateDesc(postId);
+        verify(commentRepository, times(1)).findAllByPost_IdOrderByCreatedAtDesc(postId);
     }
 }

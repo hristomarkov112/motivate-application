@@ -33,7 +33,7 @@ public class CommentController {
     @GetMapping("/delete/{id}")
     public String deleteComment(@PathVariable UUID id) {
         commentService.deleteComment(id);
-        return "redirect:/posts"; // Redirect to the list of comments
+        return "redirect:/posts";
     }
 
 //

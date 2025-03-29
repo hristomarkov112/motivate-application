@@ -50,7 +50,7 @@ public class PaymentControllerUTest {
                         .recipient(user.getUsername())
                         .amount(new BigDecimal("100.00"))
                         .currency(Currency.getInstance("EUR"))
-                        .type(PaymentType.TRANSFER)
+                        .type(PaymentType.PURCHASE)
                         .status(PaymentStatus.SUCCESSFUL)
                         .description("test")
                         .createdAt(LocalDateTime.now())
@@ -63,7 +63,7 @@ public class PaymentControllerUTest {
                         .recipient(user.getUsername())
                         .amount(new BigDecimal("100.00"))
                         .currency(Currency.getInstance("EUR"))
-                        .type(PaymentType.TRANSFER)
+                        .type(PaymentType.PURCHASE)
                         .status(PaymentStatus.PENDING)
                         .description("test")
                         .createdAt(LocalDateTime.now())
@@ -73,10 +73,8 @@ public class PaymentControllerUTest {
         when(authenticationMetaData.getId()).thenReturn(userId);
         when(paymentService.getAllByOwnerId(userId)).thenReturn(mockPayments);
 
-        // Act
         ModelAndView result = paymentController.getAllPayments(authenticationMetaData);
 
-        // Assert
         assertAll(
                 () -> assertEquals("payments", result.getViewName()),
                 () -> assertNotNull(result.getModel().get("payments")),
@@ -87,22 +85,20 @@ public class PaymentControllerUTest {
 
     @Test
     public void getAllPayments_WhenNoPaymentsExist_ReturnsEmptyList() {
-        // Arrange
+
         UUID userId = UUID.randomUUID();
 
         when(authenticationMetaData.getId()).thenReturn(userId);
         when(paymentService.getAllByOwnerId(userId)).thenReturn(Collections.emptyList());
 
-        // Act
         ModelAndView result = paymentController.getAllPayments(authenticationMetaData);
 
-        // Assert
         assertTrue(((List<?>) result.getModel().get("payments")).isEmpty());
     }
 
     @Test
     public void getPremiumResultPage_ReturnsFirstPayment() {
-        // Arrange
+
         UUID userId = UUID.randomUUID();
         User user = User.builder()
                 .id(userId)
@@ -117,7 +113,7 @@ public class PaymentControllerUTest {
                 .recipient(user.getUsername())
                 .amount(new BigDecimal("100.00"))
                 .currency(Currency.getInstance("EUR"))
-                .type(PaymentType.TRANSFER)
+                .type(PaymentType.PURCHASE)
                 .status(PaymentStatus.SUCCESSFUL)
                 .description("test")
                 .createdAt(LocalDateTime.now())
@@ -126,10 +122,8 @@ public class PaymentControllerUTest {
         when(authenticationMetaData.getId()).thenReturn(userId);
         when(paymentService.getAllByOwnerId(userId)).thenReturn(List.of(mockPayment));
 
-        // Act
         ModelAndView result = paymentController.getPremiumResultPage(authenticationMetaData);
 
-        // Assert
         assertAll(
                 () -> assertEquals("premium-result", result.getViewName()),
                 () -> assertEquals(mockPayment, result.getModel().get("payment")),
@@ -139,13 +133,12 @@ public class PaymentControllerUTest {
 
     @Test
     public void getPremiumResultPage_WhenNoPaymentsExist_ThrowsIndexOutOfBoundsException() {
-        // Arrange
+
         UUID userId = UUID.randomUUID();
 
         when(authenticationMetaData.getId()).thenReturn(userId);
         when(paymentService.getAllByOwnerId(userId)).thenReturn(Collections.emptyList());
 
-        // Act & Assert
         assertThrows(IndexOutOfBoundsException.class, () -> {
             paymentController.getPremiumResultPage(authenticationMetaData);
         });

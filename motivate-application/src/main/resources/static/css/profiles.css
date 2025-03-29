@@ -104,23 +104,16 @@ h1 {
     margin-right: 15px;
 }
 
-.profile-field {
-    margin-bottom: 5px;
-    padding-bottom: 5px;
-}
-
 .profile-field label {
     font-weight: bold;
     color: #555;
-    display: inline-block;
+    display: block;
     width: 120px;
 }
 
 .profile-field span {
     color: #333;
 }
-
-
 
 .username {
     font-size: 1.2rem;
