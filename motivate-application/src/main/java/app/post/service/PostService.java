@@ -44,11 +44,11 @@ public class PostService {
         }
 
         if (postRequest.getContent() == null || postRequest.getContent().trim().isEmpty()) {
-            throw new PostMustNotBeEmpty("Post content must not be empty");
+            throw new IllegalArgumentException("Post content must not be empty");
         }
 
         if (postRequest.getContent().length() > 4000) {
-            throw new PostMustNotBeEmpty("Post content exceeds maximum length");
+            throw new IllegalArgumentException("Post content exceeds maximum length");
         }
 
         Post post = Post.builder()

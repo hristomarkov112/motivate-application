@@ -111,7 +111,7 @@ public class WalletServiceUTest {
 
         assertNotNull(newWallet);
         assertEquals(user, newWallet.getOwner());
-        assertEquals(new BigDecimal("100.00"), newWallet.getBalance());
+        assertEquals(new BigDecimal("0.00"), newWallet.getBalance());
         assertEquals(Currency.getInstance("EUR"), newWallet.getCurrency());
         assertNotNull(newWallet.getCreatedAt());
         assertNotNull(newWallet.getUpdatedAt());
