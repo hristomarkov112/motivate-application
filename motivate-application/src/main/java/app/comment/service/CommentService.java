@@ -35,6 +35,7 @@ public class CommentService {
         return Comment.builder()
                 .owner(owner)
                 .username(owner.getUsername())
+                .profilePicture(owner.getProfilePictureUrl())
                 .post(post)
                 .content(commentRequest.getContent())
                 .createdAt(LocalDateTime.now())

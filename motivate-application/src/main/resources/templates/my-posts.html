@@ -13,6 +13,7 @@
   </div>
   <div class="navbar-links">
     <a th:href="@{/home}" class="nav-link">Home</a>
+    <a th:href="@{/posts}" class="nav-link">Posts</a>
     <a th:href="@{/users/{id}/profile}" class="nav-link">Profile</a>
     <a th:href="@{/memberships/details}" class="nav-link">Membership</a>
     <a th:href="@{/payments/history}" class="nav-link">Payments</a>
@@ -41,7 +42,7 @@
       <div class="post-content">
         <p th:text="${post.content}">Just had an amazing day hiking in the mountains! 🏞️ #NatureLover</p>
       </div>
-      <form th:action="@{/posts/{id}/delete (id = ${post.id})}" th:method="DELETE">
+      <form th:action="@{/posts/{id}/delete-my-post (id = ${post.id})}" th:method="DELETE">
         <button class="view-comments-button">Delete Post</button>
         <a th:href="@{'/posts/' + ${post.id} + '/comments'}" class="view-comments-button">
           View Comments
@@ -77,6 +78,6 @@
   </div>
 </div>
 <!-- Footer -->
-<th:block th:insert="fragments/footer::footer"></th:block>
+<th:block th:replace="~{fragments/footer::footer}"></th:block>
 </body>
 </html>

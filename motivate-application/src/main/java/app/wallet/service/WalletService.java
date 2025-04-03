@@ -83,14 +83,8 @@ public class WalletService {
         walletRepository.save(wallet);
 
         System.out.printf("Thread [%s]: Code in WalletService.class\n", Thread.currentThread().getName());
-        PaymentNotificationEvent event = PaymentNotificationEvent.builder()
-                .userId(user.getId())
-                .paymentDate(LocalDateTime.now())
-                .email(user.getEmail())
-                .amount(amount)
-                .build();
 
-        eventPublisher.publishEvent(event);
+        publishPaymentNotification(user, amount);
 
         return paymentService.createNewPayment(
                 user,
@@ -106,6 +100,23 @@ public class WalletService {
         );
     }
 
+    private void publishPaymentNotification(User user, BigDecimal amount) {
+        try {
+            if (user.getEmail() != null && !user.getEmail().isBlank()) {
+                PaymentNotificationEvent event = PaymentNotificationEvent.builder()
+                        .userId(user.getId())
+                        .paymentDate(LocalDateTime.now())
+                        .email(user.getEmail())
+                        .amount(amount)
+                        .build();
+
+                eventPublisher.publishEvent(event);
+            }
+        } catch (Exception e) {
+            log.error("Failed to publish payment event for user {}", user.getId(), e);
+        }
+    }
+
     protected Wallet initializeWallet(User user) {
 
         LocalDateTime now = LocalDateTime.now();
@@ -117,7 +128,7 @@ public class WalletService {
 
         return Wallet.builder()
                 .owner(user)
-                .balance(new BigDecimal("100.00"))
+                .balance(new BigDecimal("0.00"))
                 .currency(Currency.getInstance("EUR"))
                 .createdAt(now)
                 .updatedAt(now)

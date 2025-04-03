@@ -13,5 +13,4 @@ public class PremiumRequest {
     private MembershipPeriod membershipPeriod;
 
     private UUID walletId;
-
 }

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.UUID;
@@ -29,6 +30,9 @@ public class AdditionalInfoControllerUTest {
 
     @Mock
     private AuthenticationMetaData authenticationMetaData;
+
+    @Mock
+    private BindingResult bindingResult;
 
     @InjectMocks
     private AdditionalInfoController additionalInfoController;
@@ -134,7 +138,8 @@ public class AdditionalInfoControllerUTest {
 
     @Test
     void getProfileMenu_WhenPathIdDifferentFromAuthId_ShouldUseAuthId() {
-        UUID pathId = UUID.randomUUID(); // Different from authUserId
+
+        UUID pathId = UUID.randomUUID();
         UUID authUserId = UUID.randomUUID();
         User mockUser = User.builder()
                 .id(authUserId)
@@ -195,61 +200,49 @@ public class AdditionalInfoControllerUTest {
     }
 
     @Test
-    void submitAdditionalInfoForm_ShouldSaveAndRedirect() {
+    void submitAdditionalInfoForm_WithValidData_ShouldSaveAndRedirect() {
 
-        UUID pathId = UUID.randomUUID();
-        UUID authUserId = UUID.randomUUID();
-        User mockUser = User.builder()
-                .id(authUserId)
-                .country(Country.BULGARIA)
-                .username("gosho123")
-                .build();
-        AdditionalInfo formData = AdditionalInfo.builder()
+        UUID userId = UUID.randomUUID();
+        AdditionalInfo additionalInfo = AdditionalInfo.builder()
                 .gender("MALE")
                 .phoneNumber("0888854232")
                 .secondEmail("mail@abv.bg")
                 .build();
-        formData.setGender("Male");
-        formData.setPhoneNumber("123456789");
-        formData.setSecondEmail("secondary@example.com");
 
-        when(authenticationMetaData.getId()).thenReturn(authUserId);
-        when(userService.getById(authUserId)).thenReturn(mockUser);
+        when(bindingResult.hasErrors()).thenReturn(false);
 
         ModelAndView mav = additionalInfoController.submitAdditionalInfoForm(
-                pathId, formData, authenticationMetaData
+                userId, additionalInfo, authenticationMetaData, bindingResult
         );
 
-        // Assert
-        assertAll(
-                () -> assertEquals("redirect:/additional-info", mav.getViewName()),
-                () -> verify(additionalInfoService).saveAdditionalInfo(
-                        pathId,
-                        "Male",
-                        "123456789",
-                        "secondary@example.com"
-                ),
-                () -> verify(userService).getById(authUserId)
-        );
+        assertEquals("redirect:/additional-info", mav.getViewName());
+        verify(additionalInfoService).saveAdditionalInfo(
+                userId, "MALE", "0888854232", "mail@abv.bg");
+
+        verify(authenticationMetaData, never()).getId();
     }
 
     @Test
-    void submitAdditionalInfoForm_ShouldUsePathIdForSaving() {
+    void submitAdditionalInfoForm_WithPartialData_ShouldSaveOnlyProvidedFields() {
 
-        UUID pathId = UUID.randomUUID();
-        UUID authUserId = UUID.randomUUID();
-        when(authenticationMetaData.getId()).thenReturn(authUserId);
-        when(userService.getById(authUserId)).thenReturn(new User());
-
-        AdditionalInfo formData = AdditionalInfo.builder()
-                .gender("MALE")
-                .phoneNumber("0888854232")
-                .secondEmail("mail@abv.bg")
+        UUID userId = UUID.randomUUID();
+        AdditionalInfo additionalInfo = AdditionalInfo.builder()
+                .gender("FEMALE")
+                .phoneNumber(null)
+                .secondEmail(null)
                 .build();
-        formData.setGender("Female");
-        formData.setPhoneNumber("987654321");
 
-        additionalInfoController.submitAdditionalInfoForm(pathId, formData, authenticationMetaData);
+        when(bindingResult.hasErrors()).thenReturn(false);
+
+        ModelAndView mav = additionalInfoController.submitAdditionalInfoForm(
+                userId, additionalInfo, authenticationMetaData, bindingResult
+        );
+
+        assertEquals("redirect:/additional-info", mav.getViewName());
+        verify(additionalInfoService).saveAdditionalInfo(
+                userId, "FEMALE", null, null);
+
+        verify(authenticationMetaData, never()).getId();
     }
 
     @Test
@@ -267,71 +260,52 @@ public class AdditionalInfoControllerUTest {
                             .phoneNumber("0888854232")
                             .secondEmail("mail@abv.bg")
                             .build(),
-                    authenticationMetaData
+                    authenticationMetaData, bindingResult
             );
         });
     }
 
     @Test
-    void submitAdditionalInfoForm_WhenAuthDataIsNull_ShouldThrowException() {
-        assertThrows(NullPointerException.class, () -> {
-            additionalInfoController.submitAdditionalInfoForm(
-                    UUID.randomUUID(),
-                    AdditionalInfo.builder()
-                            .gender("MALE")
-                            .phoneNumber("0888854232")
-                            .secondEmail("mail@abv.bg")
-                            .build(),
-                    null
-            );
-        });
-    }
+    void submitAdditionalInfoForm_WhenServiceThrowsException_ShouldPropagateIt() {
 
-    @Test
-    void submitAdditionalInfoForm_WhenPartialData_ShouldStillSave() {
-
-        UUID pathId = UUID.randomUUID();
-        UUID authUserId = UUID.randomUUID();
-        when(authenticationMetaData.getId()).thenReturn(authUserId);
-        when(userService.getById(authUserId)).thenReturn(new User());
-
-        AdditionalInfo formData = AdditionalInfo.builder()
+        UUID userId = UUID.randomUUID();
+        AdditionalInfo additionalInfo = AdditionalInfo.builder()
                 .gender("MALE")
                 .phoneNumber("0888854232")
                 .secondEmail("mail@abv.bg")
                 .build();
-        formData.setPhoneNumber("555555555");
 
-        ModelAndView mav = additionalInfoController.submitAdditionalInfoForm(
-                pathId, formData, authenticationMetaData
-        );
-
-        assertEquals("redirect:/additional-info", mav.getViewName());
-    }
-
-    @Test
-    void submitAdditionalInfoForm_WhenSaveFails_ShouldPropagateException() {
-
-        UUID pathId = UUID.randomUUID();
-        UUID authUserId = UUID.randomUUID();
-        when(authenticationMetaData.getId()).thenReturn(authUserId);
-        when(userService.getById(authUserId)).thenReturn(new User());
-
-        AdditionalInfo formData = AdditionalInfo.builder()
-                .gender("MALE")
-                .phoneNumber("0888854232")
-                .secondEmail("mail@abv.bg")
-                .build();
-        formData.setGender("Other");
-
-        doThrow(new RuntimeException("Save failed"))
-                .when(additionalInfoService)
-                .saveAdditionalInfo(any(), any(), any(), any());
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(new RuntimeException("Database error"))
+                .when(additionalInfoService).saveAdditionalInfo(any(), any(), any(), any());
 
         assertThrows(RuntimeException.class, () -> {
             additionalInfoController.submitAdditionalInfoForm(
-                    pathId, formData, authenticationMetaData
+                    userId, additionalInfo, authenticationMetaData, bindingResult
             );
         });
+
+        verifyNoInteractions(authenticationMetaData);
+    }
+
+    @Test
+    void submitAdditionalInfoForm_ShouldAddAdditionalInfoToModel() {
+
+        UUID userId = UUID.randomUUID();
+        AdditionalInfo additionalInfo = AdditionalInfo.builder()
+                .gender("MALE")
+                .phoneNumber("0888854232")
+                .secondEmail("mail@abv.bg")
+                .build();
+
+        when(bindingResult.hasErrors()).thenReturn(false);
+
+        ModelAndView mav = additionalInfoController.submitAdditionalInfoForm(
+                userId, additionalInfo, authenticationMetaData, bindingResult
+        );
+
+        assertEquals(additionalInfo, mav.getModel().get("additional-info"));
+
+        verifyNoInteractions(authenticationMetaData);
     }
 }

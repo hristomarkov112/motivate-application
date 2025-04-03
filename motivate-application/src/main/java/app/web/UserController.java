@@ -2,7 +2,6 @@ package app.web;
 
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
-import app.user.model.UserRole;
 import app.user.service.UserService;
 import app.web.dto.UserEditRequest;
 import app.web.mapper.DtoMapper;
@@ -12,10 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.nio.file.AccessDeniedException;
@@ -49,6 +45,7 @@ public class UserController {
     @GetMapping("/{id}/profile")
     public ModelAndView getProfilePage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
+        UUID userId = authenticationMetaData.getId();
         User user = userService.getById(authenticationMetaData.getId());
 
         ModelAndView modelAndView = new ModelAndView();
@@ -72,13 +69,15 @@ public class UserController {
     }
 
     @PutMapping("/{id}/profile-menu")
-    public ModelAndView updateUserProfile(@PathVariable UUID id, @Valid UserEditRequest userEditRequest, BindingResult bindingResult) {
+    public ModelAndView updateUserProfile(@PathVariable UUID id, @Valid @ModelAttribute UserEditRequest userEditRequest, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
+
             User user = userService.getById(id);
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("profile-menu");
             modelAndView.addObject("user", user);
+
+        if (bindingResult.hasErrors()) {
             modelAndView.addObject("userEditRequest", userEditRequest);
 
             return modelAndView;
@@ -94,7 +93,7 @@ public class UserController {
 
         userService.blockUser(id);
 
-        return new ModelAndView("redirect:/users");
+        return new ModelAndView("redirect:/users/admin-panel");
     }
 
     @PutMapping("/{id}/role")
@@ -102,7 +101,7 @@ public class UserController {
 
         userService.changeRole(id);
 
-        return new ModelAndView("redirect:/users");
+        return new ModelAndView("redirect:/users/admin-panel");
     }
 
     @GetMapping("/profiles")

@@ -34,7 +34,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-public class PostControllerApiTest {
+public class PostControllerUTest {
 
     @Mock
     private UserService userService;
@@ -86,32 +86,27 @@ public class PostControllerApiTest {
 
     @Test
     public void getCreatePostPage_ShouldReturnCorrectModelAndView() {
-        // Arrange
+
         UUID userId = UUID.randomUUID();
-        User mockUser = new User();
-        mockUser.setId(userId);
+        AuthenticationMetaData auth = new AuthenticationMetaData(
+                userId, "gosho123", "123123", UserRole.USER, true);
 
-        when(userService.getById(userId)).thenReturn(mockUser);
-
-        ModelAndView result = postController.getCreatePostPage(
-                new AuthenticationMetaData(userId, "gosho123", "123123", UserRole.USER, true),
-                null
-        );
+        ModelAndView result = postController.getCreatePostPage(auth, null);
 
         assertNotNull(result);
         assertEquals("new-post", result.getViewName());
         assertNotNull(result.getModel().get("postRequest"));
         assertNull(result.getModel().get("errorMessage"));
+
+        verifyNoInteractions(userService);
+        verifyNoInteractions(postService);
+        verifyNoInteractions(commentService);
     }
 
     @Test
     public void getCreatePostPage_WithErrorParam_ShouldAddErrorMessage() {
 
         UUID userId = UUID.randomUUID();
-        User mockUser = new User();
-        mockUser.setId(userId);
-
-        when(userService.getById(userId)).thenReturn(mockUser);
 
         ModelAndView result = postController.getCreatePostPage(
                 new AuthenticationMetaData(userId, "gosho123", "123123", UserRole.USER, true),
@@ -120,11 +115,17 @@ public class PostControllerApiTest {
 
         assertNotNull(result);
         assertEquals("new-post", result.getViewName());
-        assertEquals("The text length must be less than or equal 4000 characters.",
-                result.getModel().get("errorMessage"));
+        assertEquals(
+                "The text length must be less than or equal 4000 characters.",
+                result.getModel().get("errorMessage")
+        );
+
+        verifyNoInteractions(userService);
+        verifyNoInteractions(postService);
+        verifyNoInteractions(commentService);
     }
 
-    @Test//
+    @Test
     public void createPost_WithValidRequest_ShouldRedirect() {
 
         UUID userId = UUID.randomUUID();
@@ -173,7 +174,7 @@ public class PostControllerApiTest {
     public void createPost_WithInvalidRequest_ShouldReturnFormWithErrors() {
 
         UUID userId = UUID.randomUUID();
-        PostRequest invalidRequest = new PostRequest(); // Empty request
+        PostRequest invalidRequest = new PostRequest();
 
         when(bindingResult.hasErrors()).thenReturn(true);
 
@@ -327,8 +328,7 @@ public class PostControllerApiTest {
 
         ModelAndView result = postController.deletePost(postId, authData);
 
-
-        assertEquals("my-posts", result.getViewName());
+        assertEquals("posts", result.getViewName());
 
         List<Post> returnedPosts = (List<Post>) result.getModel().get("posts");
         assertNotNull(returnedPosts);
@@ -359,7 +359,7 @@ public class PostControllerApiTest {
 
         ModelAndView result = postController.deletePost(postId, authData);
 
-        assertEquals("my-posts", result.getViewName());
+        assertEquals("posts", result.getViewName());
 
         List<Post> returnedPosts = (List<Post>) result.getModel().get("posts");
         assertNotNull(returnedPosts);
@@ -384,10 +384,9 @@ public class PostControllerApiTest {
         when(postService.getById(postId)).thenReturn(postToDelete);
         when(postService.getPostsByUserId(userId)).thenReturn(remainingPosts);
 
-
         ModelAndView result = postController.deletePost(postId, authData);
 
-        assertEquals("my-posts", result.getViewName());
+        assertEquals("posts", result.getViewName());
         verify(postService).deletePost(postId, userId);
     }
 
@@ -584,7 +583,7 @@ public class PostControllerApiTest {
 
         Post mockPost = new Post();
         User mockUser = new User();
-        CommentRequest invalidRequest = new CommentRequest(); // Empty/invalid
+        CommentRequest invalidRequest = new CommentRequest();
 
         AuthenticationMetaData authData = new AuthenticationMetaData(userId, "gosho123", "123123", UserRole.USER, true);
 
@@ -671,7 +670,7 @@ public class PostControllerApiTest {
         UUID userId = UUID.randomUUID();
 
         Post mockPost = new Post();
-        CommentRequest invalidRequest = new CommentRequest(); // Invalid
+        CommentRequest invalidRequest = new CommentRequest();
 
         AuthenticationMetaData authData = new AuthenticationMetaData(userId, "gosho123", "123123", UserRole.USER, true);
 
@@ -686,7 +685,7 @@ public class PostControllerApiTest {
                 model
         );
 
-        verify(model).addAttribute("post", mockPost); // Should be called regardless of validation
+        verify(model).addAttribute("post", mockPost);
     }
 
     @Test
@@ -697,7 +696,7 @@ public class PostControllerApiTest {
 
         Post mockPost = new Post();
         User mockUser = new User();
-        CommentRequest invalidRequest = new CommentRequest(); // Invalid
+        CommentRequest invalidRequest = new CommentRequest();
 
         AuthenticationMetaData authData = new AuthenticationMetaData(userId, "gosho123", "123123", UserRole.USER, true);
 

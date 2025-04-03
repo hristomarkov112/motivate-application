@@ -1,5 +1,6 @@
 package app.web;
 
+import app.exception.InsufficientFundsException;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -78,9 +80,15 @@ public class WalletController {
     public String processWithdrawal(
             @AuthenticationPrincipal AuthenticationMetaData auth,
             @ModelAttribute("withdrawalRequest") @Valid WithdrawalRequest withdrawalRequest,
-            Model model) {
+            Model model, BindingResult bindingResult) {
 
         User user = userService.getById(auth.getId());
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "withdrawal-form";
+        }
+
         walletService.withdrawal(user.getWallets().get(0).getId(), withdrawalRequest.getAmount());
 
         model.addAttribute("withdrawalRequest", withdrawalRequest);

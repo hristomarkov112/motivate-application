@@ -152,7 +152,7 @@ input:checked + .slider:before {
 }
 
 
-/*Toggle Button 2 by GPT*/
+/*Toggle Button */
 .toggle-btn-block {
     padding: 10px 15px;
     border: 2px solid white;
@@ -170,7 +170,7 @@ input:checked + .slider:before {
 }
 
 .toggle-btn-role {
-    padding: 10px 15px;
+    padding: 5px 15px;
     border: 2px solid white;
     background-color: #5A9DD4;
     color: white;
@@ -181,6 +181,6 @@ input:checked + .slider:before {
 }
 
 .toggle-btn-role.toggled {
-    background-color: #932727;
+    background-color: #5A9DD4;
     color: white;
 }

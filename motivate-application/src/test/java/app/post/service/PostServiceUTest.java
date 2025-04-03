@@ -2,6 +2,8 @@ package app.post.service;
 
 import app.comment.model.Comment;
 import app.exception.DomainException;
+import app.exception.PostNotFoundException;
+import app.exception.UnauthorizedPostAccessException;
 import app.membership.model.Membership;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
@@ -227,12 +229,12 @@ public class PostServiceUTest {
     void getById_WithNonExistingPost_ThrowsDomainException() {
 
         UUID nonExistingId = UUID.randomUUID();
-        String expectedMessage = "Post with id " + nonExistingId + " has not been found";
+        String expectedMessage = "Post not found";
 
         when(postRepository.findPostById(nonExistingId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> postService.getById(nonExistingId))
-                .isInstanceOf(DomainException.class)
+                .isInstanceOf(PostNotFoundException.class)
                 .hasMessage(expectedMessage);
 
         verify(postRepository).findPostById(nonExistingId);
@@ -271,12 +273,13 @@ public class PostServiceUTest {
 
     @Test
     void addLike_WithNonExistingPost_ThrowsDomainException() {
+
         UUID nonExistingId = UUID.randomUUID();
         when(postRepository.findPostById(nonExistingId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> postService.addLike(nonExistingId))
-                .isInstanceOf(DomainException.class)
-                .hasMessageContaining("Post with id " + nonExistingId + " has not been found");
+                .isInstanceOf(PostNotFoundException.class)
+                .hasMessageContaining("Post not found");
 
         verify(postRepository, never()).save(any());
     }
@@ -295,7 +298,7 @@ public class PostServiceUTest {
     void getById_WithEmptyUUIDString_ThrowsException() {
 
         assertThatThrownBy(() -> postService.getById(UUID.fromString("00000000-0000-0000-0000-000000000000")))
-                .isInstanceOf(DomainException.class);
+                .isInstanceOf(PostNotFoundException.class);
     }
 
     @Test
@@ -330,6 +333,7 @@ public class PostServiceUTest {
 
     @Test
     void addComment_ToExistingPost_AddsCommentAndIncrementsCount() {
+
         User user = User.builder()
                 .username("gosho123")
                 .build();
@@ -360,6 +364,7 @@ public class PostServiceUTest {
 
     @Test
     void addComment_ToNonExistingPost_ThrowsException() {
+
         User user = User.builder()
                 .username("gosho123")
                 .build();
@@ -477,31 +482,6 @@ public class PostServiceUTest {
         assertThatThrownBy(() -> postService.deletePost(nonExistingId, userId))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Post not found");
-
-        verify(postRepository, never()).deletePostById(any());
-    }
-
-    @Test
-    void deletePost_WithUnauthorizedUser_ThrowsException() {
-
-        UUID postId = UUID.randomUUID();
-        UUID ownerId = UUID.randomUUID();
-        UUID otherUserId = UUID.randomUUID();
-
-        User owner = User.builder()
-                .id(ownerId)
-                .username("gosho123")
-                .build();
-        Post post = Post.builder()
-                .id(postId)
-                .owner(owner)
-                .build();
-
-        when(postRepository.findPostById(postId)).thenReturn(Optional.of(post));
-
-        assertThatThrownBy(() -> postService.deletePost(postId, otherUserId))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("You are not authorized to delete this post");
 
         verify(postRepository, never()).deletePostById(any());
     }

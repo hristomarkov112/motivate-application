@@ -165,7 +165,6 @@ public class MembershipControllerUTest {
 
         when(userService.getById(userId)).thenReturn(mockUser);
 
-
         for (MembershipType type : MembershipType.values()) {
 
             membershipController.getPremiumPage(
@@ -175,7 +174,7 @@ public class MembershipControllerUTest {
             );
 
             verify(membershipService).getPremium(mockUser, type, premiumRequest);
-            reset(membershipService); // Reset mock between iterations
+            reset(membershipService);
         }
     }
 
@@ -192,7 +191,6 @@ public class MembershipControllerUTest {
         AuthenticationMetaData authData = new AuthenticationMetaData(userId, "gosho123", "123123", UserRole.USER, true);
 
         when(userService.getById(userId)).thenReturn(mockUser);
-
 
         membershipController.getPremiumPage(
                 membershipType,
@@ -307,7 +305,7 @@ public class MembershipControllerUTest {
 
         assertEquals("redirect:/memberships/details", result);
         verify(userService).getById(userId);
-        verifyNoInteractions(membershipService); // Now this will pass
+        verifyNoInteractions(membershipService);
     }
 
     @Test
@@ -329,7 +327,7 @@ public class MembershipControllerUTest {
 
 
             verify(membershipService).updateMembershipRenewal(mockUser, true, period);
-            reset(membershipService); // Reset mock between iterations
+            reset(membershipService);
         }
     }
 

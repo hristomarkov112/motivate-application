@@ -190,7 +190,7 @@ public class WalletControllerUTest {
         when(auth.getId()).thenReturn(testUserId);
         when(userService.getById(testUserId)).thenReturn(mockUser);
 
-        String viewName = walletController.processWithdrawal(auth, request, model);
+        String viewName = walletController.processWithdrawal(auth, request, model, bindingResult);
 
         assertEquals("withdrawal-result", viewName);
         verify(walletService).withdrawal(testWalletId, new BigDecimal("100.00"));
@@ -216,7 +216,7 @@ public class WalletControllerUTest {
                 .when(walletService).withdrawal(any(), any());
 
         assertThrows(IllegalArgumentException.class, () -> {
-            walletController.processWithdrawal(auth, request, model);
+            walletController.processWithdrawal(auth, request, model, bindingResult);
         });
     }
 }

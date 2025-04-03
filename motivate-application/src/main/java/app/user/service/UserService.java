@@ -1,7 +1,7 @@
 package app.user.service;
 
 import app.additionalinfo.service.AdditionalInfoService;
-import app.exception.DomainException;
+import app.exception.NonExistingUsernameException;
 import app.exception.UsernameAlreadyExistsException;
 import app.membership.service.MembershipService;
 import app.security.AuthenticationMetaData;
@@ -107,9 +107,10 @@ public class UserService implements UserDetailsService {
 
     public User getById(UUID id) {
 
-        return userRepository.findUserById(id).orElseThrow(() -> new DomainException("User with id [%s] does not exist.".formatted(id)));
+        return userRepository.findUserById(id).orElseThrow(() -> new RuntimeException("User with id [%s] does not exist.".formatted(id)));
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void blockUser(UUID userId) {
         User user = getById(userId);
 
@@ -137,7 +138,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("Username [%s] does not exist.".formatted(username)));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NonExistingUsernameException("Username [%s] does not exist.".formatted(username)));
 
         return new AuthenticationMetaData(user.getId(), username, user.getPassword(), user.getRole(), user.isActive());
     }

@@ -9,11 +9,13 @@ import app.post.model.Post;
 import app.post.service.PostService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
+import app.user.model.UserRole;
 import app.user.service.UserService;
 import app.web.dto.CommentRequest;
 import app.web.dto.PostRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,7 +72,6 @@ public class PostController {
     @GetMapping("/new")
     public ModelAndView getCreatePostPage(@AuthenticationPrincipal AuthenticationMetaData authenticationMetaData, @RequestParam(value = "error", required = false) String errorParam) {
         ModelAndView modelAndView = new ModelAndView();
-        User user = userService.getById(authenticationMetaData.getId());
 
         modelAndView.setViewName("new-post");
         modelAndView.addObject("postRequest", new PostRequest());
@@ -111,14 +112,10 @@ public class PostController {
         return modelAndView;
     }
 
-    @DeleteMapping("/{postId}/delete")
-    public ModelAndView deletePost(@PathVariable UUID postId, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+    @DeleteMapping("/{postId}/delete-my-post")
+    public ModelAndView deleteMyPost(@PathVariable UUID postId, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
 
         Post post = postService.getById(postId);
-
-        if (!post.getOwner().getId().equals(authenticationMetaData.getId())) {
-            throw new UnauthorizedPostAccessException("You are not authorized to delete this post");
-        }
 
         postService.deletePost(postId, post.getOwner().getId());
         List<Post> posts = postService.getPostsByUserId(authenticationMetaData.getId());
@@ -126,6 +123,23 @@ public class PostController {
         //My Posts
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("my-posts");
+        modelAndView.addObject("posts", posts);
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{postId}/delete")
+    public ModelAndView deletePost(@PathVariable UUID postId, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+
+        Post post = postService.getById(postId);
+        postService.deletePost(postId, post.getOwner().getId());
+
+        List<Post> posts = postService.getPostsByUserId(authenticationMetaData.getId());
+
+        //Posts
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("posts");
         modelAndView.addObject("posts", posts);
 
         return modelAndView;

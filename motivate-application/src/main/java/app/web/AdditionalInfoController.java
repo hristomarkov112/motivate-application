@@ -5,10 +5,10 @@ import app.additionalinfo.service.AdditionalInfoService;
 import app.security.AuthenticationMetaData;
 import app.user.model.User;
 import app.user.service.UserService;
-import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -57,29 +57,23 @@ public class AdditionalInfoController {
     }
 
     @PostMapping("/{id}/form")
-    public ModelAndView submitAdditionalInfoForm(@PathVariable UUID id,@ModelAttribute AdditionalInfo additionalInfo, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
+    public ModelAndView submitAdditionalInfoForm(@PathVariable UUID id,
+                                                 @ModelAttribute AdditionalInfo additionalInfo,
+                                                 @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData,
+                                                 BindingResult bindingResult) {
 
-        User user = userService.getById(authenticationMetaData.getId());
+        if (bindingResult.hasErrors()) {
+            ModelAndView mav = new ModelAndView("additional-info-menu");
+            mav.addObject("errors", bindingResult.getAllErrors());
+            return mav;
+        }
 
-//        try {
-            additionalInfoService.saveAdditionalInfo(id, additionalInfo.getGender(), additionalInfo.getPhoneNumber(), additionalInfo.getSecondEmail());
-            ModelAndView modelAndView = new ModelAndView("redirect:/additional-info");
-            modelAndView.addObject("additional-info", additionalInfo);
+        User user = userService.getById(id);
 
-            return modelAndView;
-//        }
-//        catch (FeignException.BadRequest e) {
-//            ModelAndView modelAndView = new ModelAndView("additional-info-menu");
-//            modelAndView.addObject("user", user);
-//            modelAndView.addObject("additional-info", additionalInfo);
-//            modelAndView.addObject("error", "Invalid input. Please check your data.");
-//            return modelAndView;
-//        } catch (Exception e) {
-//            ModelAndView modelAndView = new ModelAndView("additional-info-menu");
-//            modelAndView.addObject("user", user);
-//            modelAndView.addObject("additional-info", additionalInfo);
-//            modelAndView.addObject("error", "An error occurred while saving additional information.");
-//            return modelAndView;
-//        }
+        additionalInfoService.saveAdditionalInfo(id, additionalInfo.getGender(), additionalInfo.getPhoneNumber(), additionalInfo.getSecondEmail());
+        ModelAndView modelAndView = new ModelAndView("redirect:/additional-info");
+        modelAndView.addObject("additional-info", additionalInfo);
+
+        return modelAndView;
     }
 }

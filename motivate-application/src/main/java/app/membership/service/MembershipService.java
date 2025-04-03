@@ -1,6 +1,7 @@
 package app.membership.service;
 
 import app.exception.DomainException;
+import app.exception.NoActiveMembershipException;
 import app.membership.model.Membership;
 import app.membership.model.MembershipPeriod;
 import app.membership.model.MembershipStatus;
@@ -62,7 +63,7 @@ public class MembershipService {
 
         Optional<Membership> optionalMembership = membershipRepository.findByStatusAndOwnerId(MembershipStatus.ACTIVE, user.getId());
         if (optionalMembership.isEmpty()) {
-            throw new DomainException("No active subscription has been found for this user.");
+            throw new NoActiveMembershipException("No active membership has been found for this user.");
         }
 
         Membership currentMembership = optionalMembership.get();

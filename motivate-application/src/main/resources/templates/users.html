@@ -20,7 +20,7 @@
 <div class="container">
   <header>
     <h1>Users Details</h1>
-    <a th:href="@{/home}" class="btn">Back</a> <!-- Optional: Link to go back to the dashboard -->
+    <a th:href="@{/home}" class="btn">Back</a>
   </header>
   <section class="user-report">
     <table>
@@ -45,31 +45,31 @@
       </thead>
       <tbody>
       <tr th:each="user : ${users}">
-        <td th:text="${user.id}">{{ user.id }}</td>
-        <td th:text="${user.username}">{{ user.username }}</td>
-        <td th:text="${user.wallets[0].balance}">{{ user.wallet.balance }}</td>
-        <td th:text="${user.wallets[0].currency}">{{ user.wallet.currency }}</td>
-        <td th:text="${user.firstName}">{{ user.first_name }}</td>
-        <td th:text="${user.lastName}">{{ user.last_name }}</td>
-        <td th:text="${user.email}">{{ user.email }}</td>
-        <td th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}">{{ user.country }}</td>
-        <td th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}">{{ user.create_date }}</td>
-        <td th:text="${user.memberships[0].type}">{{ user.membership }}</td>
-        <td th:text="${user.memberships[0].period}">{{ user.membership }}</td>
-        <td th:text="${user.active} ? 'Yes' : 'No'">{{ user.email }}</td>
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.wallets[0].balance}"></td>
+        <td th:text="${user.wallets[0].currency}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}"></td>
+        <td th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}"></td>
+        <td th:text="${user.memberships[0].type}"></td>
+        <td th:text="${user.memberships[0].period}"></td>
+        <td th:text="${user.isActive()} ? 'Yes' : 'No'"></td>
         <td>
           <form th:action="@{'/users/' + ${user.id} + '/status'}" th:method="PUT">
             <input type="hidden" name="userId" th:value="${user.id}" />
             <button type="submit" th:classappend="${user.isActive()} ? 'toggled'" class="toggle-btn-block">
-              <span th:text="${user.isActive()} ? 'BLOCK' : 'UNBLOCK'"></span>
+              <span th:text="${user.isActive()}? 'BLOCK' : 'UNBLOCK'"></span>
             </button>
           </form>
         </td>
-        <td th:text="${user.role}">{{ user.email }}</td>
+        <td th:text="${user.role}"></td>
         <td>
           <form th:action="@{'/users/' + ${user.id} + '/role'}" th:method="PUT">
             <input type="hidden" name="userId" th:value="${user.id}" />
-            <button type="submit" th:classappend="${user.role.USER} ? 'CHANGE'" class="toggle-btn-role">
+            <button type="submit" th:classappend="${user.role.USER} ? 'toggled'" class="toggle-btn-role">
               <span th:text="${user.role.name() == 'ADMIN'} ? 'To USER' : 'To ADMIN'"></span>
             </button>
           </form>
@@ -80,7 +80,7 @@
   </section>
   <header>
     <h1>Registrations</h1>
-    <a th:href="@{/home}" class="btn">Back</a> <!-- Optional: Link to go back to the dashboard -->
+    <a th:href="@{/home}" class="btn">Back</a>
   </header>
   <section class="user-report">
     <table>
@@ -99,15 +99,15 @@
       </thead>
       <tbody>
       <tr th:each="user : ${users}">
-        <td th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}">{{ user.create_date }}</td>
-        <td th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}">{{ user.country }}</td>
-        <td th:text="${user.username}">{{ user.username }}</td>
-        <td th:text="${user.id}">{{ user.id }}</td>
-        <td th:text="${user.firstName}">{{ user.first_name }}</td>
-        <td th:text="${user.lastName}">{{ user.last_name }}</td>
-        <td th:text="${user.email}">{{ user.email }}</td>
-        <td th:text="${user.wallets[0].balance}">{{ user.wallet.balance }}</td>
-        <td th:text="${user.wallets[0].currency}">{{ user.wallet.currency }}</td>
+        <td th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}"></td>
+        <td th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.wallets[0].balance}"></td>
+        <td th:text="${user.wallets[0].currency}"></td>
       </tr>
       </tbody>
     </table>
@@ -115,7 +115,7 @@
 
   <header>
     <h1>Memberships</h1>
-    <a th:href="@{/home}" class="btn">Back</a> <!-- Optional: Link to go back to the dashboard -->
+    <a th:href="@{/home}" class="btn">Back</a>
   </header>
   <section class="user-report">
     <table>
@@ -142,13 +142,13 @@
         <td th:text="${user.email}"></td>
         <td th:text="${#strings.capitalize(#strings.toLowerCase(user.country))}"></td>
         <td th:text="${#temporals.format(user.createdAt, 'dd MMM YYYY HH:mm' )}"></td>
-        <td th:text="${user.active} ? 'Yes' : 'No'"></td>
+        <td th:text="${user.isActive()} ? 'Yes' : 'No'"></td>
       </tr>
       </tbody>
     </table>
   </section>
 </div>
 <!-- Footer -->
-<th:block th:insert="fragments/footer::footer"></th:block>
+<th:block th:replace="~{fragments/footer::footer}"></th:block>
 </body>
 </html>

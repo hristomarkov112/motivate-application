@@ -2,7 +2,9 @@ package app.user.service;
 
 import app.additionalinfo.service.AdditionalInfoService;
 import app.exception.DomainException;
+import app.exception.NonExistingUsernameException;
 import app.exception.UsernameAlreadyExistsException;
+import app.exception.UsernameDoesNotExistException;
 import app.membership.service.MembershipService;
 import app.user.model.Country;
 import app.user.model.User;
@@ -175,16 +177,16 @@ public class UserServiceUTest {
         User user = User.builder()
                 .id(userId)
                 .username("gosho123")
-                .isActive(true) // Initially active
+                .isActive(true)
                 .build();
 
         when(userRepository.findUserById(userId)).thenReturn(Optional.of(user));
 
         userService.blockUser(userId);
 
-        assertFalse(user.isActive()); // Verify the user is now inactive (blocked)
-        verify(userRepository, times(1)).save(user); // Verify the user was saved
-        verify(userRepository, times(1)).findUserById(userId); // Verify the user was fetched
+        assertFalse(user.isActive());
+        verify(userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).findUserById(userId);
     }
 
     @Test
@@ -194,7 +196,7 @@ public class UserServiceUTest {
 
         when(userRepository.findUserById(userId)).thenReturn(Optional.empty());
 
-        assertThrows(DomainException.class, () -> userService.blockUser(userId));
+        assertThrows(RuntimeException.class, () -> userService.blockUser(userId));
 
         verify(userRepository, times(1)).findUserById(userId);
         verify(userRepository, never()).save(any(User.class));
@@ -245,7 +247,7 @@ public class UserServiceUTest {
 
         when(userRepository.findUserById(userId)).thenReturn(Optional.empty());
 
-        assertThrows(DomainException.class, () -> userService.changeRole(userId));
+        assertThrows(RuntimeException.class, () -> userService.changeRole(userId));
 
         verify(userRepository, times(1)).findUserById(userId);
         verify(userRepository, never()).save(any(User.class));
@@ -282,7 +284,7 @@ public class UserServiceUTest {
 
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
-        assertThrows(DomainException.class, () -> userService.loadUserByUsername(username));
+        assertThrows(NonExistingUsernameException.class, () -> userService.loadUserByUsername(username));
 
         verify(userRepository, times(1)).findByUsername(username);
     }

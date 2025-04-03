@@ -35,24 +35,4 @@ public class CommentController {
         commentService.deleteComment(id);
         return "redirect:/posts";
     }
-
-//
-//    @PostMapping("/new")
-//    public ModelAndView createComment(@Valid CommentRequest commentRequest, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-//
-//        User user = userService.getById(authenticationMetaData.getId());
-//
-//        ModelAndView modelAndView = new ModelAndView();
-//
-//        UUID postId = commentRequest.getPostId();
-//        Post post = postService.getById(postId);
-//        commentService.createComment(commentRequest, user, post);
-//        modelAndView.addObject("commentRequest", commentRequest);
-//        modelAndView.addObject("post", post);
-//        modelAndView.setViewName("redirect:/comments/new");
-//
-//        return modelAndView;
-//    }
-
-
 }

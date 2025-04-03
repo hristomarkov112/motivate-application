@@ -324,7 +324,7 @@ public class UserControllerUTest {
 
     @Test
     public void updateUserProfile_ShouldPassCorrectRequestToService() {
-        // Arrange
+
         UUID userId = UUID.randomUUID();
         UserEditRequest validRequest = UserEditRequest.builder()
                 .profilePicture("pic.jpg")
@@ -347,7 +347,7 @@ public class UserControllerUTest {
 
         ModelAndView result = userController.blockUser(userId);
 
-        assertEquals("redirect:/users", result.getViewName());
+        assertEquals("redirect:/users/admin-panel", result.getViewName());
         verify(userService).blockUser(userId);
     }
 
@@ -368,7 +368,7 @@ public class UserControllerUTest {
 
         ModelAndView result = userController.blockUser(userId);
 
-        assertEquals("redirect:/users", result.getViewName());
+        assertEquals("redirect:/users/admin-panel", result.getViewName());
     }
 
     @Test
@@ -390,7 +390,7 @@ public class UserControllerUTest {
 
         ModelAndView result = userController.changeUserRole(userId);
 
-        assertEquals("redirect:/users", result.getViewName());
+        assertEquals("redirect:/users/admin-panel", result.getViewName());
         verify(userService).changeRole(userId);
     }
 
@@ -411,7 +411,7 @@ public class UserControllerUTest {
 
         ModelAndView result = userController.changeUserRole(userId);
 
-        assertEquals("redirect:/users", result.getViewName());
+        assertEquals("redirect:/users/admin-panel", result.getViewName());
     }
 
     @Test
@@ -482,13 +482,13 @@ public class UserControllerUTest {
                 .build();
 
         when(authenticationMetaData.getId()).thenReturn(userId);
-        when(userService.getById(userId)).thenReturn(currentUser);
         when(userService.getRegularUsers()).thenReturn(List.of(currentUser));
 
         ModelAndView mav = userController.getProfilesPage(authenticationMetaData);
 
         assertEquals("profiles", mav.getViewName());
 
+        @SuppressWarnings("unchecked")
         List<User> returnedUsers = (List<User>) mav.getModel().get("users");
         assertEquals(1, returnedUsers.size());
         assertEquals(currentUser, returnedUsers.get(0));
@@ -511,6 +511,7 @@ public class UserControllerUTest {
 
     @Test
     public void getProfilesPage_WhenAuthenticationMetaDataIsNull_ThrowsException() {
+
         assertThrows(NullPointerException.class, () -> {
             userController.getProfilesPage(null);
         });
@@ -521,6 +522,7 @@ public class UserControllerUTest {
 
     @Test
     public void getProfilesPage_WhenDatabaseErrorOccurs_PropagatesException() {
+
         UUID userId = UUID.randomUUID();
 
         when(authenticationMetaData.getId()).thenReturn(userId);
@@ -547,14 +549,13 @@ public class UserControllerUTest {
 
         ModelAndView result = userController.getOtherProfilePage(authenticationMetaData);
 
-        assertAll(
-                () -> assertEquals("other-profile", result.getViewName()),
-                () -> assertNotNull(result.getModel().get("user")),
-                () -> assertEquals(mockUser, result.getModel().get("user")),
-                () -> assertEquals("gosho123", ((User) result.getModel().get("user")).getUsername()),
-                () -> verify(userService).getById(userId),
-                () -> verifyNoInteractions(postService)
-        );
+        assertEquals("other-profile", result.getViewName());
+        assertNotNull(result.getModel().get("user"));
+        assertEquals(mockUser, result.getModel().get("user"));
+        assertEquals("gosho123", ((User) result.getModel().get("user")).getUsername());
+        verify(userService).getById(userId);
+        verifyNoInteractions(postService);
+
     }
 
     @Test
@@ -572,6 +573,7 @@ public class UserControllerUTest {
 
     @Test
     public void getOtherProfilePage_WhenAuthenticationMetaDataIsNull_ThrowsException() {
+
         assertThrows(NullPointerException.class, () -> {
             userController.getOtherProfilePage(null);
         });
@@ -588,7 +590,7 @@ public class UserControllerUTest {
                 .id(userId)
                 .username("gosho123")
                 .country(Country.BULGARIA)
-                .build(); // No display name
+                .build();
 
         when(authenticationMetaData.getId()).thenReturn(userId);
         when(userService.getById(userId)).thenReturn(minimalUser);

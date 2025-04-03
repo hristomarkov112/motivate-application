@@ -91,33 +91,10 @@ public class IndexController {
         modelAndView.addObject("posts", posts);
         posts.forEach(post -> post.setContent(postService.formatPostContent(post.getContent())));
 
-        //Comments
-//        List<Comment> comments = commentService.getCommentsByPostId(post.getId());
-//        int commentsCount = comments.size();
-//        modelAndView.addObject("commentRequest", new CommentRequest());
-//        modelAndView.addObject("comments", comments);
-
         if (errorParam != null) {
             modelAndView.addObject("errorMessage", "The text length must be less than or equal 4000 characters.") ;
         }
 
         return modelAndView;
     }
-
-
-//    @PostMapping("/home/comment")
-//    public ModelAndView createCommentPage(@Valid CommentRequest commentRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetaData authenticationMetaData) {
-//
-//        ModelAndView modelAndView = new ModelAndView();
-//        User user = userService.getById(authenticationMetaData.getId());
-//
-//        if (bindingResult.hasErrors()) {
-//            modelAndView.setViewName("home");
-//        }
-//
-//        commentService.createComment(commentRequest, user);
-//
-//        return new ModelAndView("redirect:/home");
-//    }
-
 }

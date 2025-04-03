@@ -20,7 +20,7 @@ public class PostRequest {
     @NotNull
     private User owner;
 
-    @NotBlank
+    @NotBlank(message = "Content cannot be blank")
     @Size(max = 4000, message = "The content must be not more than 4000 characters.")
     private String content;
 

@@ -120,7 +120,7 @@ public class MembershipServiceUTest {
         User user = User.builder()
                 .username("gosho123")
                 .build();
-        user.setMemberships(Collections.emptyList()); // or null
+        user.setMemberships(Collections.emptyList());
 
         assertThatThrownBy(() ->
                 membershipService.updateMembershipRenewal(user, false, MembershipPeriod.MONTHLY)
