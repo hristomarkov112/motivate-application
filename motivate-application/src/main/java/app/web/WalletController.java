@@ -63,7 +63,7 @@ public class WalletController {
             Model model) {
 
         User user = userService.getById(auth.getId());
-        walletService.deposit(user.getWallets().get(0).getId(), depositRequest.getAmount());
+        walletService.deposit(user, user.getWallets().get(0).getId(), depositRequest.getAmount());
 
         model.addAttribute("depositRequest", depositRequest);
 

@@ -116,7 +116,7 @@ public class WalletControllerUTest {
 
         String result = walletController.processDeposit(auth, request, model);
 
-        verify(walletService).deposit(testWalletId, new BigDecimal("200.00"));
+        verify(walletService).deposit(user, testWalletId, new BigDecimal("200.00"));
         assertEquals("deposit-result", result);
     }
 
@@ -141,7 +141,7 @@ public class WalletControllerUTest {
 
 
         assertEquals("deposit-result", redirect);
-        verify(walletService).deposit(testWalletId, new BigDecimal("100.00"));
+        verify(walletService).deposit(mockUser, testWalletId, new BigDecimal("100.00"));
         verify(model).addAttribute("depositRequest", request);
     }
 

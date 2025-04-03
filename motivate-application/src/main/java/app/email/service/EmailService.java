@@ -33,7 +33,7 @@ public class EmailService {
                         "that you have made a successful deposit to your account!\n\n" +
                         "Deposit Amount: " + event.getAmount() + " EUR.\n" +
                         "Deposit Date: " + formattedDate + "\n\n\n" +
-                        "In case you need any further help, you can always contact us on via email.\n" +
+                        "In case you need any further help, you can always contact us via email.\n" +
                         "Thank you for using our service!\n\n\n" +
                         "Best Regards\n" +
                         "Motiv8 Customer Support Team"

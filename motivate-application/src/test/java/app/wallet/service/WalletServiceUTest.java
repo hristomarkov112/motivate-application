@@ -139,13 +139,15 @@ public class WalletServiceUTest {
         BigDecimal depositAmount = new BigDecimal("100.00");
         Wallet mockWallet = createTestWallet(initialBalance);
         Payment mockPayment = new Payment();
+        User user = User.builder()
+                .id(UUID.randomUUID()).build();
 
         when(walletRepository.findById(testWalletId)).thenReturn(java.util.Optional.of(mockWallet));
 
         when(paymentService.createNewPayment(any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(mockPayment);
 
-        Payment result = walletService.deposit(testWalletId, depositAmount);
+        Payment result = walletService.deposit(user, testWalletId, depositAmount);
 
         assertNotNull(result);
 
@@ -154,35 +156,46 @@ public class WalletServiceUTest {
 
     @Test
     void deposit_WhenWalletIdNull_ShouldThrow() {
+        User user = User.builder()
+                .id(UUID.randomUUID()).build();
         assertThrows(IllegalArgumentException.class, () -> {
-            walletService.deposit(null, new BigDecimal("100.00"));
+            walletService.deposit(user, null, new BigDecimal("100.00"));
         }, "Wallet ID must not be null");
     }
 
     @Test
     void deposit_WhenAmountNull_ShouldThrow() {
+        User user = User.builder()
+                .id(UUID.randomUUID()).build();
+
         assertThrows(IllegalArgumentException.class, () -> {
-            walletService.deposit(testWalletId, null);
+            walletService.deposit(user, testWalletId, null);
         }, "Amount must not be null");
     }
 
     @Test
     void deposit_WhenAmountZeroOrNegative_ShouldThrow() {
+        User user = User.builder()
+                .id(UUID.randomUUID()).build();
+
         assertThrows(IllegalArgumentException.class, () -> {
-            walletService.deposit(testWalletId, BigDecimal.ZERO);
+            walletService.deposit(user, testWalletId, BigDecimal.ZERO);
         }, "Deposit amount must be positive");
 
         assertThrows(IllegalArgumentException.class, () -> {
-            walletService.deposit(testWalletId, new BigDecimal("-100.00"));
+            walletService.deposit(user, testWalletId, new BigDecimal("-100.00"));
         }, "Deposit amount must be positive");
     }
 
     @Test
     void deposit_WhenWalletNotFound_ShouldThrow() {
+        User user = User.builder()
+                .id(UUID.randomUUID()).build();
+
         when(walletRepository.findById(testWalletId)).thenReturn(java.util.Optional.empty());
 
         WalletNotFoundException exception = assertThrows(WalletNotFoundException.class, () -> {
-            walletService.deposit(testWalletId, new BigDecimal("100.00"));
+            walletService.deposit(user, testWalletId, new BigDecimal("100.00"));
         });
 
         assertTrue(exception.getMessage().contains(testWalletId.toString()));
@@ -191,13 +204,15 @@ public class WalletServiceUTest {
     @Test
     void deposit_ShouldFormatCurrencyCorrectly() {
 
+        User user = User.builder()
+                .id(UUID.randomUUID()).build();
         BigDecimal depositAmount = new BigDecimal("123.45");
         Wallet mockWallet = createTestWallet(initialBalance);
         mockWallet.setCurrency(Currency.getInstance("USD"));
 
         when(walletRepository.findById(testWalletId)).thenReturn(java.util.Optional.of(mockWallet));
 
-        walletService.deposit(testWalletId, depositAmount);
+        walletService.deposit(user, testWalletId, depositAmount);
     }
 
 

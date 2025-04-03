@@ -84,8 +84,6 @@ public class WalletService {
 
         System.out.printf("Thread [%s]: Code in WalletService.class\n", Thread.currentThread().getName());
 
-        publishPaymentNotification(user, amount);
-
         return paymentService.createNewPayment(
                 user,
                 wallet.getId().toString(),
@@ -136,7 +134,7 @@ public class WalletService {
     }
 
     @Transactional
-    public Payment deposit(UUID walletId, BigDecimal amount) {
+    public Payment deposit(User user, UUID walletId, BigDecimal amount) {
 
         if (walletId == null) {
             throw new IllegalArgumentException("Wallet ID must not be null");
@@ -155,6 +153,8 @@ public class WalletService {
         wallet.setUpdatedAt(LocalDateTime.now());
 
         walletRepository.save(wallet);
+
+        publishPaymentNotification(user, amount);
 
         return paymentService.createNewPayment(wallet.getOwner(),
                 MASTERCARD,
